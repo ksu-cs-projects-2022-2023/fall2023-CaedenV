@@ -31,7 +31,11 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(uxLoginForm));
             this.uxWelcLabel = new System.Windows.Forms.Label();
             this.uxWRLabel = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.uxLoginlbl = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.uxSignUpButton = new System.Windows.Forms.Button();
+            this.uxLoginButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // uxWelcLabel
@@ -61,22 +65,70 @@
             this.uxWRLabel.TabIndex = 1;
             this.uxWRLabel.Text = "WeReader";
             // 
-            // label1
+            // uxLoginlbl
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(0, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(39, 14);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "label1";
+            this.uxLoginlbl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.uxLoginlbl.AutoSize = true;
+            this.uxLoginlbl.Location = new System.Drawing.Point(101, 92);
+            this.uxLoginlbl.Name = "uxLoginlbl";
+            this.uxLoginlbl.Size = new System.Drawing.Size(165, 14);
+            this.uxLoginlbl.TabIndex = 2;
+            this.uxLoginlbl.Text = "Please enter your information:";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox1.ForeColor = System.Drawing.Color.MediumPurple;
+            this.textBox1.Location = new System.Drawing.Point(72, 155);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.PlaceholderText = "Password";
+            this.textBox1.Size = new System.Drawing.Size(221, 22);
+            this.textBox1.TabIndex = 3;
+            this.textBox1.WordWrap = false;
+            // 
+            // textBox2
+            // 
+            this.textBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox2.ForeColor = System.Drawing.Color.MediumPurple;
+            this.textBox2.Location = new System.Drawing.Point(72, 127);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.PlaceholderText = "valid@email.com";
+            this.textBox2.Size = new System.Drawing.Size(221, 22);
+            this.textBox2.TabIndex = 4;
+            this.textBox2.WordWrap = false;
+            // 
+            // uxSignUpButton
+            // 
+            this.uxSignUpButton.Location = new System.Drawing.Point(218, 183);
+            this.uxSignUpButton.Name = "uxSignUpButton";
+            this.uxSignUpButton.Size = new System.Drawing.Size(75, 23);
+            this.uxSignUpButton.TabIndex = 5;
+            this.uxSignUpButton.Text = "Sign Up!";
+            this.uxSignUpButton.UseVisualStyleBackColor = true;
+            // 
+            // uxLoginButton
+            // 
+            this.uxLoginButton.Location = new System.Drawing.Point(72, 183);
+            this.uxLoginButton.Name = "uxLoginButton";
+            this.uxLoginButton.Size = new System.Drawing.Size(75, 23);
+            this.uxLoginButton.TabIndex = 6;
+            this.uxLoginButton.Text = "Log in";
+            this.uxLoginButton.UseVisualStyleBackColor = true;
             // 
             // uxLoginForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Ivory;
-            this.ClientSize = new System.Drawing.Size(379, 420);
-            this.Controls.Add(this.label1);
+            this.ClientSize = new System.Drawing.Size(379, 273);
+            this.Controls.Add(this.uxLoginButton);
+            this.Controls.Add(this.uxSignUpButton);
+            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.uxLoginlbl);
             this.Controls.Add(this.uxWRLabel);
             this.Controls.Add(this.uxWelcLabel);
             this.Font = new System.Drawing.Font("Cambria", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
@@ -95,6 +147,10 @@
 
         private Label uxWelcLabel;
         private Label uxWRLabel;
-        private Label label1;
+        private Label uxLoginlbl;
+        private TextBox textBox1;
+        private TextBox textBox2;
+        private Button uxSignUpButton;
+        private Button uxLoginButton;
     }
 }
