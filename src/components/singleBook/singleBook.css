@@ -1,0 +1,58 @@
+.singleBook{
+    flex: 9;
+}
+
+.singleBookWrapper{
+    padding: 20px;
+    padding-right: 0;
+}
+
+.singleBookCover{
+    width: 500px;
+    height: 800px;
+    border-radius: 5px;
+    object-fit: fill;
+}
+
+.singleBookTitle{
+    text-align: left;
+    font-family: 'Phudu', cursive;
+    font-size: 50px;
+    margin-left: 12px;
+    color: mediumpurple;
+}
+.singleBookOpt{
+    float: right;
+    font-size: 25px;
+    margin-left: 10px;
+    cursor: pointer;
+    color: mediumpurple;
+    display: flex;
+}
+.singleIcons{
+    margin-left: 15px;
+}
+.singleBookInfo{
+    margin-left: 15px;
+    display: flex;
+    font-size: 16px;
+    color: rgb(117, 87, 177);
+    flex: 3;
+}
+
+.singleBookDesc{
+    color: rgb(101, 75, 151);
+    font-size: 18px;
+    line-height: 25px;
+}
+
+.bookCoverTitle{
+    display: flex;
+}
+.singleBookDesc{
+    margin: 12px;
+}
+.split{
+    margin-left: 5px;
+    margin-right: 5px;
+}

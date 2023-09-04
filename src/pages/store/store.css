@@ -1,0 +1,29 @@
+.store {
+    background-color: rgb(255, 233, 207);
+}
+label{
+    font-size: 50px;
+    color: rgb(130, 99, 190);
+    font-family: 'Lora','serif';
+}
+.sParameters{
+    display: flex;
+    margin: 15px;
+    justify-content: center;
+}
+.s{
+    font-size: 20px;
+    margin-left: 5px;
+    color: white;
+    background-color: rgb(164, 139, 214);
+}
+.searchIcon{
+    margin-left: 2px;
+    color: mediumpurple;
+    background-color: white;
+    font-size: 23px;
+    border: 1px solid mediumpurple;
+}
+.results{
+    margin-top: 50px;
+}

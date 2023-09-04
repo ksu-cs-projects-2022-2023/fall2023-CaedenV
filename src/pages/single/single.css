@@ -1,0 +1,21 @@
+.single{
+    background-color: bisque;
+}
+
+.revSection{
+    margin-top: 15px;
+}
+
+.revHeader > h {
+    font-size: 36px;
+    margin-left: 10px;
+    text-align: center;
+}
+.makeReviewIcon{
+    margin-left: 30px;
+    font-size: 25px;
+    cursor: pointer;
+}
+.revHeader{
+    color: mediumpurple;
+}
