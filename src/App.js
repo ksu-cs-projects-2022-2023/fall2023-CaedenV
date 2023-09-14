@@ -36,6 +36,8 @@ function App() {
         </Route>
         <Route path="/read/:bookId" element={user ? <Read /> :<Login/>}>
         </Route>
+        <Route path="/login" element={<Login/>}>
+        </Route>
       </Routes>
     </Router>
   );

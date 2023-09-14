@@ -1,66 +1,48 @@
 import "./store.css"
-import LibBooks from "../../components/bookWithDesc/LibBooks"
+import { Component } from "react"
+import SearchArea from "../../components/searchArea/SearchArea";
+import request from 'superagent';
+import SearchListResults from "../../components/searchListResults/SearchListResults";
 
-export default function Store() {
-  return (
-    <div className="store">
-      <label className="pageLabel">Store</label>
-      <div className="sParameters">
-        
-        <select name="genre" id="genre" className="s Genre" placeholder="Genre">
-          <optgroup label="Fiction">
-            <option value="rom">Romance</option>
-            <option value="scifan">Sci-Fi/Fantasy</option>
-            <option value="myst">Mystery</option>
-            <option value="thr">Thriller</option>
-            <option value="ya">Young Adult</option>
-            <option value="hor">Horror</option>
-          </optgroup>
-          <optgroup label="Nonfiction">
-            <option value="mem">Memoir</option>
-            <option value="self">Self-Help</option>
-            <option value="rel">Religion/Spirituality</option>
-            <option value="cult">Culture</option>
-            <option value="hist">History</option>
-            <option value="bio">Biography</option>
-          </optgroup>
-        </select>
-        <select name="rate" id="rate" className="s Rate">
-          <option value="5">5 Stars</option>
-          <option value="4">4 Stars</option>
-          <option value="3">3 Stars</option>
-          <option value="2">2 Stars</option>
-          <option value="1">1 Star</option>
-        </select>
-        <form className="searchBar">
-          <input type="text" placeholder="Search" className="s Bar" />
-          <button type="submit" className="searchIcon"><i className="sIcon fa-solid fa-magnifying-glass"></i></button>
-        </form>
-      </div>
+class Store extends Component{
+  constructor(props) {
+    super(props);
+    this.state = {
+      results: [],
+      field: ''
+    }
+  }
+  
+  searchBook = (e) => {
+    e.preventDefault();
+    request
+      .get("https://www.googleapis.com/books/v1/volumes?&filter=ebooks&download=epub&key=AIzaSyD2we9fItQNmaJdL0YiIT2PGlweOFdOhNg" +"&maxResults=40")
+      .query({q: this.state.field})
+      .then((data) => {
+        this.setState({results: [...data.body.items]})
+      })
 
-      <div className="results">
-        <label>Here's what we found for X:</label>
-        <ul className="found">
-        <LibBooks />
-        <LibBooks />
-        <LibBooks />
-        <LibBooks />
-        <LibBooks />
-        <LibBooks />
-        <LibBooks />
-        <LibBooks />
-        <LibBooks />
-        <LibBooks />
-        <LibBooks />
-        <LibBooks />
-        <LibBooks />
-        <LibBooks />
-        <LibBooks />
-        <LibBooks />
-        <LibBooks />
-        <LibBooks />
-        </ul>
+  }
+
+  handleSearch = (e) => {
+    this.setState({ field: e.target.value });
+  }
+
+  render() {
+    return (
+      <div className="store">
+        <label className="pageLabel">Store</label>
+        <SearchArea searchBook={this.searchBook} handleSearch={this.handleSearch}/>
+  
+        <div className="results">
+          <label>Here's what we found for {this.state.field}:</label>
+          <ul className="found">
+            <SearchListResults results={this.state.results}/>
+          </ul>
+        </div>
       </div>
-    </div>
-  )
+    )
+  }
 }
+
+export default Store;

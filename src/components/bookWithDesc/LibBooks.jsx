@@ -1,40 +1,66 @@
 import "./libBooks.css"
+import { Link } from "react-router-dom";
 
-export default function Libs() {
+const own = false;
+var single = "";
+const LibBooks = (props) => {
+  const data = {
+    cover: props.fullCover,
+    title: props.title,
+    pubDate: props.pubDate,
+    auth: props.auth,
+    avgRate: props.avgRate,
+    genres: props.genres,
+    desc: props.desc,
+    id: props.id
+  };
+  single = "/book/:" + props.id;
+
+
+
   return (
     <div className="libBooks">
-      <img
-        className="bookCover"
-        src="https://th.bing.com/th/id/R.f130ff77f75101067d9cc5818e307ca7?rik=Fw6L%2bImNwU%2bSaw&riu=http%3a%2f%2ftesseraguild.com%2fwp-content%2fuploads%2f2018%2f06%2fHobbit.jpg&ehk=0xpERpQ3Zvv7CZHZts86OPPva7nqdaM33H9h%2b932pG0%3d&risl=&pid=ImgRaw&r=0"
-        alt="Book Cover"
-      />
+      <Link className="link" to={single} id={props.id} onClick={props.findSingle}>
+        <img className="bookCover"
+        src={props.miniCover}
+        alt="Book Cover"/>
+        
+      </Link>
+
       <div className="bookInfo">
         <div className="bookGenre">
-          <span className="bookGenre">Sci-Fi</span>
-          <span className="bookGenre">Romance</span>
-          <span className="bookGenre">Young Adult</span>
+          <Link className="link" to="/store" >
+            <span className="bookGenre">{props.genres}</span>
+          </Link>
         </div>
-        <div className="detContainer">
-          <span className="singleAuthor">Author: <b>Abe Lincoln </b></span>
-          <span className="split">|</span>
-          <span className="singlePub">Aug 16, 2012</span>
-        </div>
+        <Link className="link" to={single} id={props.id}>
+          <span className="bookTitle">{props.title}</span>
+        </Link>
+        <span className="Pub_Auth"> {props.auth} | {props.pubDate}</span>
         <div className="iconContainer">
-          <i className="reviewIcon fa-solid fa-star-half-stroke"></i>
+          <Link className="link" to="/store" >
+            <span className="ratingNum">{props.avgRate}</span>
+            <i className="reviewIcon fa-solid fa-star-half-stroke"></i>
+          </Link>
           <i className="singleLen fa-solid fa-scroll"></i>
-          <button className="buy">Buy</button>
+          {own ? (
+            <Link className="openLink" to={"/open/:bookId"}>
+              <button className="read">Open</button>
+            </Link>
+
+          ) : (
+            <Link className="buyLink" to={single} id={props.id}>
+              <button className="read">Buy</button>
+            </Link>
+          )
+          }
         </div>
         <span className="bookDesc">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat,
-          officiis veritatis magnam provident dolores, recusandae sint laboriosam
-          est sequi saepe placeat sit sunt ad praesentium odio. Corporis
-          voluptatem veniam repellat! Quaerat, officiis veritatis magnam
-          provident dolores. Lorem, ipsum dolor sit amet consectetur adipisicing
-          elit. Fuga et voluptas ut sequi dolorum quo odit iure optio quaerat
-          non. Nesciunt nemo in ratione. Beatae rerum illo officia facilis
-          praesentium.
+          {props.desc}
         </span>
       </div>
     </div>
   )
 }
+
+export default LibBooks;

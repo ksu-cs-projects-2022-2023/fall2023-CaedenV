@@ -15,34 +15,34 @@ export default function TopBar() {
                     <li className="topListItem"><Link className="link" to="/read/:bookId" >READ</Link></li>
                     <li className="topListItem"> <Link className="link" to="/library" >LIBRARY</Link></li>
                     <li className="topListItem">
-                        {user && "LOGOUT" }
-                        <Link className="link" to="/login" ></Link>
+                        <Link className="link" to="/login">{user && "LOGOUT"}</Link>
                     </li>
+
                 </ul>
             </div>
             <div className="topRight">
                 {user ? (
-                    <Link className="settingsLink" to={"/settings"}>
+                    <Link className="settingsLink" to={"/settings"} >
                         <img
-                        className="topProfile"
-                        src="https://www.pinclipart.com/picdir/middle/169-1690579_book-icon-png-clip-art-transparent-download-book.png"
-                        alt=""
-                    />
+                            className="topProfile"
+                            src="https://www.pinclipart.com/picdir/middle/169-1690579_book-icon-png-clip-art-transparent-download-book.png"
+                            alt=""
+                        />
                     </Link>
-                    
+
                 ) : (
                     <ul className="topList">
                         <li className="topListItem">
-                        <Link className="link" to="/login" >LOGIN</Link>
+                            <Link className="link" to="/login" >LOGIN</Link>
                         </li>
                         <li className="topListItem">
-                        <Link className="link" to="/register" >REGISTER</Link>
+                            <Link className="link" to="/register" >REGISTER</Link>
                         </li>
                     </ul>
                 )
                 }
                 <input type="text" className="search" placeholder="Search.."></input>
-                <i className="topSearchIcon fa-solid fa-magnifying-glass"></i>
+                <Link className="link" to="/store" ><i className="topSearchIcon fa-solid fa-magnifying-glass" /></Link>
             </div>
         </div>
     )

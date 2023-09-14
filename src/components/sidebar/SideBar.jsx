@@ -3,25 +3,17 @@ export default function SideBar() {
   return (
     <div className="sidebar">
         <div className="sidebarItem">
-            <span className="sidebarTitle">ABOUT ME</span>
+            <span className="sidebarTitle">ABOUT</span>
             <p>
-                asdf asd ffas dfkjah hsdkljdfh klasjhdfjk hasskjghsakjghsakjlh.
-                asdfgasjdf asdfasdf sadf asdfasdf.
+                This website was built in 2023 as a senior project to
+                combine an eReader with a social media aspect of encouraging
+                the reading community and sharing what you love about books. I
+                hope you like it!
             </p>
-        </div>
-        
-        <div className="sidebarItem">
-            <span className="sidebarTitle">CATEGORIES</span>
-            <ul className="sidebarList">
-                <li className="sidebarListItem">A</li>
-                <li className="sidebarListItem">A</li>
-                <li className="sidebarListItem">A</li>
-                <li className="sidebarListItem">A</li>
-            </ul>
         </div>
 
         <div className="sidebarItem">
-            <span className="sidebarTitle">FOLLOW THE PROGRESS</span>
+            <span className="sidebarTitle">CONTACT</span>
             <div className="sidebarSocial">
                 <i className="sidebarIcon fa-brands fa-facebook"></i>
                 <i className="sidebarIcon fa-brands fa-square-instagram"></i>
