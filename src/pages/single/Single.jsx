@@ -11,7 +11,9 @@ class Single extends Component {
     super(props);
     
     this.state = {
-      info: []
+      info: {
+        
+      }
     }
   }
 
