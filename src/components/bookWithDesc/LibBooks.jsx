@@ -30,7 +30,8 @@ class LibBooks extends Component {
     request
       .get("https://www.googleapis.com/books/v1/volumes/" + this.state.data.id + "?projection=lite&key=AIzaSyD2we9fItQNmaJdL0YiIT2PGlweOFdOhNg")
       .then((results) => {
-        this.setState({ info: [...results.body] })
+        //console.log(results.body);
+        this.setState({ info: results.body })
       })
   
   }
@@ -38,10 +39,12 @@ class LibBooks extends Component {
   render() {
     return (
       <div className="libBooks">
-        <Link className="link" to={single} id={this.state.data.id} onClick={this.findSingle}>
+        <Link className="link" to={single} info={this.state.info} >
           <img className="bookCover"
             src={this.state.data.cover}
-            alt="Book Cover" />
+            alt="Book Cover" 
+            onClick={this.findSingle}
+            />
     
         </Link>
     
