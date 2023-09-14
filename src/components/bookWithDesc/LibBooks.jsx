@@ -29,8 +29,8 @@ class LibBooks extends Component {
     e.preventDefault();
     request
       .get("https://www.googleapis.com/books/v1/volumes/" + this.state.data.id + "?projection=lite&key=AIzaSyD2we9fItQNmaJdL0YiIT2PGlweOFdOhNg")
-      .then((data) => {
-        this.setState({ info: [...data.body.items] })
+      .then((results) => {
+        this.setState({ info: [...results.body] })
       })
   
   }
