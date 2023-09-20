@@ -4,24 +4,51 @@ import MakeReview from "../../components/makeReview/MakeReview"
 import "./single.css"
 import { Link } from "react-router-dom";
 import { Component } from "react";
+import axios from "axios";
 
 const own = false;
 class Single extends Component {
   constructor(props) {
     super(props);
-    
     this.state = {
-      info: {
-        
-      }
+      id: props.id,
+      read: "/read/:" + props.id,
+      unfiltered: [],
+      info: []
     }
+    window.addEventListener("load", this.findSingle);
   }
+
+  findSingle = () => {
+    axios.get("https://www.googleapis.com/books/v1/volumes/" + this.state.id + "?projection=lite&key=AIzaSyD2we9fItQNmaJdL0YiIT2PGlweOFdOhNg")
+    .then( (results) => {
+      this.setState({ unfiltered: results.body })
+    });
+  }
+
+  componentDidMount(){
+    this.findSingle();
+  }
+
+  // filterInfo(){
+  //   this.setState({
+  //     info: {
+  //       cover: this.state.unfiltered.imageLinks.large,
+  //       title: this.state.unfiltered.volumeInfo.title,
+  //       pubDate: this.state.unfiltered.volumeInfo.publishedDate,
+  //       auth: this.state.unfiltered.volumeInfo.authors,
+  //       avgRate: this.state.unfiltered.volumeInfo.averageRating,
+  //       genres: this.state.unfiltered.volumeInfo.categories,
+  //       desc: this.state.unfiltered.volumeInfo.description,
+  //       read: "/read/:" + props.id
+  //     }
+  //   })
+  // }
 
   render() {
     return (
       <div className="single">
         <div className="mainContents">
-        {this.state.info}
           <span className="bookCoverTitle">
             <img src={this.state.info.cover}
               alt="Book Cover"
@@ -31,7 +58,7 @@ class Single extends Component {
               <h1 className="singleBookTitle"> {this.state.info.title}
                 <div className="singleBookOpt">
                   {own ? (
-                    <Link className="openLink" to={"/open/:bookId"}>
+                    <Link className="openLink" to={this.state.read} id={this.state.id}>
                       <button className="read">Open</button>
                     </Link>
 
@@ -50,7 +77,7 @@ class Single extends Component {
                 <span className="split">|</span>
                 <i className="singleLen fa-solid fa-scroll"></i>
                 <span className="split">|</span>
-                <span className="ratingNum">{this.state.info.avgRank}</span>
+                <span className="ratingNum">{this.state.info.avgRate}</span>
                 <i className="reviewIcon fa-solid fa-star-half-stroke"></i>
               </div>
               <p className="singleBookDesc">

@@ -72,3 +72,10 @@
 .search:focus{
     width: 98%;
 }
+.topRight .settingsLink .label {
+    font-size: small;
+}
+
+.Name{
+    font-size: 20px;
+}

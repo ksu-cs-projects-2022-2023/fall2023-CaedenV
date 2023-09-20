@@ -16,7 +16,7 @@ class Store extends Component{
   searchBook = (e) => {
     e.preventDefault();
     request
-      .get("https://www.googleapis.com/books/v1/volumes?&filter=ebooks&download=epub&key=AIzaSyD2we9fItQNmaJdL0YiIT2PGlweOFdOhNg" +"&maxResults=40")
+      .get("https://www.googleapis.com/books/v1/volumes?&filter=ebooks&download=epub&key=AIzaSyD2we9fItQNmaJdL0YiIT2PGlweOFdOhNg&maxResults=40")
       .query({q: this.state.field})
       .then((data) => {
         this.setState({results: [...data.body.items]})

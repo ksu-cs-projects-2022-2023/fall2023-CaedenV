@@ -1,8 +1,21 @@
+import { Component } from "react"
 import "./read.css"
 
-export default function Read() {
-  
-  return (
-    <div className="readPage">:bookId</div>
-  )
+class Read extends Component {
+  constructor(props){
+    super(props);
+
+    
+    
+  }
+
+  render() {
+    return (
+      <div className="readPage">:bookId</div>
+    )
+  }
+
+
 }
+
+export default Read;

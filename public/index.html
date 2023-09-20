@@ -22,9 +22,9 @@
     const bookId = document.querySelector(".")
     google.books.load();
 
-    function init(){
+    function init( id){
       var viewer = new google.books.DefaultViewer(document.getElementsByClassName('readPage'));
-      viewer.load("id");
+      viewer.load("ID:" + id);
     }
   </script>
   <style>

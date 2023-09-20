@@ -2,7 +2,6 @@ import "./ownedBook.css"
 import { Link } from "react-router-dom";
 
 export default function OwnedBook() {
-  const own = true;
   return (
     <div className="ownedBooks">
       <Link className="link" to="/book/:bookId" ><img

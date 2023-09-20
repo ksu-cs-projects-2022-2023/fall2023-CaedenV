@@ -1,10 +1,8 @@
 import { Component } from "react";
 import "./libBooks.css"
 import { Link } from "react-router-dom";
-import request from 'superagent';
 
 const own = false;
-var single = "";
 class LibBooks extends Component {
   constructor(props) {
     super(props);
@@ -19,33 +17,21 @@ class LibBooks extends Component {
         genres: props.genres,
         desc: props.desc,
         id: props.id,
-        single: "/book/:" + props.id
+        single: "/book/:" + props.id,
+        read: "/read/:" + props.id
       },
       
     }
   }
 
-  findSingle = (e) => {
-    e.preventDefault();
-    request
-      .get("https://www.googleapis.com/books/v1/volumes/" + this.state.data.id + "?projection=lite&key=AIzaSyD2we9fItQNmaJdL0YiIT2PGlweOFdOhNg")
-      .then((results) => {
-        //console.log(results.body);
-        this.setState({ info: results.body })
-      })
-  
-  }
-
   render() {
     return (
       <div className="libBooks">
-        <Link className="link" to={single} info={this.state.info} >
+        <Link className="link" to={this.state.data.single} id={this.state.data.id} >
           <img className="bookCover"
             src={this.state.data.cover}
             alt="Book Cover" 
-            onClick={this.findSingle}
-            />
-    
+             />
         </Link>
     
         <div className="bookInfo">
@@ -54,8 +40,8 @@ class LibBooks extends Component {
               <span className="bookGenre">{this.state.data.genres}</span>
             </Link>
           </div>
-          <Link className="link" to={single} id={this.state.data.id}>
-            <span className="bookTitle">{this.state.data.title}</span>
+          <Link className="link" to={this.state.data.single} id={this.state.data.id}>
+            <span className="bookTitle">{this.state.data.title} </span>
           </Link>
           <span className="Pub_Auth"> {this.state.data.auth} | {this.state.data.pubDate}</span>
           <div className="iconContainer">
@@ -65,12 +51,12 @@ class LibBooks extends Component {
             </Link>
             <i className="singleLen fa-solid fa-scroll"></i>
             {own ? (
-              <Link className="openLink" to={"/open/:bookId"}>
+              <Link className="openLink" to={this.state.data.read}>
                 <button className="read">Open</button>
               </Link>
     
             ) : (
-              <Link className="buyLink" to={single} id={this.state.data.id}>
+              <Link className="buyLink" to={this.state.data.single} id={this.state.data.id}>
                 <button className="read">Buy</button>
               </Link>
             )

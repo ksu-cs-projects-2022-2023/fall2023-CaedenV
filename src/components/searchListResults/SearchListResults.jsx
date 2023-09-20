@@ -17,6 +17,7 @@ const SearchListResults = (props) => {
                         genres={book.volumeInfo.categories}
                         desc={book.volumeInfo.description}
                         id={book.id}
+                        key={i}
                     />
                 })
             }

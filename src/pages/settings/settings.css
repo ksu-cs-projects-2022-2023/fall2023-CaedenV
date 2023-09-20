@@ -18,6 +18,44 @@
     font-family: 'Lora','serif';
     font-weight: bolder;
 }
+.friends{
+    font-size: 30px;
+    margin-bottom: 20px;
+    margin-right: 40dvh;
+    color: rgb(131, 101, 192);
+    background-color: ivory;
+    font-family: 'Lora','serif';
+    border: 2px solid mediumpurple;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.friendList{
+    display: flex;
+    flex-direction: column;
+    font-family: 'Lora','serif';
+    background-color: rgb(185, 171, 214);
+    font-size: 20px;
+    border: none;
+    
+}
+.addF{
+    color: ivory;
+    background-color: mediumpurple;
+    font-family: 'Lora','serif';
+    border: none;
+    border-radius: 5px;
+    margin-top: 3px;
+    cursor: pointer;
+}
+.fName{
+    border: none;
+    font-size: 30px;
+    background-color: mediumpurple;
+    border-radius: 10px;
+    width: 30vh;
+    color: ivory;
+}
+
 .settingsDelTitle{
     color: black;
     font-size: 15px;
@@ -34,8 +72,8 @@
     margin-top: 10px 0;
 }
 .settingsProfPic > img{
-    width: 200px;
-    height: 200px;
+    width: 500px;
+    height: 500px;
     border-radius: 20px;
     object-fit: cover;
 }
@@ -62,14 +100,6 @@
     border-bottom: 1px solid rgb(170, 147, 216);
 }
 
-.settingsSubmit{
-    font-size: 100px;
-    color: mediumpurple;
-    padding: 10px;
-    margin-top: 20px;
-    cursor: pointer;
-}
-
 .personalsForm{
     color: rgb(117, 90, 172);
     font-size: 40px;
@@ -77,8 +107,10 @@
     
 }
 
-.rankContainer{
+.topFive{
     margin-top: 20px;
+    display: flex;
+    flex-direction: column;
 }
 .rank{
     margin-top: 20px;
@@ -86,23 +118,26 @@
     color: rgb(136, 104, 201);
     background-color: bisque;
     border-bottom: 1px solid rgb(170, 147, 216);
+    font-size: 30px;
 }
-.genre{
+.FavGenre{
     margin-left: 10px;
-    color: white;
-    background-color: rgb(164, 138, 216);
-    border-radius: 5px;
+    color: rgb(90, 7, 255);
+    background-color: transparent;
+    border:none;
     font-family: 'Lora','serif';
     font-size: 30px;
-}
-.friends{
-    font-size: 30px;
-    margin-bottom: 20px;
-    color: rgb(131, 101, 192);
-    background-color: ivory;
-    font-family: 'Lora','serif';
-    border: 2px solid mediumpurple;
-    border-radius: 10px;
-    cursor: pointer;
 }
 
+.topCategory{
+    display: flex;
+    justify-content: space-between;
+}
+
+.settingsSubmit{
+    font-size: 100px;
+    color: mediumpurple;
+    padding: 10px;
+    margin-top: 20px;
+    cursor: pointer;
+}
