@@ -141,3 +141,7 @@
     margin-top: 20px;
     cursor: pointer;
 }
+.Submit {
+    background-color: transparent;
+    border: none;
+}

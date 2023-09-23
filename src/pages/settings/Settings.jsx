@@ -1,8 +1,24 @@
 import "./settings.css"
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
+import {useState} from "react";
+import axios from "axios";
 
 export default function Settings() {
+    
+    const[inputs,setInputs] = useState({})
+    const handleChange = (e) => {
+        const name = e.target.className;
+        const value = e.target.value;
+        setInputs(values => ({...values, [name]: value}))
+    }
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        axios.post('http://localhost:80/api/user/save', inputs);
+        console.log(inputs);
+    }
+    
     return (
         <div className="settings">
             <div className="settingsWrapper">
@@ -38,7 +54,7 @@ export default function Settings() {
 
                     <span className="settingsDelTitle">Delete Account</span>
                 </div>
-                <form className="settingsForm">
+                <form className="settingsForm" onSubmit={handleSubmit}>
                     <label>Profile Picture</label>
                     <div className="topCategory">
                         <div className="settingsProfPic">
@@ -49,22 +65,22 @@ export default function Settings() {
                             <label htmlFor="fileInput">
                                 <i className="settingsPPIcon fa-solid fa-face-smile-beam"></i>
                             </label>
-                            <input type="file" id="fileInput" style={{ display: "none" }} />
+                            <input type="file" id="fileInput" style={{ display: "none" }} onChange={handleChange}/>
                         </div>
                         <div className="personalsWrapper">
                             <form className="personalsForm">
                                 <div className="favGenreContainer">
                                     <label>Favorite Genre:</label>
-                                    <input type="text" placeholder="Romace" className="FavGenre" />
+                                    <input type="text" placeholder="Romance" className="FavGenre" onChange={handleChange}/>
                                 </div>
                                 <div className="rankContainer">
                                     <label>Top Five Books:</label>
                                     <ol className="topFive">
-                                        <li>1.<input type="text" className="rank 1" /></li>
-                                        <li>2.<input type="text" className="rank 2" /></li>
-                                        <li>3.<input type="text" className="rank 3" /></li>
-                                        <li>4.<input type="text" className="rank 4" /></li>
-                                        <li>5.<input type="text" className="rank 5" /></li>
+                                        <li>1.<input type="text" className="rank 1" onChange={handleChange}/></li>
+                                        <li>2.<input type="text" className="rank 2" onChange={handleChange}/></li>
+                                        <li>3.<input type="text" className="rank 3" onChange={handleChange}/></li>
+                                        <li>4.<input type="text" className="rank 4" onChange={handleChange}/></li>
+                                        <li>5.<input type="text" className="rank 5" onChange={handleChange}/></li>
                                     </ol>
                                 </div>
                             </form>
@@ -76,13 +92,15 @@ export default function Settings() {
 
                     </div>
                     <label>UserName</label>
-                    <input type="text" placeholder="Reader#429" className="userName" />
+                    <input type="text" placeholder="Reader#429" className="userName" onChange={handleChange}/>
+
+                    <button className="Submit" ><i className="settingsSubmit fa-regular fa-square-check"></i></button>
                 </form>
 
             </div>
 
-
-            <i className="settingsSubmit fa-regular fa-square-check"></i>
+            
+            
         </div>
     )
 }
