@@ -1,0 +1,23 @@
+.SearchArea{
+    display: flex;
+    justify-content: center;
+}
+.sParameters{
+    display: flex;
+    margin: 15px;
+    justify-content: center;
+}
+.s{
+    font-size: 20px;
+    margin-left: 5px;
+    color: white;
+    background-color: rgb(164, 139, 214);
+}
+.searchIcon{
+    margin-left: 2px;
+    color: mediumpurple;
+    background-color: white;
+    font-size: 23px;
+    border: 1px solid mediumpurple;
+    cursor: pointer;
+}

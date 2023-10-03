@@ -1,0 +1,56 @@
+.book{
+    width: 250px;
+    margin: 0px 25px 40px 25px;
+}
+
+.bookCover{
+    width: 150px;
+    height: 250px;
+    object-fit:fill;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.bookInfo{
+    display: flex;
+    flex-direction: column;
+    color: mediumpurple;
+    font-family: 'Merriweather', serif;
+}
+
+.bookGenre{
+    font-size: 11px;
+    color: mediumpurple;
+    line-height: 20px;
+    margin-top: 10px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.bookTitle{
+    font-family: 'Phudu', cursive;
+    font-size: 24px;
+    font-weight: 700;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.Pub_Auth{
+    font-style: italic;
+    font-size: 13px;
+}
+
+.BookDesc{
+    color: rgb(106, 81, 156);
+    font-size: 14px;
+    margin-top: 3px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+.iconContainer{
+    justify-content: space-between;
+    font-family: 'Courier New', Courier, monospace;
+}
