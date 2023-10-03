@@ -23,8 +23,10 @@ class TopBar extends Component {
                 prof: res.profileObj.imageUrl,
                 fullName: res.profileObj.name,
                 login: true
-            }
+            },
+            user: true
         });
+        console.log(this.state.user);
     }
 
     render() {
@@ -43,7 +45,7 @@ class TopBar extends Component {
                             {this.state.user ? (<Logout />) : (
                                 <li className="topListItem">
                                     <Login handler={this.handler} />
-                                    {this.setState({user: true})}
+                                    
                                 </li>)}
                         </li>
 
@@ -65,7 +67,7 @@ class TopBar extends Component {
                     ) : (
                         <li className="topListItem">
                             <Login handler={this.handler} />
-                            {this.setState({user: true})}
+                            
                         </li>
                     )
                     }
