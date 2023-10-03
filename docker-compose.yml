@@ -1,0 +1,80 @@
+# docker-compose.yml
+services:
+  # database
+  project-db:
+    # Use an existing image from DockerHub
+    image: postgres:15
+    container_name: project-db
+    # Automatically restart the container as needed
+    restart: unless-stopped
+    networks:
+      - project-network
+    volumes:
+      # Persist database data in a Docker volume
+      - project_db_data:/var/lib/postgresql/data:rw
+    environment:
+      # Configure environment using .env file
+      POSTGRES_USER:
+      POSTGRES_PASSWORD:
+      POSTGRES_DB:
+    healthcheck:
+      # check if database is running and healthy
+      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # server
+  project-server:
+    build:
+      # location of Dockerfile
+      context: ./back_end
+    container_name: project-server
+    # set the user ID to match our user
+    user: "1000"
+    depends_on:
+      # requires database to start
+      - project-db
+    networks:
+      - project-network
+      # allow external connections (remove this in production)
+      - default
+    volumes:
+      # mount code into container
+      - ./server:/app/server
+      # maintain existing node_modules in container
+      - /app/server/node_modules
+    env_file:
+      # load environment file into container environment
+      - .env
+  
+  # client
+  project-client:
+    build:
+      # location of Dockerfile
+      context: ./front_end
+    container_name: project-client
+    # set the user ID to match our user
+    user: "1000"
+    depends_on:
+      # requires server to start
+      - project-server
+    networks:
+      - project-network
+      # allow external connections
+      - default
+    volumes:
+      # mount code into container
+      - ./client:/app/client
+      # maintain existing node_modules in container
+      - /app/client/node_modules
+
+volumes:
+  project_db_data:
+
+networks:
+  # internal Docker network for project
+  project-network:
+    name: project-network
+    internal: true
