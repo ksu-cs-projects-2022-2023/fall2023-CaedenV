@@ -66,8 +66,6 @@ class TopBar extends Component {
                         </>
                     ) : (
                         <li className="topListItem">
-                            <Login handler={this.handler} />
-                            
                         </li>
                     )
                     }
