@@ -1,28 +1,39 @@
 import { Component } from "react";
-import { GoogleLogin } from "react-google-login";
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { GoogleLogin } from '@react-oauth/google';
+import jwt_decode from 'jwt_decode';
+
 class Login extends Component {
     constructor(props) {
         super(props);
     }
 
+    onSignIn(googleUser) {
+        var profile = googleUser.getBasicProfile();
+        console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+        console.log('Name: ' + profile.getName());
+        console.log('Image URL: ' + profile.getImageUrl());
+        console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+    }
+
     render() {
         const clientId = "497979895028-b8cmvnagbbbl2oget6ir0dvjaokaufqc.apps.googleusercontent.com";
-        const onFailure = (res) => {
-            console.log("LOGIN FAILED! res: ", res);
-          }
-        
+
         return (
-            <div id="signInButton">
+
+            <GoogleOAuthProvider clientId={clientId}>
                 <GoogleLogin
-                    clientId={clientId}
-                    buttonText="Login"
-                    onSuccess={this.props.handler}
-                    onFailure={onFailure}
-                    cookiePolicy={'single_host_origin'}
-                    isSignedIn={true}
+                    onSuccess={credentialResponse => {
+                        const data = jwt_decode(credentialResponse.credential);
+                        console.log(data);
+                    }}
+                    onError={() => {
+                        console.log('Login Failed');
+                    }}
                 />
-            </div>
-            
+            </GoogleOAuthProvider>
+
+
         )
     }
 }
