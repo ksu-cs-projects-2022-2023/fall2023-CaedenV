@@ -1,6 +1,8 @@
 import SideBar from "../../components/sidebar/SideBar"
 import Reviews from "../../components/reviews/Reviews"
 import MakeReview from "../../components/makeReview/MakeReview"
+import addWishButton from "../../components/addToLists/addWishButton"
+import addOwnButton from "../../components/addToLists/addOwnButton"
 import "./single.css"
 import { Link } from "react-router-dom";
 import { Component } from "react";
@@ -63,10 +65,12 @@ class Single extends Component {
                     </Link>
 
                   ) : (
-                    <button className="read">Buy</button>
+                    <>
+                      <addOwnButton />
+                      <addWishButton />
+                    </>
                   )
                   }
-                  <i className="singleIcons fa-solid fa-list"></i>
                   <i className="singleIcons fa-solid fa-share"></i>
                 </div>
               </h1>

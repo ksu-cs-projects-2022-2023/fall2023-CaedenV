@@ -3,22 +3,6 @@
  * @returns { Promise<void> }
  */
 exports.up = function(knex) {
-  
-};
-
-/**
- * @param { import("knex").Knex } knex
- * @returns { Promise<void> }
- */
-exports.down = function(knex) {
-  
-};
-
-/**
- * @param { import("knex").Knex } knex
- * @returns { Promise<void> }
- */
-exports.up = function(knex) {
     return knex.schema
     .createTable('review', function (table) {
         table.string('bookGoogleID', 55).unique().notNullable()
@@ -53,8 +37,6 @@ exports.up = function(knex) {
         table.text('bookDesc').notNullable()
         table.float('bookCost', 2, 1).notNullable()
         table.float('bookAvgRating', 1,1).notNullable()
-        table.boolean('bookOwn').defaultTo(false)
-        table.boolean('bookWish').defaultTo(false)
     })
 
     .createTable('friends', function (table) {

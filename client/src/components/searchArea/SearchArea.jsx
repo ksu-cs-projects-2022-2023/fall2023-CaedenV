@@ -4,24 +4,7 @@ import "./searchArea.css"
 const SearchArea = (props) => {
     return (
         <div className='SearchArea'>
-            <select name="genre" id="genre" className="s Genre" placeholder="Genre">
-                <optgroup label="Fiction">
-                    <option value="rom">Romance</option>
-                    <option value="scifan">Sci-Fi/Fantasy</option>
-                    <option value="myst">Mystery</option>
-                    <option value="thr">Thriller</option>
-                    <option value="ya">Young Adult</option>
-                    <option value="hor">Horror</option>
-                </optgroup>
-                <optgroup label="Nonfiction">
-                    <option value="mem">Memoir</option>
-                    <option value="self">Self-Help</option>
-                    <option value="rel">Religion/Spirituality</option>
-                    <option value="cult">Culture</option>
-                    <option value="hist">History</option>
-                    <option value="bio">Biography</option>
-                </optgroup>
-            </select>
+            <input type="text" id="genre" placeholder="genre" className="s Genre"/>
             <select name="rate" id="rate" className="s Rate">
                 <option value="5">4-5 Stars</option>
                 <option value="4">3-4 Stars</option>

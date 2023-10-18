@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import "./topbar.css"
-import Login from "../LoginBtns/Login";
 import { Component } from "react";
+import LoginButton from "../LoginBtns/LoginBtn";
 
 class TopBar extends Component {
     constructor(props) {
@@ -40,7 +40,6 @@ class TopBar extends Component {
                         <li className="topListItem"><Link className="link" to="/store" data={this.state.info}>STORE</Link></li>
                         <li className="topListItem"><Link className="link" to="/read/:bookId" >READ</Link></li>
                         <li className="topListItem"> <Link className="link" to="/library" data={this.state.info}>LIBRARY</Link></li>
-                        <li className="topListItem"><Login handler={this.handler} /></li>
                     </ul>
                 </div>
                 <div className="topRight">
@@ -58,7 +57,7 @@ class TopBar extends Component {
                         </>
                     ) : (
                         <li className="topListItem">
-                            <Login handler={this.handler} />
+                            <LoginButton />
                             
                         </li>
                     )

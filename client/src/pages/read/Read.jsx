@@ -11,7 +11,7 @@ class Read extends Component {
 
   render() {
     return (
-      <div className="readPage">:bookId</div>
+      <div className="readPage" id="viewerCanvas"></div>
     )
   }
 

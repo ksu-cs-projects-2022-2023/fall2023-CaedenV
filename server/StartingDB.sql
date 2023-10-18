@@ -6,9 +6,9 @@ UserEmail nvarchar(500),
 FavGenre nvarchar(500),
 DateJoined datetime,
 PhotoFileName nvarchar(500),
-UserOwnedBooks nvarchar(500),
-UserWishlistBooks nvarchar(500)
-)
+UserOwnedId int,
+UserWishlist int
+);
 
 create table Book(
 BookGoogleID nvarchar(500),
@@ -23,7 +23,7 @@ BookOwned bit,
 BookWish bit,
 BookAvgRating float,
 BookRatingsList nvarchar(500)
-)
+);
 
 create table Review(
 ReviewID int identity(1,1),
@@ -31,7 +31,7 @@ ReviewUser nvarchar(500),
 ReviewRating float,
 ReviewTitle nvarchar(500),
 ReviewText text
-) 
+);
 
 create table OwnedBooks AS
 	SELECT BookGoogleID, BookGoogleLink, BookTitle, BookAuthors, BookPubDate,

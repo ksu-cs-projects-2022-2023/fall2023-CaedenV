@@ -1,6 +1,7 @@
 import { Component } from "react";
 import "./libBooks.css"
 import { Link } from "react-router-dom";
+import addWishButton from "../addToLists/addWishButton";
 
 const own = false;
 class LibBooks extends Component {
@@ -56,9 +57,12 @@ class LibBooks extends Component {
               </Link>
     
             ) : (
+              <>
               <Link className="buyLink" to={this.state.data.single} id={this.state.data.id}>
-                <button className="read">Buy</button>
+                <button className="buy">...</button>
               </Link>
+              <addWishButton className="wish"/>
+              </>
             )
             }
           </div>

@@ -34,9 +34,14 @@ export default function Book() {
             </Link>
 
           ) : (
+            <>
             <Link className="buyLink" to={"/book/:bookId"}>
-              <button className="read">Buy</button>
+              <button className="read">...</button>
             </Link>
+            <addWishButton className="wish"/>
+            </>
+            
+            
           )
           }
         </div>
