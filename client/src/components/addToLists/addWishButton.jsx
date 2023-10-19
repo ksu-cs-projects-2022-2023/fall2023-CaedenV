@@ -1,30 +1,23 @@
 import React, { useState } from "react";
+import axios from "axios";
 
-const addWishButton = ({ book }) => {
+const addWishButton = ({ userId, bookId }) => {
   const [isWishlisted, setIsWishlisted] = useState(false);
 
   const addToWishlist = async () => {
     // Add the book to the user's wishlist in the PostgreSQL database
-    const response = await fetch("/api/wishlist", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        bookId: book.id,
-      }),
+    const response = await axios.put("/appUser/${userId}/wish-listed-books", {
+      bookId,
     });
 
-    if (response.ok) {
+    if (response.status === 200) {
       setIsWishlisted(true);
-    } else {
-      // Handle error
     }
   };
 
   return (
-    <button onClick={addToWishlist} disabled={isWishlisted}>
-      <i className="singleIcons fa-solid fa-list"></i>
+    <button onClick={addToWishlist}>
+      {isWishlisted ? <i className="singleIcons fa-solid fa-list"></i> : <i class="fa-solid fa-list-check"></i>}
     </button>
   );
 };

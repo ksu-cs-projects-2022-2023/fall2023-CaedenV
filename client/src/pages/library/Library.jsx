@@ -1,8 +1,27 @@
-import LibBooks from "../../components/bookWithDesc/LibBooks"
-import OwnedBook from "../../components/ownedBook/OwnedBook"
-import "./library.css"
+import LibBooks from "../../components/bookWithDesc/LibBooks";
+import OwnedBook from "../../components/ownedBook/OwnedBook";
+import "./library.css";
+import axios from "axios";
 
-export default function Library() {
+const Library = () => {
+    const params = useParams();
+    const userId = params.userId;
+
+    const [ownedBooks, setOwnedBooks] = useState([]);
+    const [wishedBooks, setWishedBooks] = useState([]);
+
+    useEffect(() => {
+        // Make a GET request to the `/users/:userId/owned-books` endpoint.
+        axios.get(`/user/${userId}/owned-books`).then((response) => {
+            setOwnedBooks(response.data);
+        });
+
+        // Make a GET request to the `/users/:userId/wished-books` endpoint.
+        axios.get(`/user/${userId}/wished-books`).then((response) => {
+            setWishedBooks(response.data);
+        });
+    }, [userId]);
+
     return (
         <div className="library">
             <label className="libTitle">My Library</label>
@@ -10,41 +29,23 @@ export default function Library() {
                 <div className="ownWrapper">
                     <label className="ownTitle">Owned</label>
                     <ul className="ownList">
-                        <li><OwnedBook /></li>
-                        <li><OwnedBook /></li>
-                        <li><OwnedBook /></li>
-                        <li><OwnedBook /></li>
-                        <li><OwnedBook /></li>
-                        <li><OwnedBook /></li>
-                        <li><OwnedBook /></li>
-                        <li><OwnedBook /></li>
-                        <li><OwnedBook /></li>
-                        <li><OwnedBook /></li>
+                        {ownedBooks.map((book) => (
+                            <li key={book.id}><OwnedBook /></li>
+                        ))}
                     </ul>
                 </div>
                 <div className="wishWrapper">
                     <label className="wishTitle">Wishlist</label>
                     <ul className="wishList">
-                        <li><LibBooks /></li>
-                        <li><LibBooks /></li>
-                        <li><LibBooks /></li>
-                        <li><LibBooks /></li>
-                        <li><LibBooks /></li>
-                        <li><LibBooks /></li>
-                        <li><LibBooks /></li>
-                        <li><LibBooks /></li>
-                        <li><LibBooks /></li>
-                        <li><LibBooks /></li>
-                        <li><LibBooks /></li>
-                        <li><LibBooks /></li>
-                        <li><LibBooks /></li>
-                        <li><LibBooks /></li>
-                        <li><LibBooks /></li>
-                        <li><LibBooks /></li>
+                        {wishedBooks.map((book) => (
+                            <li key={book.id}><LibBooks /></li>
+                        ))}
                     </ul>
                 </div>
             </div>
         </div>
 
     )
-}
+};
+
+export default Library;

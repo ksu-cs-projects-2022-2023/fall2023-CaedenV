@@ -8,16 +8,16 @@ const SearchListResults = (props) => {
             {
                 props.results.map((book, i) => {
                     return <LibBooks
+                        key={i}
                         miniCover={book.volumeInfo.imageLinks.smallThumbnail}
                         fullCover={book.volumeInfo.imageLinks.thumbnail}
                         title={book.volumeInfo.title}
                         pubDate={book.volumeInfo.publishedDate}
-                        auth={book.volumeInfo.authors}
+                        auth={book.volumeInfo.authors[0]}
                         avgRate={book.volumeInfo.averageRating}
-                        genres={book.volumeInfo.categories}
+                        genres={book.volumeInfo.categories[0]}
                         desc={book.volumeInfo.description}
                         id={book.id}
-                        key={i}
                     />
                 })
             }

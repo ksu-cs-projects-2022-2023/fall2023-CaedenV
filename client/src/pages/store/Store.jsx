@@ -9,33 +9,45 @@ class Store extends Component{
     super(props);
     this.state = {
       results: [],
-      field: ''
-    }
+      field: '',
+      selectedSearchType: "title",
+    };
   }
   
-  searchBook = (e) => {
+  searchBook = async (e) => {
     e.preventDefault();
-    request
-      .get("https://www.googleapis.com/books/v1/volumes?&filter=ebooks&download=epub&key=AIzaSyD2we9fItQNmaJdL0YiIT2PGlweOFdOhNg&maxResults=40")
-      .query({q: this.state.field})
-      .then((data) => {
-        this.setState({results: [...data.body.items]})
-      })
 
-  }
+    const response = await axios.get(
+      "https://www.googleapis.com/books/v1/volumes?&filter=ebooks&download=epub&key=AIzaSyD2we9fItQNmaJdL0YiIT2PGlweOFdOhNg&maxResults=40", 
+      {
+        params: {q: this.state.field, filter: this.state.selectedSearchType}
+      }
+    );
+
+    this.setState({ results: response.data.items });
+  };
 
   handleSearch = (e) => {
     this.setState({ field: e.target.value });
+  };
+
+  setSelectedSearchType = (searchType) => {
+    this.setState({selectedSearchType: searchType });
   }
 
   render() {
     return (
       <div className="store">
         <label className="pageLabel">Store</label>
-        <SearchArea searchBook={this.searchBook} handleSearch={this.handleSearch}/>
+        <SearchArea searchBook={this.searchBook} 
+          handleSearch={this.handleSearch} 
+          field={this.state.field} 
+          selectedSearchType={this.state.selectedSearchType} 
+          setSelectedSearchType={this.setSelectedSearchType}
+        />
   
         <div className="results">
-          <label>Here's what we found for {this.state.field}:</label>
+          <label>Here's what we found for {this.state.field} searching through {this.state.selectedSearchType}:</label>
           <ul className="found">
             <SearchListResults results={this.state.results}/>
           </ul>

@@ -7,15 +7,14 @@ cur = conn.cursor()
 
 # Create a table to store the epubs
 cur.execute("""
-CREATE TABLE IF NOT EXISTS book (
-    id TEXT PRIMARY KEY,
-    title TEXT,
-    author TEXT,
-    publish_date DATE,
-    genre TEXT,
-    description TEXT,
-    average_rating FLOAT,
-    epub_url TEXT
+CREATE TABLE IF NOT EXISTS Book (
+    GoogleBookId TEXT PRIMARY KEY,
+    BookTitle TEXT,
+    BookAuthor TEXT,
+    BookPubDate DATE,
+    BookGenre TEXT,
+    BookDesc TEXT,
+    BookAvgRating FLOAT,
 );
 """)
 
@@ -27,17 +26,16 @@ data = response.json()
 # Iterate over all the epubs and add them to the PostgreSQL database
 for item in data['items']:
     cur.execute("""
-    INSERT INTO epubs (
-        id,
-        title,
-        author,
-        publish_date,
-        genre,
-        description,
-        average_rating,
-        epub_url
+    INSERT INTO Book (
+        GoogleBookId,
+        BookTitle,
+        BookAuthor,
+        BookPubDate,
+        BookGenre,
+        BookDesc,
+        BookAvgRating,
     ) VALUES (%s, %s, %s, %s, %s, %s, %s);
-    """, (item['id'], item['volumeInfo']['title'], item['volumeInfo']['authors'][0], item['volumeInfo']['publishedDate'], item['volumeInfo']['categories'][0], item['volumeInfo']['description'], item['volumeInfo']['averageRating'], item['accessInfo']['epub']['downloadLink']))
+    """, (item['id'], item['volumeInfo']['title'], item['volumeInfo']['authors'][0], item['volumeInfo']['publishedDate'], item['volumeInfo']['categories'][0], item['volumeInfo']['description'], item['volumeInfo']['averageRating']))
 
 # Commit the changes
 conn.commit()

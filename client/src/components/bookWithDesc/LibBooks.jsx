@@ -3,7 +3,6 @@ import "./libBooks.css"
 import { Link } from "react-router-dom";
 import addWishButton from "../addToLists/addWishButton";
 
-const own = false;
 class LibBooks extends Component {
   constructor(props) {
     super(props);

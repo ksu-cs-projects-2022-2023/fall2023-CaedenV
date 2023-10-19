@@ -1,18 +1,23 @@
 import "./reviews.css"
-import Review from "../review/Review"
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
-export default function Reviews() {
+const Reviews = ({ bookId }) => {
+  const [reviews, setReviews] = useState([]);
+
+  useEffect(() => {
+    axios.get(`/books/${bookId}/reviews`).then((response) => {
+      setReviews(response.data);
+    });
+  }, [bookId]);
+
   return (
-    <div className="reviews">
-        <Review/>
-        <Review/>
-        <Review/>
-        <Review/>
-        <Review/>
-        <Review/>
-        <Review/>
-        <Review/>
-        <Review/>
+    <div>
+      <ul>
+        {reviews.map((review) => (
+          <li key={review.id}><Review /></li>
+        ))}
+      </ul>
     </div>
   )
 }

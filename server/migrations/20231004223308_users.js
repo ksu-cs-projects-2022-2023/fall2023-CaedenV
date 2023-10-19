@@ -4,63 +4,61 @@
  */
 exports.up = function(knex) {
     return knex.schema
-    .createTable('review', function (table) {
-        table.string('bookGoogleID', 55).unique().notNullable()
-        table.increments('id')
-        table.string('reviewUser', 20).unique().notNullable()
-        table.string('reviewTitle', 50).notNullable()
-        table.text('reviewText').notNullable()
-        table.float('reviewRating', 1,1).notNullable()
+    .createTable('Reviews', function (table) {
+        table.increments('ReviewId')
+        table.string('GoogleBookId').unique().notNullable().references("GoogleBookId").inTable("Book")
+        table.integer('ReviewUserId').unique().notNullable().references("userId").inTable("appUser")
+        table.string('ReviewTitle').notNullable()
+        table.string('ReviewText').notNullable()
+        table.float('ReviewRating', 1,1).notNullable()
     })
     
-    .createTable('ownBooks', function (table) {
-        table.string('userName', 20).unique().notNullable()
-        table.string('bookGoogleID', 55).unique().notNullable()
-        table.string('bookGoogleLink', 255).notNullable()
-        table.string('bookTitle', 255).notNullable()
-        table.string('bookAuthors',255).notNullable()
-        table.date('bookPubDate').notNullable()
-        table.string('bookGenres', 255).notNullable()
-        table.text('bookDesc').notNullable()
-        table.float('bookCost', 2, 1).notNullable()
-        table.float('bookAvgRating', 1,1).notNullable()
-    })
-    .createTableLike('wishBooks', 'ownBooks')
-
-    .createTable('book', function (table) {
-        table.string('bookGoogleID', 55).unique().notNullable()
-        table.string('bookGoogleLink', 255).notNullable()
-        table.string('bookTitle', 255).notNullable()
-        table.string('bookAuthors', 255).notNullable()
-        table.date('bookPubDate').notNullable()
-        table.string('bookGenres', 255).notNullable()
-        table.text('bookDesc').notNullable()
-        table.float('bookCost', 2, 1).notNullable()
-        table.float('bookAvgRating', 1,1).notNullable()
+    .createTable('OwnedBooks', function (table) {
+        table.increments('OwnedId')
+        table.integer('userId').unique().notNullable().references("userId").inTable("appUser")
+        table.string('bookGoogleID').unique().notNullable().references("GoogleBookId").inTable("Book")
     })
 
-    .createTable('friends', function (table) {
-        table.string('username', 20).unique().notNullable()
-        table.increments('id')
-        table.string('friendUName',20)
-        table.date('friendSince')
+    .createTable('WishedBooks', function (table) {
+        table.increments('WishId')
+        table.integer('userId').unique().notNullable().references("userId").inTable("appUser")
+        table.string('GoogleBookId').unique().notNullable().references("GoogleBookId").inTable("Book")
+    })
+    .createTable('Book', function (table) {
+        table.string('GoogleBookId').unique().notNullable()
+        table.string('BookCoverLink')
+        table.string('BookTitle').notNullable()
+        table.string('BookAuthor')
+        table.date('BookPubDate')
+        table.string('BookGenre')
+        table.string('BookDesc')
+        table.float('BookAvgRating', 1,1)
+    })
+
+    .createTable('UserFriends', function (table) {
+        table.increments('userFriendsId')
+        table.integer('userId').unique().notNullable().references("userId").inTable("appUser")
+        table.integer('friendId').unique().notNullable().references("userId").inTable("appUser")
     })
     
-    .createTable('users', function (table) {
-        table.increments('id')
-        table.string('username', 20).unique().notNullable()
-        table.string('name', 255).notNullable()
-        table.string('email', 255).notNullable()
-        table.string('profPic', 255).notNullable()
-        table.string('favGenre', 255).notNullable()
-        table.string('num1Book', 255).notNullable()
-        table.string('num2Book', 255).notNullable()
-        table.string('num3Book', 255).notNullable()
-        table.string('num4Book', 255).notNullable()
-        table.string('num5Book', 255).notNullable()
-        table.date('dateJoined')
-      })
+    .createTable('appUser', function (table) {
+        table.increments('userId')
+        table.string('userUN').unique()
+        table.string('userName').notNullable()
+        table.string('userEmail').notNullable()
+        table.string('userPicLink')
+        table.string('userFavGenre')
+        table.date('userJoinedAt')
+        table.boolean('userLoggedIn')
 
+    })
+
+    .createTable('Top5Books', function (table) {
+        table.increments('topBookId')
+        table.integer('userId').notNullable().references("userId").inTable("appUser")
+        table.string('GoogleBookId').notNullable().references("GoogleBookId").inTable("Book")
+        table.integer('Priority').notNullable()
+    })
     
 
     
