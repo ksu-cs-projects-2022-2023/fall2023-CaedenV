@@ -1,4 +1,4 @@
-Welcome to <b>WeReader<b>, the website that combines reading with a social space!
+Welcome to <b>WeReader</b>, the website that combines reading with a social space!
 
 The main goal and best possible version of this website should allow a user to sign in with their Google email (through OAuth) and access all their purchased and wish-listed books. The website pulls data from the Google Books API through it's search function, focusing solely on epubs to allow for text altering (*fingers crossed*). These epubs are then put into my backend database of books, collecting the unique google id as well as other vital information (title, author, publish date, genre, etc.). The user can sift and search through the aformentioned database and find books to purchase, sending them to the googlebooks site for security, add to their wish-list for future reading, or leave a review, altering the overall rating on the book to allow for accurate searching.
 
