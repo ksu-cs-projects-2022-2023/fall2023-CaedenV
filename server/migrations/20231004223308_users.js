@@ -56,8 +56,11 @@ exports.up = function(knex) {
     .createTable('Top5Books', function (table) {
         table.increments('topBookId')
         table.integer('userId').notNullable().references("userId").inTable("appUser")
-        table.string('GoogleBookId').notNullable().references("GoogleBookId").inTable("Book")
-        table.integer('Priority').notNullable()
+        table.string('Book1Id').notNullable().references("GoogleBookId").inTable("Book")
+        table.string('Book2Id').notNullable().references("GoogleBookId").inTable("Book")
+        table.string('Book3Id').notNullable().references("GoogleBookId").inTable("Book")
+        table.string('Book4Id').notNullable().references("GoogleBookId").inTable("Book")
+        table.string('Book5Id').notNullable().references("GoogleBookId").inTable("Book")
     })
     
 

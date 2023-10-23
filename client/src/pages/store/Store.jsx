@@ -1,7 +1,6 @@
 import "./store.css"
 import { Component } from "react"
 import SearchArea from "../../components/searchArea/SearchArea";
-import request from 'superagent';
 import SearchListResults from "../../components/searchListResults/SearchListResults";
 
 class Store extends Component{

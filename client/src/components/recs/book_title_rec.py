@@ -15,7 +15,6 @@ from PIL import Image
 import requests
 from io import BytesIO
 import matplotlib.pyplot as plt
-%matplotlib inline
 # Reading the file
 df = pd.read_csv("goodread.csv")
 #Reading the first five records

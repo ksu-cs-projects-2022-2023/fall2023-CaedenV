@@ -6,8 +6,7 @@ import Settings from "./pages/settings/Settings";
 import Login from "./pages/login/Login";
 import Library from "./pages/library/Library";
 import Read from "./pages/read/Read";
-import { useEffect, useState } from "react";
-import { gapi } from "gapi-script";
+import { useState } from "react";
 
 import {
   BrowserRouter as Router,
@@ -19,45 +18,33 @@ const clientId = "497979895028-b8cmvnagbbbl2oget6ir0dvjaokaufqc.apps.googleuserc
 
 
 function App() {
-  const [data,setData]=useState();
-  
-
-
-  /*useEffect(() => {
-    function start() {
-      gapi.client.init({
-        clientId: clientId,
-        scope: ""
-      })
-    };
-    gapi.load('client:auth2', start);
-
-    //getData()
-  });*/
-
+  const [userId, setUserId] = useState(null);
 
   return (
-    <Router>
-      <TopBar />
-      <Routes>
-        <Route exact path="/" element={<Store />}>
-        </Route>
-        <Route path="/login" element={clientId !== "" ? <Home /> : <Login />}>
-        </Route>
-        <Route path="/store" element={clientId !== "" ? <Store /> : <Login />}>
-        </Route>
-        <Route path="/user/:userId/settings" element={clientId !== "" ? <Settings /> : <Login />}>
-        </Route>
-        <Route path="/books/:GoogleBookId" element={<Single />}>
-        </Route>
-        <Route path="/user/:userId/library" element={clientId !== "" ? <Library /> : <Login />}>
-        </Route>
-        <Route path="/read/:bookId" element={clientId !== "" ? <Read /> : <Login />}>
-        </Route>
-        <Route path="/login" element={<Login />}>
-        </Route>
-      </Routes>
-    </Router>
+    <UserContext.Provider value={{ userId, setUser }}>
+      <Router>
+        <TopBar onLogin={setUserId} />
+        <Routes>
+          <Route exact path="/" element={<Store />}>
+          </Route>
+          <Route path="/login" element={userId !== "" ? <Home /> : <Login />}>
+          </Route>
+          <Route path="/store" element={userId !== "" ? <Store /> : <Login />}>
+          </Route>
+          <Route path="/user/:userId/settings" element={userId !== "" ? <Settings /> : <Login />}>
+          </Route>
+          <Route path="/books/:GoogleBookId" element={<Single />}>
+          </Route>
+          <Route path="/user/:userId/library" element={userId !== "" ? <Library /> : <Login />}>
+          </Route>
+          <Route path="/read/:bookId" element={userId !== "" ? <Read /> : <Login />}>
+          </Route>
+          <Route path="/login" element={<Login />}>
+          </Route>
+        </Routes>
+      </Router>
+    </UserContext.Provider>
+
   );
 }
 

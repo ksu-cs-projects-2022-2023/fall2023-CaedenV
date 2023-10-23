@@ -34,14 +34,14 @@ router.get('/:userId/wished-books', async (req, res) => {
     res.json(books);
 });
 
-router.get('/:userId/top-5-fav-books', async (req, res) => {
+router.get('/user/:userId/top-5-fav-books', async (req, res) => {
     const userId = req.params.userId;
 
-    const books = await knex('books')
-        .select('*')
-        .where('userId', userId);
+    const top5Books = await knex('Top5Books')
+        .where('userId', userId)
+        .first();
 
-    res.json(books);
+    res.json(top5Books);
 });
 
 router.get('/:userId/friends-list', async (req, res) => {
@@ -63,25 +63,31 @@ router.put('/:userId', async (req, res) => {
         .update({
             userPicLink,
             userFavGenre,
+            userUN,
         })
         .where('userId', userId);
 
-    res.json({ message: 'User Pic & Genre updated successfully' });
+    res.json({ message: 'User Pic, Genre, UserName updated successfully' });
 });
 
-router.put('/:userId/top-5-fav-books', async (req, res) => {
+router.put('/user/:userId/top-5-fav-books', async (req, res) => {
     const userId = req.params.userId;
+    const { top5Books } = req.body;
 
     await knex('Top5Books')
         .update({
-            GoogleBookId,
-            Priority,
+            Book1Id: top5Books[0],
+            Book2Id: top5Books[1],
+            Book3Id: top5Books[2],
+            Book4Id: top5Books[3],
+            Book5Id: top5Books[4],
         })
-    where('userId', userId);
+        .where('userId', userId);
+
     res.json({ message: 'Top 5 updated successfully' });
 });
 
-// INSERTS into existing tables
+// INSERTS and DELETES rows existing tables
 router.put('/:userId/owned-books', async (req, res) => {
     const userId = req.params.userId;
     const bookId = req.body.bookId;
@@ -122,6 +128,18 @@ router.put('/:userId/friends-list', async (req, res) => {
     res.json({ message: 'Friends list updated successfully' });
 });
 
+router.delete('/user/:userId/friends-list/:friendId', async (req, res) => {
+    const userId = req.params.userId;
+    const friendId = req.params.friendId;
+
+    await knex('UserFriends')
+        .where('userId', userId)
+        .where('friendId', friendId)
+        .delete();
+
+    res.json({ message: 'Friend removed successfully' });
+});
+
 async function createUser(req, res) {
     // Get the user's name and email from the request body.
     const name = req.body.name;
@@ -134,16 +152,19 @@ async function createUser(req, res) {
 
     // If the user doesn't exist, create a new user.
     if (!user) {
-        await knex('appUser').insert({
+        const [userId] = await knex('appUser').insert({
             name,
             email,
             joinedAt,
             userLoggedIn,
-        });
-    }
+        }).returning('userId');
 
-    // Return a success response.
-    res.status(201).json({ message: 'User created successfully.' });
+        // Return a success response.
+        res.status(201).json({ message: 'User created successfully.', userId });
+    } else {
+        // Return a conflict response.
+        res.status(200).json({ message: 'User already exists.', userId: user.userId });
+    }
 }
 
 module.exports = createUser;
