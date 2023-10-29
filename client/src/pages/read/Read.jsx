@@ -16,7 +16,7 @@ const Read = () => {
       const data = await response.json();
       setBookMetadata(data);
     };
-
+ 
     fetchBookMetadata();
   }, [bookId]);
 

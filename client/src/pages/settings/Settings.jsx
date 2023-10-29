@@ -2,12 +2,10 @@ import "./settings.css"
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import { useState, useEffect, useParams } from "react";
-import { useHistory } from 'react-router-dom';
 import axios from "axios";
 
 const Settings = () => {
     const { userId } = useParams();
-    const history = useHistory();
 
     const [user, setUser] = useState(null);
     const [top5Books, setTop5Books] = useState([]);
@@ -15,7 +13,7 @@ const Settings = () => {
     const [fileInput, setFileInput] = useState(null);
     const [friends, setFriends] = useState([]);
 
-    useEffect(() => {
+    useEffect((userId) => {
         axios.get(`/user/${userId}`)
             .then((response) => {
                 setUser(response.data);
@@ -73,11 +71,6 @@ const Settings = () => {
             .then((response) => {
                 setUser({ ...user, userPicLink: response.data.userPicLink });
             });
-
-        axios.put(`/user/${user.userId}/top-5-fav-books`, { top5Books })
-            .then((response) => {
-                history.push('/');
-            });
     };
 
     if (!user || !top5Books || !books || !friends) {
@@ -107,7 +100,7 @@ const Settings = () => {
                                     <div className='modal'>
                                         <div className="enterName">
                                             <label className="enterLbl">Enter Username:</label>
-                                            <input type="text" className="fName" placeholder="Friend ID"/>
+                                            <input type="text" className="fName" placeholder="Friend ID" />
                                         </div>
                                         <label className="found">Friend added!</label>
                                     </div>

@@ -14,37 +14,34 @@ import {
   Routes
 } from "react-router-dom"
 
-const clientId = "497979895028-b8cmvnagbbbl2oget6ir0dvjaokaufqc.apps.googleusercontent.com";
+//const clientId = "497979895028-b8cmvnagbbbl2oget6ir0dvjaokaufqc.apps.googleusercontent.com";
 
 
 function App() {
   const [userId, setUserId] = useState(null);
 
   return (
-    <UserContext.Provider value={{ userId, setUser }}>
-      <Router>
-        <TopBar onLogin={setUserId} />
-        <Routes>
-          <Route exact path="/" element={<Store />}>
-          </Route>
-          <Route path="/login" element={userId !== "" ? <Home /> : <Login />}>
-          </Route>
-          <Route path="/store" element={userId !== "" ? <Store /> : <Login />}>
-          </Route>
-          <Route path="/user/:userId/settings" element={userId !== "" ? <Settings /> : <Login />}>
-          </Route>
-          <Route path="/books/:GoogleBookId" element={<Single />}>
-          </Route>
-          <Route path="/user/:userId/library" element={userId !== "" ? <Library /> : <Login />}>
-          </Route>
-          <Route path="/read/:bookId" element={userId !== "" ? <Read /> : <Login />}>
-          </Route>
-          <Route path="/login" element={<Login />}>
-          </Route>
-        </Routes>
-      </Router>
-    </UserContext.Provider>
-
+    <Router>
+      <TopBar userId={userId} updateUserId={(newUserId) => setUserId(newUserId)}/>
+      <Routes>
+        <Route exact path="/" element={<Login />}>
+        </Route>
+        <Route path="/login" element={userId !== "" ? <Home /> : <Login />}>
+        </Route>
+        <Route path="/user/:userId/store" element={userId !== "" ? <Store /> : <Login />}>
+        </Route>
+        <Route path="/user/:userId/settings" element={userId !== "" ? <Settings /> : <Login />}>
+        </Route>
+        <Route path="/books/:GoogleBookId" element={<Single />}>
+        </Route>
+        <Route path="/user/:userId/library" element={userId !== "" ? <Library /> : <Login />}>
+        </Route>
+        <Route path="/:userId/read/:bookId" element={userId !== "" ? <Read /> : <Login />}>
+        </Route>
+        <Route path="/user/:userId/home" element={<Home />}>
+        </Route>
+      </Routes>
+    </Router>
   );
 }
 

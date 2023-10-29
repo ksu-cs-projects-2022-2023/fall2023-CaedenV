@@ -9,8 +9,7 @@ const SearchListResults = (props) => {
                 props.results.map((book, i) => {
                     return <LibBooks
                         key={i}
-                        miniCover={book.volumeInfo.imageLinks.smallThumbnail}
-                        fullCover={book.volumeInfo.imageLinks.thumbnail}
+                        cover={book.volumeInfo.imageLinks.thumbnail}
                         title={book.volumeInfo.title}
                         pubDate={book.volumeInfo.publishedDate}
                         auth={book.volumeInfo.authors[0]}

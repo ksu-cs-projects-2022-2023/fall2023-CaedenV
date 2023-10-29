@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-const addWishButton = ({ userId, bookId }) => {
+const AddWishButton = ({ userId, bookId }) => {
   const [isWishlisted, setIsWishlisted] = useState(false);
 
   const addToWishlist = async () => {
     // Add the book to the user's wishlist in the PostgreSQL database
-    const response = await axios.put("/appUser/${userId}/wish-listed-books", {
+    const response = await axios.put(`/appUser/${userId}/wish-listed-books`, {
+      userId,
       bookId,
     });
 
@@ -22,4 +23,4 @@ const addWishButton = ({ userId, bookId }) => {
   );
 };
 
-export default addWishButton;
+export default AddWishButton;

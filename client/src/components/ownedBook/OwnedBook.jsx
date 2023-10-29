@@ -1,5 +1,6 @@
 import "./ownedBook.css"
 import { Link } from "react-router-dom";
+import { Component } from "react";
 
 
 class OwnedBook extends Component {

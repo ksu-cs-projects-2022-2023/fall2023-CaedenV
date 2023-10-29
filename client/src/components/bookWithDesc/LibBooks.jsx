@@ -1,13 +1,13 @@
 import { Component } from "react";
 import "./libBooks.css"
 import { Link } from "react-router-dom";
-import addWishButton from "../addToLists/addWishButton";
+import AddWishButton from "../addToLists/addWishButton";
+
 
 class LibBooks extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      info: [],
       data: {
         cover: props.fullCover,
         title: props.title,
@@ -17,56 +17,50 @@ class LibBooks extends Component {
         genres: props.genres,
         desc: props.desc,
         id: props.id,
+        user: props.user,
         single: "/book/:" + props.id,
         read: "/read/:" + props.id
       },
-      
+
     }
   }
 
   render() {
+    const info = this.state.data;
+    const userId = info.user;
+    const bookId = info.id;
     return (
       <div className="libBooks">
-        <Link className="link" to={this.state.data.single} id={this.state.data.id} >
+        <Link className="link" to={info.single} id={info.id} >
           <img className="bookCover"
-            src={this.state.data.cover}
-            alt="Book Cover" 
-             />
+            src={info.cover}
+            alt="Book Cover"
+          />
         </Link>
-    
+
         <div className="bookInfo">
           <div className="bookGenre">
             <Link className="link" to="/store" >
-              <span className="bookGenre">{this.state.data.genres}</span>
+              <span className="bookGenre">{info.genres}</span>
             </Link>
           </div>
-          <Link className="link" to={this.state.data.single} id={this.state.data.id}>
-            <span className="bookTitle">{this.state.data.title} </span>
+          <Link className="link" to={info.single} id={info.id}>
+            <span className="bookTitle">{info.title} </span>
           </Link>
-          <span className="Pub_Auth"> {this.state.data.auth} | {this.state.data.pubDate}</span>
+          <span className="Pub_Auth"> {info.auth} | {info.pubDate}</span>
           <div className="iconContainer">
             <Link className="link" to="/store" >
-              <span className="ratingNum">{this.state.data.avgRate}</span>
+              <span className="ratingNum">{info.avgRate}</span>
               <i className="reviewIcon fa-solid fa-star-half-stroke"></i>
             </Link>
             <i className="singleLen fa-solid fa-scroll"></i>
-            {own ? (
-              <Link className="openLink" to={this.state.data.read}>
-                <button className="read">Open</button>
-              </Link>
-    
-            ) : (
-              <>
-              <Link className="buyLink" to={this.state.data.single} id={this.state.data.id}>
-                <button className="buy">...</button>
-              </Link>
-              <addWishButton className="wish"/>
-              </>
-            )
-            }
+            <Link className="buyLink" to={info.single} id={info.id}>
+              <button className="buy">...</button>
+            </Link>
+            <AddWishButton userId={userId} bookId={bookId} />
           </div>
           <span className="bookDesc">
-            {this.state.data.desc}
+            {info.desc}
           </span>
         </div>
       </div>

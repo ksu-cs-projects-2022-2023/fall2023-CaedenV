@@ -48,8 +48,9 @@ exports.up = function(knex) {
         table.string('userEmail').notNullable()
         table.string('userPicLink')
         table.string('userFavGenre')
-        table.date('userJoinedAt')
+        table.date('userJoinedAt').notNullable()
         table.boolean('userLoggedIn')
+        table.string('userCurrOwnRead')
 
     })
 

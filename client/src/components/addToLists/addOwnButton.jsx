@@ -1,11 +1,12 @@
 import React from "react";
 import axios from "axios";
+import { useState } from "react";
 
-const addOwnButton = ({ userId, bookId }) => {
+const AddOwnButton = ({ userId, bookId }) => {
   const [isOwned, setIsOwned] = useState(false);
   const purchaseBook = async () => {
     // Redirect the user to the Google Books website to purchase the book
-    window.open(`https://books.google.com/books?id=${book.id}`, "_blank");
+    window.open(`https://books.google.com/books?id=${bookId}`, "_blank");
 
     const response = await axios.put(`/appUser/${userId}/owned-books`, {
       bookId,
@@ -25,4 +26,4 @@ const addOwnButton = ({ userId, bookId }) => {
   );
 };
 
-export default addOwnButton;
+export default AddOwnButton;

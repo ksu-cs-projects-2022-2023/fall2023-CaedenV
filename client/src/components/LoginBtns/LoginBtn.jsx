@@ -1,20 +1,22 @@
-import React, { useContext, useState } from 'react';
-import { UserContext } from './context';
 import { GoogleLogin } from "@react-oauth/google";
-import { createUser } from "./server/routes/user.js";
+import axios from "axios"
 
-const LoginButton = (props) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const { setUser } = useContext(UserContext);
-
+const LoginButton = ({userId}) => {
   const onSignIn = async (googleUser) => {
     const name = googleUser.getBasicProfile().getName();
     const email = googleUser.getBasicProfile().getEmail();
-    setIsLoggedIn(true);
 
-    const userId = await createUser(name, email);
-    setUserId(userId);
-    setUser(userId);
+    userId = await createUser(name, email);
+    
+  };
+
+  const createUser = async (name, email) => {
+    const response = await axios.post('/users/create', {
+      name,
+      email,
+    });
+  
+    return response.data;
   };
 
   return (
@@ -22,7 +24,7 @@ const LoginButton = (props) => {
       clientId="497979895028-b8cmvnagbbbl2oget6ir0dvjaokaufqc.apps.googleusercontent.com"
       buttonText="Sign in with Google"
       onSuccess={onSignIn}
-      onFailure={console.log(error)}
+      onFailure={console.log("error")}
     />
   );
 };

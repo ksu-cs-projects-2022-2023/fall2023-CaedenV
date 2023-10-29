@@ -1,6 +1,7 @@
 import "./reviews.css"
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Review from "../review/Review"
 
 const Reviews = ({ bookId }) => {
   const [reviews, setReviews] = useState([]);
@@ -21,3 +22,5 @@ const Reviews = ({ bookId }) => {
     </div>
   )
 }
+
+export default Reviews;

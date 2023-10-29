@@ -1,5 +1,4 @@
 const express = require('express')
-const axios = require("axios")
 const router = express.Router()
 const knex = require('knex');
 const knexConfig = require('./knexfile');
@@ -12,6 +11,22 @@ router.get('/', async (req, res) => {
         .orderBy('userJoinedAt');
 
     res.json(users);
+});
+
+router.get('/:userId', async (req, res) => {
+    const userId = req.params.userId;
+    const user = await knex('appUser')
+        .select('*')
+        .where('userId', userId)
+    res.json(user);
+});
+
+router.get('/:userId/curr-read', async (req, res) => {
+    const userId = req.params.userId;
+    const curr = await knex('appUser')
+        .select('userCurrOwnRead')
+        .where('userId',userId)
+    res.json(curr);
 });
 
 router.get('/:userId/owned-books', async (req, res) => {
@@ -88,6 +103,10 @@ router.put('/user/:userId/top-5-fav-books', async (req, res) => {
 });
 
 // INSERTS and DELETES rows existing tables
+router.post('/', async (req, res) => {
+    const userId = await createUser(req.body.name, req.body.email);
+})
+
 router.put('/:userId/owned-books', async (req, res) => {
     const userId = req.params.userId;
     const bookId = req.body.bookId;
