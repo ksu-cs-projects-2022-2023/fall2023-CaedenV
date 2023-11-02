@@ -28,17 +28,17 @@ function App() {
         </Route>
         <Route path="/login" element={userId !== "" ? <Home /> : <Login />}>
         </Route>
-        <Route path="/user/:userId/store" element={userId !== "" ? <Store /> : <Login />}>
+        <Route path="/:userId/store" element={userId !== "" ? <Store /> : <Login />}>
         </Route>
         <Route path="/user/:userId/settings" element={userId !== "" ? <Settings /> : <Login />}>
         </Route>
-        <Route path="/books/:GoogleBookId" element={<Single />}>
+        <Route path="/:userId/view/:GoogleBookId" element={<Single />}>
         </Route>
-        <Route path="/user/:userId/library" element={userId !== "" ? <Library /> : <Login />}>
+        <Route path="/:userId/library" element={userId !== "" ? <Library /> : <Login />}>
         </Route>
         <Route path="/:userId/read/:bookId" element={userId !== "" ? <Read /> : <Login />}>
         </Route>
-        <Route path="/user/:userId/home" element={<Home />}>
+        <Route path="/:userId/home" element={<Home />}>
         </Route>
       </Routes>
     </Router>

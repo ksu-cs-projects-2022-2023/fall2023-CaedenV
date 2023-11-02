@@ -5,7 +5,7 @@ import { useState, useEffect, useParams } from "react";
 import axios from "axios";
 
 const Settings = () => {
-    const { userId } = useParams();
+    const userId = useParams();
 
     const [user, setUser] = useState(null);
     const [top5Books, setTop5Books] = useState([]);
@@ -13,40 +13,40 @@ const Settings = () => {
     const [fileInput, setFileInput] = useState(null);
     const [friends, setFriends] = useState([]);
 
-    useEffect((userId) => {
-        axios.get(`/user/${userId}`)
+    useEffect(() => {
+        axios.get(`http://project-server/user/${userId}`)
             .then((response) => {
                 setUser(response.data);
             });
 
-        axios.get(`/user/${userId}/friends-list`)
+        axios.get(`http://project-server/user/${userId}/friends-list`)
             .then((response) => {
                 setFriends(response.data);
             });
 
-        axios.get(`/user/${userId}/top-5-fav-books`)
+        axios.get(`http://project-server/user/${userId}/top-5-fav-books`)
             .then((response) => {
                 setTop5Books(response.data);
             });
 
-        axios.get('/books')
+        axios.get('http://project-server/books/')
             .then((response) => {
                 setBooks(response.data);
             });
-    }, []);
+    });
 
     const handleAddFriend = (event) => {
         event.preventDefault();
 
         const friendId = event.target.friendId.value;
 
-        axios.put(`/user/${user.userId}/friends-list`, { friendId })
+        axios.put(`http://project-server/user/${user.userId}/friends-list`, { friendId: friendId })
             .then((response) => {
                 setFriends([...friends, { userId: user.userId, friendId }]);
             });
     };
     const handleRemoveFriend = (friendId) => {
-        axios.delete(`/user/${user.userId}/friends-list/${friendId}`)
+        axios.delete(`http://project-server/user/${user.userId}/friends-list/${friendId}`)
             .then((response) => {
                 setFriends(friends.filter((friend) => friend.friendId !== friendId));
             });
@@ -67,7 +67,7 @@ const Settings = () => {
         const formData = new FormData();
         formData.append('userPicLink', fileInput);
 
-        axios.put(`/user/${user.userId}/profile-pic`, formData)
+        axios.put(`http://project-server/user/${user.userId}/profile-pic`, formData)
             .then((response) => {
                 setUser({ ...user, userPicLink: response.data.userPicLink });
             });
@@ -107,7 +107,6 @@ const Settings = () => {
                                 )
                             }
                         </Popup>
-
                     </Popup>
 
                     <span className="settingsDelTitle">Delete Account</span>

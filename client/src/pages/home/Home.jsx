@@ -7,7 +7,7 @@ export default function Home() {
       <div className="home">
         <h1 className="Welcome">Welcome to WeReader</h1>
         <div className="recsOverall">
-          <h2>Genre1 books you may enjoy:</h2>
+          <h2>Genre books you may enjoy:</h2>
           <div className="rec genre1">
             <ul className="genre1">
               <li className="recBook"><LibBook /></li>
@@ -15,7 +15,7 @@ export default function Home() {
             </ul>
           </div>
 
-          <h2>Genre2 books you may enjoy:</h2>
+          <h2>FavBook1 books you may enjoy:</h2>
           <div className="rec genre2">
             <ul className="genre2">
               <li className="recBook"><LibBook /></li>
@@ -23,7 +23,7 @@ export default function Home() {
             </ul>
           </div>
 
-          <h2>Genre3 books you may enjoy:</h2>
+          <h2>FavBook2 books you may enjoy:</h2>
           <div className="rec genre3">
             <ul className="genre3">
               <li className="recBook"><LibBook/></li>

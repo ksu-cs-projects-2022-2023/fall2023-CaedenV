@@ -12,10 +12,10 @@ const TopBar = ({userId, updateUserId }) => {
             </div>
             <div className="topCenter">
                 <ul className="topList">
-                    <li className="topListItem"><Link className="link" to={`/user/${userId}/home`} data={this.state.info}>HOME</Link></li>
-                    <li className="topListItem"><Link className="link" to={`/user/${userId}/store`} data={this.state.info}>STORE</Link></li>
+                    <li className="topListItem"><Link className="link" to={`${userId}/home`} data={this.state.info}>HOME</Link></li>
+                    <li className="topListItem"><Link className="link" to={`${userId}/store`} data={this.state.info}>STORE</Link></li>
                     <li className="topListItem"><Link className="link" to={`/${userId}/read/${bookId}`} >READ</Link></li>
-                    <li className="topListItem"> <Link className="link" to={`/user/${userId}/library`} data={this.state.info}>LIBRARY</Link></li>
+                    <li className="topListItem"> <Link className="link" to={`${userId}/library`} data={this.state.info}>LIBRARY</Link></li>
                 </ul>
             </div>
             <div className="topRight">

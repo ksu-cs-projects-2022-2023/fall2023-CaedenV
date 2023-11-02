@@ -105,6 +105,8 @@ router.put('/user/:userId/top-5-fav-books', async (req, res) => {
 // INSERTS and DELETES rows existing tables
 router.post('/', async (req, res) => {
     const userId = await createUser(req.body.name, req.body.email);
+
+    res.json({message: 'createUser called successfully'});
 })
 
 router.put('/:userId/owned-books', async (req, res) => {

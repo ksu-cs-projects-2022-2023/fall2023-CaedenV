@@ -11,7 +11,7 @@ const LoginButton = ({userId}) => {
   };
 
   const createUser = async (name, email) => {
-    const response = await axios.post('/users/create', {
+    const response = await axios.post('http://project-server/users/create', {
       name,
       email,
     });

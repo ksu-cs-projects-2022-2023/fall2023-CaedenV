@@ -1,32 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { EmbeddedViewer } from "@google/books-js";
 import "./read.css"
 
 const Read = () => {
-  const params = useParams();
-  const bookId = params.bookId;
+  const {bookId } = useParams();
 
-  const [bookMetadata, setBookMetadata] = useState(null);
+  const [EmbeddedViewer, setEmbeddedViewer] = useState(null);
 
   useEffect(() => {
-    // Fetch the book's metadata from the Google Books API.
-    const fetchBookMetadata = async () => {
-      const response = await fetch(`https://www.googleapis.com/books/v1/volumes/${bookId}`);
-      const data = await response.json();
-      setBookMetadata(data);
-    };
- 
-    fetchBookMetadata();
+    //Load Google Books Embedded Viewer API
+    google.books.load();
+    //Creates a new embedded viewer and loads the book from the parameters
+    const viewer = new google.books.DefaultViewer(document.getElementById('embedded-viewer'));
+    viewer.load(bookId);
+    //Sets the state of the EmbeddedViewer
+    setEmbeddedViewer(viewer);
   }, [bookId]);
 
-  if (!bookMetadata) {
+  if (!EmbeddedViewer) {
     return <div>Loading...</div>;
   }
 
   return (
     <div>
-      <EmbeddedViewer bookId={bookId} />
+      <div className="reader" id="embedded-viewer"></div>
     </div>
   );
 };
