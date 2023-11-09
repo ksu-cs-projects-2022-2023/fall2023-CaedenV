@@ -16,12 +16,12 @@ const Single = memo(() => {
 
   useEffect(() => {
     async function fetchBook() {
-      const response = await axios.get(`http://project-server/books/${GoogleBookId}`);
+      const response = await axios.get(`http://project-server:3000/books/${GoogleBookId}`);
       const data = response.data;
 
       setInfo(data);
     }
-    axios.get(`http://project-server/user/${userId}/friends-list`)
+    axios.get(`http://project-server:3000/user/${userId}/friends-list`)
       .then((response) => {
         setFriends(response.data);
       });

@@ -13,12 +13,12 @@ const Library = () => {
 
     useEffect(() => {
         // Make a GET request to the `/users/:userId/owned-books` endpoint.
-        axios.get(`http://project-server/user/${userId}/owned-books`).then((response) => {
+        axios.get(`http://project-server:3000/user/${userId}/owned-books`).then((response) => {
             setOwnedBooks(response.data);
         });
 
         // Make a GET request to the `/users/:userId/wished-books` endpoint.
-        axios.get(`http://project-server/user/${userId}/wished-books`).then((response) => {
+        axios.get(`http://project-server:3000/user/${userId}/wished-books`).then((response) => {
             setWishedBooks(response.data);
         });
     }, [userId]);

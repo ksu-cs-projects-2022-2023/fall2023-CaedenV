@@ -7,7 +7,7 @@ const Reviews = ({ bookId }) => {
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
-    axios.get(`http://project-server/books/${bookId}/reviews`).then((response) => {
+    axios.get(`http://project-server:3000/books/${bookId}/reviews`).then((response) => {
       setReviews(response.data);
     });
   }, [bookId]);

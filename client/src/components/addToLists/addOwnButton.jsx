@@ -8,7 +8,7 @@ const AddOwnButton = ({ userId, bookId }) => {
     // Redirect the user to the Google Books website to purchase the book
     window.open(`https://books.google.com/books?id=${bookId}`, "_blank");
 
-    const response = await axios.put(`http://project-server/user/${userId}/owned-books`, {
+    const response = await axios.put(`http://project-server:3000/user/${userId}/owned-books`, {
       bookId,
     });
 

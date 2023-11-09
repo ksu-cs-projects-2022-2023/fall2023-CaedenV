@@ -24,22 +24,14 @@ function App() {
     <Router>
       <TopBar userId={userId} updateUserId={(newUserId) => setUserId(newUserId)}/>
       <Routes>
-        <Route exact path="/" element={<Login />}>
-        </Route>
-        <Route path="/login" element={userId !== "" ? <Home /> : <Login />}>
-        </Route>
-        <Route path="/:userId/store" element={userId !== "" ? <Store /> : <Login />}>
-        </Route>
-        <Route path="/user/:userId/settings" element={userId !== "" ? <Settings /> : <Login />}>
-        </Route>
-        <Route path="/:userId/view/:GoogleBookId" element={<Single />}>
-        </Route>
-        <Route path="/:userId/library" element={userId !== "" ? <Library /> : <Login />}>
-        </Route>
-        <Route path="/:userId/read/:bookId" element={userId !== "" ? <Read /> : <Login />}>
-        </Route>
-        <Route path="/:userId/home" element={<Home />}>
-        </Route>
+        <Route exact path="/" component={<Login />} />
+        <Route path="/login" component={userId !== "" ? <Home /> : <Login />} />
+        <Route path="/:userId/store" component={userId !== "" ? <Store /> : <Login />} />
+        <Route path="/user/:userId/settings" component={userId !== "" ? <Settings /> : <Login />} />
+        <Route path="/:userId/view/:GoogleBookId" component={<Single />} />
+        <Route path="/:userId/library" component={userId !== "" ? <Library /> : <Login />} />
+        <Route path="/:userId/read/:bookId" component={userId !== "" ? <Read /> : <Login />} />
+        <Route path="/:userId/home" component={<Home />} />
       </Routes>
     </Router>
   );

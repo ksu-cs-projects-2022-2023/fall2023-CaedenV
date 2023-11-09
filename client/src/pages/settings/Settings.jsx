@@ -67,7 +67,7 @@ const Settings = () => {
         const formData = new FormData();
         formData.append('userPicLink', fileInput);
 
-        axios.put(`http://project-server/user/${user.userId}/profile-pic`, formData)
+        axios.put(`http://project-server:3000/user/${user.userId}/profile-pic`, formData)
             .then((response) => {
                 setUser({ ...user, userPicLink: response.data.userPicLink });
             });
