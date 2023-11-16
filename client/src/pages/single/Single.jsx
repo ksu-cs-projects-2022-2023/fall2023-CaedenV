@@ -16,12 +16,12 @@ const Single = memo(() => {
 
   useEffect(() => {
     async function fetchBook() {
-      const response = await axios.get(`http://project-server:3000/books/${GoogleBookId}`);
+      const response = await axios.get(`http://project-server:8000/books/${GoogleBookId}`);
       const data = response.data;
 
       setInfo(data);
     }
-    axios.get(`http://project-server:3000/user/${userId}/friends-list`)
+    axios.get(`http://project-server:8000/user/${userId}/friends-list`)
       .then((response) => {
         setFriends(response.data);
       });
@@ -82,8 +82,8 @@ const Single = memo(() => {
               Reviews
             </h>
           </div>
-          <MakeReview bookId={this.state.id} />
-          <Reviews bookId={this.state.id} />
+          <MakeReview bookId={GoogleBookId} />
+          <Reviews bookId={GoogleBookId} />
         </div>
       </div>
       <SideBar />

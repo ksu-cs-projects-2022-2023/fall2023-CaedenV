@@ -8,7 +8,7 @@ const MakeReview = ({ bookId }) => {
     const [reviewText, setReviewText] = useState("");
 
     const handleSubmit = async () => {
-        const response = await axios.post(`http://project-server:3000/books/${bookId}/reviews`, {
+        const response = await axios.post(`http://project-server:8000/books/${bookId}/reviews`, {
             title: reviewTitle,
             rating: reviewRating,
             text: reviewText

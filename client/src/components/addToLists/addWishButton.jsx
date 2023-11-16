@@ -6,7 +6,7 @@ const AddWishButton = ({ userId, bookId }) => {
 
   const addToWishlist = async () => {
     // Add the book to the user's wishlist in the PostgreSQL database
-    const response = await axios.put(`http://project-server:3000/user/${userId}/wish-listed-books`, {
+    const response = await axios.put(`http://project-server:8000/user/${userId}/wish-listed-books`, {
       userId,
       bookId,
     });

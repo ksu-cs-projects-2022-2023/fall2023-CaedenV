@@ -69,6 +69,8 @@ services:
       - ./client:/app/client
       # maintain existing node_modules in container
       - /app/client/node_modules
+    ports:
+      - "8000:3000"
 
 volumes:
   project_db_data:

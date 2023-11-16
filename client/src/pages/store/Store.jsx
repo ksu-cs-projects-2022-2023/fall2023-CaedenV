@@ -17,7 +17,7 @@ const formatGoogleBooksResults = (results) => {
 };
 
 const addCheckBook = async (GoogleBookId, BookTitle, BookCoverLink, BookAuthor, BookPubDate, BookGenre, BookDesc, BookAvgRating) => {
-  const response = await axios.post('http://project-server/books/checkbook', {
+  const response = await axios.post('http://project-server:8000/books/checkbook', {
     GoogleBookId,
     BookTitle,
     BookCoverLink,
