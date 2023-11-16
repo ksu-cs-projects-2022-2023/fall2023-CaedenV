@@ -10,10 +10,12 @@ const TopBar = ({ userId, updateUserId }) => {
     const [userInfo, setUserInfo] = useState({});
     useEffect(() => {
         async function userIcon() {
-            const response = await axios.get(`http://project-server:8000/user/${userId}`);
-            const data = response.data;
-
-            setUserInfo(data);
+            if(userId != null) {
+                const response = await axios.get(`http://localhost:8000/user/${userId}`);
+                const data = response.data;
+    
+                setUserInfo(data);
+            }
         }
 
         userIcon();

@@ -25,7 +25,7 @@ function App() {
       <TopBar userId={userId} updateUserId={(newUserId) => setUserId(newUserId)}/>
       <Routes>
         <Route exact path="/" component={<Login />} />
-        <Route path="/login" component={userId !== "" ? <Home /> : <Login />} />
+        <Route path="/login" component={userId !== "null" ? <Home /> : <Login />} />
         <Route path="/:userId/store" component={userId !== "" ? <Store /> : <Login />} />
         <Route path="/user/:userId/settings" component={userId !== "" ? <Settings /> : <Login />} />
         <Route path="/:userId/view/:GoogleBookId" component={<Single />} />

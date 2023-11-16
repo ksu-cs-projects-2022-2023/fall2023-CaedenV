@@ -12,7 +12,7 @@ const LoginButton = ({ userId }) => {
   };
 
   const createUser = async (name, email) => {
-    const response = await axios.post('http://project-server:8000/users/create', {
+    const response = await axios.post('http://localhost:8000/users/create', {
       name,
       email,
     });

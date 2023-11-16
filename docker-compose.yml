@@ -48,6 +48,8 @@ services:
     env_file:
       # load environment file into container environment
       - .env
+    ports:
+      - "8000:8000"
   
   # client
   project-client:
@@ -70,7 +72,7 @@ services:
       # maintain existing node_modules in container
       - /app/client/node_modules
     ports:
-      - "8000:3000"
+      - "3000:3000"
 
 volumes:
   project_db_data:
