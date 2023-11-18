@@ -1,30 +1,35 @@
-import { GoogleOAuthProvider } from '@react-oauth/google';
-import { GoogleLogin } from "@react-oauth/google";
-import axios from "axios"
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import axios from "axios";
+import jwtDecode from 'jwt-decode';
 
 const LoginButton = ({ userId }) => {
-  const onSignIn = async (googleUser) => {
-    const name = googleUser.getBasicProfile().getName();
-    const email = googleUser.getBasicProfile().getEmail();
+  const onSignIn = async (credentials) => {
+    /*const name = googleUser.getBasicProfile().getName();
+    const email = googleUser.getBasicProfile().getEmail();*/
+
+    var decoded = jwtDecode(credentials.credential);
+    const name = decoded.given_name;
+    const email = decoded.email;
+    console.log(name + ": " + email);
 
     userId = await createUser(name, email);
-
   };
 
   const createUser = async (name, email) => {
-    const response = await axios.post('http://localhost:8000/users/create', {
+    console.log("Inside createUser");
+    const response = await axios.post('http://localhost:8000/user/create', {
       name,
       email,
     });
 
-    return response.data;
+    return response.data.userId;
   };
 
   return (
     <GoogleOAuthProvider clientId="497979895028-b8cmvnagbbbl2oget6ir0dvjaokaufqc.apps.googleusercontent.com">
       <GoogleLogin
-        onSuccess={onSignIn}
-        onFailure={console.log("error")}
+        onSuccess={credentialResponse => {onSignIn(credentialResponse)}}
+        onError={console.log("Google Login Failure")}
       />
     </GoogleOAuthProvider>
 

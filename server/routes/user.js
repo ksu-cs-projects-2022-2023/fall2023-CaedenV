@@ -103,10 +103,10 @@ router.put('/user/:userId/top-5-fav-books', async (req, res) => {
 });
 
 // INSERTS and DELETES rows existing tables
-router.post('/', async (req, res) => {
-    const userId = await createUser(req.body.name, req.body.email);
-
-    res.json({message: 'createUser called successfully'});
+router.post('/user/create', async (req, res) => {
+    const response = await createUser(req.body.name, req.body.email);
+    const userId = response.data.userId
+    res.json({message: 'createUser called successfully', userId});
 })
 
 router.put('/:userId/owned-books', async (req, res) => {
