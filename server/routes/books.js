@@ -1,13 +1,12 @@
 const express = require('express')
-const axios = require("axios")
 const router = express.Router()
 const knex = require('knex');
 const knexConfig = require('./knexfile');
-const knex = knex(knexConfig);
+const finalKnex = knex(knexConfig);
 
 //GET Book all table data
 router.get('/', async (req, res) => {
-    const books = await knex('Book')
+    const books = await finalKnex('Book')
         .select('*')
         .orderBy('BookTitle');
 
@@ -16,7 +15,7 @@ router.get('/', async (req, res) => {
 
 router.get('/:bookId/reviews', async (req, res) => {
     const bookId = req.params.GoogleBookId;
-    const revs = await knex('Reviews')
+    const revs = await finalKnex('Reviews')
         .select('*')
         .where('GoogleBookId', bookId);
 
@@ -36,10 +35,10 @@ router.post('/', async (req, res) => {
         BookAvgRating,
     } = req.body;
 
-    const bookExists = await knex('Book').where('GoogleBookId', GoogleBookId).exists();
+    const bookExists = await finalKnex('Book').where('GoogleBookId', GoogleBookId).exists();
 
     if (!bookExists) {
-        await knex('Book').insert({
+        await finalKnex('Book').insert({
             GoogleBookId,
             BookTitle,
             BookCoverLink,
