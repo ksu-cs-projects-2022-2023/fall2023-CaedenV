@@ -2,11 +2,11 @@ const express = require('express')
 const router = express.Router()
 const knex = require('knex');
 const knexConfig = require('./knexfile');
-const knex = knex(knexConfig);
+const finalKnex = knex(knexConfig);
 
 //GET appUser table data
 router.get('/', async (req, res) => {
-    const users = await knex('appUser')
+    const users = await finalKnex('appUser')
         .select('*')
         .orderBy('userJoinedAt');
 
@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
 
 router.get('/:userId', async (req, res) => {
     const userId = req.params.userId;
-    const user = await knex('appUser')
+    const user = await finalKnex('appUser')
         .select('*')
         .where('userId', userId)
     res.json(user);
@@ -23,7 +23,7 @@ router.get('/:userId', async (req, res) => {
 
 router.get('/:userId/curr-read', async (req, res) => {
     const userId = req.params.userId;
-    const curr = await knex('appUser')
+    const curr = await finalKnex('appUser')
         .select('userCurrOwnRead')
         .where('userId',userId)
     res.json(curr);
@@ -32,7 +32,7 @@ router.get('/:userId/curr-read', async (req, res) => {
 router.get('/:userId/owned-books', async (req, res) => {
     const userId = req.params.userId;
 
-    const books = await knex('OwnedBooks')
+    const books = await finalKnex('OwnedBooks')
         .select('*')
         .where('userId', userId);
 
@@ -42,17 +42,17 @@ router.get('/:userId/owned-books', async (req, res) => {
 router.get('/:userId/wished-books', async (req, res) => {
     const userId = req.params.userId;
 
-    const books = await knex('WishedBooks')
+    const books = await finalKnex('WishedBooks')
         .select('*')
         .where('userId', userId);
 
     res.json(books);
 });
 
-router.get('/user/:userId/top-5-fav-books', async (req, res) => {
+router.get('/:userId/top-5-fav-books', async (req, res) => {
     const userId = req.params.userId;
 
-    const top5Books = await knex('Top5Books')
+    const top5Books = await finalKnex('Top5Books')
         .where('userId', userId)
         .first();
 
@@ -62,7 +62,7 @@ router.get('/user/:userId/top-5-fav-books', async (req, res) => {
 router.get('/:userId/friends-list', async (req, res) => {
     const userId = req.params.userId;
 
-    const users = await knex('UserFriends')
+    const users = await finalKnex('UserFriends')
         .select('*')
         .where('userId', userId);
 
@@ -74,7 +74,7 @@ router.get('/:userId/friends-list', async (req, res) => {
 router.put('/:userId', async (req, res) => {
     const userId = req.params.userId;
 
-    await knex('appUser')
+    await finalKnex('appUser')
         .update({
             userPicLink,
             userFavGenre,
@@ -85,11 +85,11 @@ router.put('/:userId', async (req, res) => {
     res.json({ message: 'User Pic, Genre, UserName updated successfully' });
 });
 
-router.put('/user/:userId/top-5-fav-books', async (req, res) => {
+router.put('/:userId/top-5-fav-books', async (req, res) => {
     const userId = req.params.userId;
     const { top5Books } = req.body;
 
-    await knex('Top5Books')
+    await finalKnex('Top5Books')
         .update({
             Book1Id: top5Books[0],
             Book2Id: top5Books[1],
@@ -103,7 +103,8 @@ router.put('/user/:userId/top-5-fav-books', async (req, res) => {
 });
 
 // INSERTS and DELETES rows existing tables
-router.post('/user/create', async (req, res) => {
+router.post('/create', async (req, res) => {
+    console.log(req.body.name + ": " + req.body.email);
     const response = await createUser(req.body.name, req.body.email);
     const userId = response.data.userId
     res.json({message: 'createUser called successfully', userId});
@@ -114,7 +115,7 @@ router.put('/:userId/owned-books', async (req, res) => {
     const bookId = req.body.bookId;
 
     // Insert a new row into the owned_books table
-    await knex('OwnedBooks')
+    await finalKnex('OwnedBooks')
         .insert({
             userId: userId,
             GoogleBookId: bookId,
@@ -128,7 +129,7 @@ router.put('/:userId/wished-books', async (req, res) => {
     const bookId = req.body.bookId;
 
     // Insert a new row into the wish_listed_books table
-    await knex('WishedBooks')
+    await finalKnex('WishedBooks')
         .insert({
             userId: userId,
             GoogleBookId: bookId,
@@ -141,7 +142,7 @@ router.put('/:userId/friends-list', async (req, res) => {
     const userId = req.params.userId;
     const friendId = req.params.friendId;
 
-    await knex('UserFriends')
+    await finalKnex('UserFriends')
         .insert({
             userId: userId,
             friendId: friendId,
@@ -149,11 +150,11 @@ router.put('/:userId/friends-list', async (req, res) => {
     res.json({ message: 'Friends list updated successfully' });
 });
 
-router.delete('/user/:userId/friends-list/:friendId', async (req, res) => {
+router.delete('/:userId/friends-list/:friendId', async (req, res) => {
     const userId = req.params.userId;
     const friendId = req.params.friendId;
 
-    await knex('UserFriends')
+    await finalKnex('UserFriends')
         .where('userId', userId)
         .where('friendId', friendId)
         .delete();
@@ -169,11 +170,11 @@ async function createUser(req, res) {
     const userLoggedIn = true;
 
     // Check if the user exists in the table.
-    const user = await knex('appUser').where('email', email).first();
+    const user = await finalKnex('appUser').where('email', email).first();
 
     // If the user doesn't exist, create a new user.
     if (!user) {
-        const [userId] = await knex('appUser').insert({
+        const [userId] = await finalKnex('appUser').insert({
             name,
             email,
             joinedAt,
