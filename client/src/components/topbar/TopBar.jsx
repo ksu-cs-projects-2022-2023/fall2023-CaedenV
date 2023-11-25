@@ -30,10 +30,10 @@ const TopBar = ({ userId, updateUserId }) => {
             </div>
             <div className="topCenter">
                 <ul className="topList">
-                    <li className="topListItem"><Link className="link" to={`${userId}/home`} >HOME</Link></li>
-                    <li className="topListItem"><Link className="link" to={`${userId}/store`} >STORE</Link></li>
-                    <li className="topListItem"><Link className="link" to={`/${userId}/read/${bookId}`} >READ</Link></li>
-                    <li className="topListItem"> <Link className="link" to={`${userId}/library`} >LIBRARY</Link></li>
+                    <li className="topListItem"><Link className="link" to={userId === "null" ? `${userId}/home` : ``} >HOME</Link></li>
+                    <li className="topListItem"><Link className="link" to={userId === "null" ? `${userId}/store` : ``} >STORE</Link></li>
+                    <li className="topListItem"><Link className="link" to={userId === "null" ? `${userId}/read/${bookId}` : ``} >READ</Link></li>
+                    <li className="topListItem"><Link className="link" to={userId === "null" ? `${userId}/library` : ``} >LIBRARY</Link></li>
                 </ul>
             </div>
             <div className="topRight">

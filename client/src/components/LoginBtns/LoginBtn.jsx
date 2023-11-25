@@ -29,7 +29,7 @@ const LoginButton = ({ userId }) => {
     <GoogleOAuthProvider clientId="497979895028-b8cmvnagbbbl2oget6ir0dvjaokaufqc.apps.googleusercontent.com">
       <GoogleLogin
         onSuccess={credentialResponse => {onSignIn(credentialResponse)}}
-        onError={console.log("Google Login Failure")}
+        onError={() => console.log("Google Login Failure")}
       />
     </GoogleOAuthProvider>
 
