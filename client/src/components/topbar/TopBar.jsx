@@ -10,18 +10,23 @@ const TopBar = ({ userId, updateUserId }) => {
     const [userInfo, setUserInfo] = useState({});
     useEffect(() => {
         async function userIcon() {
-            if(userId != null) {
+            if (userId != null) {
+                console.log(userId);
                 const response = await axios.get(`http://localhost:8000/user/${userId}`);
                 const data = response.data;
-    
-                setUserInfo(data);
+                console.log(data);
+                setUserInfo(data[0]);
             }
         }
 
         userIcon();
     }, [userId]);
 
-    const {userName, userPicLink} = userInfo; 
+    const homeLink = userId ? `${userId}/home` : ``;
+    const storeLink = userId ? `${userId}/store` : ``;
+    const readLink = userId ? `${userId}/read/${bookId}` : ``;
+    const libraryLink = userId ? `${userId}/library` : ``;
+    const settingsLink = `${userId}/settings`;
 
     return (
         <div className='top'>
@@ -30,28 +35,28 @@ const TopBar = ({ userId, updateUserId }) => {
             </div>
             <div className="topCenter">
                 <ul className="topList">
-                    <li className="topListItem"><Link className="link" to={userId === "null" ? `${userId}/home` : ``} >HOME</Link></li>
-                    <li className="topListItem"><Link className="link" to={userId === "null" ? `${userId}/store` : ``} >STORE</Link></li>
-                    <li className="topListItem"><Link className="link" to={userId === "null" ? `${userId}/read/${bookId}` : ``} >READ</Link></li>
-                    <li className="topListItem"><Link className="link" to={userId === "null" ? `${userId}/library` : ``} >LIBRARY</Link></li>
+                    <li className="topListItem"><Link className="link" to={homeLink} >HOME</Link></li>
+                    <li className="topListItem"><Link className="link" to={storeLink} >STORE</Link></li>
+                    <li className="topListItem"><Link className="link" to={readLink} >READ</Link></li>
+                    <li className="topListItem"><Link className="link" to={libraryLink} >LIBRARY</Link></li>
                 </ul>
             </div>
             <div className="topRight">
                 {userId ? (
                     <>
-                        <Link className="settingsLink" to={"/settings"} >
+                        <Link className="settingsLink" to={settingsLink} >
                             <img
                                 className="topProfile"
-                                src={userPicLink}
+                                src={userInfo.userPicLink}
                                 alt=""
                             />
                         </Link>
-                        <label className="Name"> {userName}</label>
+                        <label className="Name"> {userInfo.userName}</label>
 
                     </>
                 ) : (
                     <li className="topListItem">
-                        <LoginButton userId={userId} />
+                        <LoginButton userId={userId} updateUserId={updateUserId} />
 
                     </li>
                 )

@@ -1,10 +1,11 @@
 import "./settings.css"
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
-import { useState, useEffect, useParams } from "react";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 
-const Settings = () => {
+const Settings = (backend) => {
     const userId = useParams();
 
     const [user, setUser] = useState(null);
@@ -12,24 +13,26 @@ const Settings = () => {
     const [books, setBooks] = useState([]);
     const [fileInput, setFileInput] = useState(null);
     const [friends, setFriends] = useState([]);
+    const go = backend + "/user/" + userId.toString();
 
     useEffect(() => {
-        axios.get(`http://project-server/user/${userId}`)
+        
+        axios.get(go, {userId})
             .then((response) => {
                 setUser(response.data);
             });
 
-        axios.get(`http://project-server/user/${userId}/friends-list`)
+        axios.get(go + `/friends-list`, {userId})
             .then((response) => {
                 setFriends(response.data);
             });
 
-        axios.get(`http://project-server/user/${userId}/top-5-fav-books`)
+        axios.get(go + `/top-5-fav-books`, {userId})
             .then((response) => {
                 setTop5Books(response.data);
             });
 
-        axios.get('http://project-server/books/')
+        axios.get(backend + `/books/`, {userId})
             .then((response) => {
                 setBooks(response.data);
             });
@@ -40,13 +43,13 @@ const Settings = () => {
 
         const friendId = event.target.friendId.value;
 
-        axios.put(`http://project-server/user/${user.userId}/friends-list`, { friendId: friendId })
+        axios.put(go + `/friends-list`, { friendId: friendId })
             .then((response) => {
                 setFriends([...friends, { userId: user.userId, friendId }]);
             });
     };
     const handleRemoveFriend = (friendId) => {
-        axios.delete(`http://project-server/user/${user.userId}/friends-list/${friendId}`)
+        axios.delete(go + `/friends-list/` + friendId)
             .then((response) => {
                 setFriends(friends.filter((friend) => friend.friendId !== friendId));
             });
@@ -67,7 +70,7 @@ const Settings = () => {
         const formData = new FormData();
         formData.append('userPicLink', fileInput);
 
-        axios.put(`http://project-server:8000/user/${user.userId}/profile-pic`, formData)
+        axios.put(go + `/profile-pic`, formData)
             .then((response) => {
                 setUser({ ...user, userPicLink: response.data.userPicLink });
             });

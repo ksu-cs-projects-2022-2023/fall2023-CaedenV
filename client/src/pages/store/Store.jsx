@@ -1,5 +1,6 @@
 import "./store.css"
-import React, { useState, useMemo, useParams } from 'react';
+import React, { useState, useMemo } from 'react';
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import LibBooks from "../../components/bookWithDesc/LibBooks";
 
@@ -16,8 +17,8 @@ const formatGoogleBooksResults = (results) => {
   }));
 };
 
-const addCheckBook = async (GoogleBookId, BookTitle, BookCoverLink, BookAuthor, BookPubDate, BookGenre, BookDesc, BookAvgRating) => {
-  const response = await axios.post('http://project-server:8000/books/checkbook', {
+const addCheckBook = async (GoogleBookId, BookTitle, BookCoverLink, BookAuthor, BookPubDate, BookGenre, BookDesc, BookAvgRating, backend) => {
+  const response = await axios.post(`${backend}/books/checkbook`, {
     GoogleBookId,
     BookTitle,
     BookCoverLink,
@@ -31,7 +32,7 @@ const addCheckBook = async (GoogleBookId, BookTitle, BookCoverLink, BookAuthor, 
   return response.data;
 };
 
-const searchGoogleBooks = async (query, selectedSearchType) => {
+const searchGoogleBooks = async (query, selectedSearchType, backend) => {
   // Search for books on Google Books.
   const url = `https://www.googleapis.com/books/v1/volumes?q=${query}&filter=${selectedSearchType}&key=AIzaSyD2we9fItQNmaJdL0YiIT2PGlweOFdOhNg&maxResults=40`;
   const response = await axios.get(url);
@@ -39,20 +40,20 @@ const searchGoogleBooks = async (query, selectedSearchType) => {
 
   //Adds the book to the db if it doesn't already exist
   for (const book of data.items) {
-    await addCheckBook(formatGoogleBooksResults(book));
+    await addCheckBook(formatGoogleBooksResults(book), backend);
   }
 
   return data.items;
 };
 
-const Store = () => {
+const Store = (backend) => {
   const [query, setQuery] = useState('');
   const [selectedSearchType, setSelectedSearchType] = useState('title');
   const params = useParams();
   const userId = params.userId;
 
   const searchResults = useMemo(async () => {
-    const results = await searchGoogleBooks(query, selectedSearchType);
+    const results = await searchGoogleBooks(query, selectedSearchType, backend);
     return results;
   }, [query, selectedSearchType]);
 

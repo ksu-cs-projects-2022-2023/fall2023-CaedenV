@@ -57,7 +57,7 @@ class LibBooks extends Component {
             <Link className="buyLink" to={info.single} id={info.id}>
               <button className="buy">...</button>
             </Link>
-            <AddWishButton userId={userId} bookId={bookId} />
+            <AddWishButton  className="Wish" userId={userId} bookId={bookId} />
           </div>
           <span className="bookDesc">
             {info.desc}

@@ -19,19 +19,20 @@ import {
 
 function App() {
   const [userId, setUserId] = useState(null);
+  const backend = "http://localhost:8000";
 
   return (
     <Router>
-      <TopBar userId={userId} updateUserId={(newUserId) => setUserId(newUserId)}/>
+      <TopBar userId={userId} updateUserId={setUserId}/>
       <Routes>
         <Route exact path="/" element={<Login />} />
-        <Route path="/login" element={userId !== "null" ? <Home /> : <Login />} />
-        <Route path="/:userId/store" element={userId !== "" ? <Store /> : <Login />} />
-        <Route path="/:userId/settings" element={userId !== "" ? <Settings /> : <Login />} />
-        <Route path="/:userId/view/:GoogleBookId" element={<Single />} />
-        <Route path="/:userId/library" element={userId !== "" ? <Library /> : <Login />} />
-        <Route path="/:userId/read/:bookId" element={userId !== "" ? <Read /> : <Login />} />
-        <Route path="/:userId/home" element={<Home />} />
+        <Route path="/login" element={userId !== null ? <Home backend={backend}/> : <Login />} />
+        <Route path="/:userId/store" element={userId !== null ? <Store backend={backend}/> : <Login />} />
+        <Route path="/:userId/settings" element={userId !== null ? <Settings backend={backend}/> : <Login />} />
+        <Route path="/:userId/view/:GoogleBookId" element={<Single backend={backend}/>} />
+        <Route path="/:userId/library" element={userId !== null ? <Library backend={backend}/> : <Login />} />
+        <Route path="/:userId/read/:bookId" element={userId !== null ? <Read /> : <Login />} />
+        <Route path="/:userId/home" element={<Home backend={backend}/>} />
       </Routes>
     </Router>
   );

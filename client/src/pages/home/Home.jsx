@@ -1,8 +1,9 @@
 import LibBook from "../../components/bookWithDesc/LibBooks"
 import SideBar from "../../components/sidebar/SideBar"
+import { useParams } from "react-router-dom";
 import "./home.css"
 
-export default function Home() {
+export default function Home(backend) {
   return (
       <div className="home">
         <h1 className="Welcome">Welcome to WeReader</h1>

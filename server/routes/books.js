@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const knex = require('knex');
-const knexConfig = require('./knexfile');
-const finalKnex = knex(knexConfig);
+const knexConfig = require('../knexfile');
+const finalKnex = knex(knexConfig.development);
 
 //GET Book all table data
 router.get('/', async (req, res) => {

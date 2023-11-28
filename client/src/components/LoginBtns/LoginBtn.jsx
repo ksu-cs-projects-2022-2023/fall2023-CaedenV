@@ -2,21 +2,20 @@ import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import axios from "axios";
 import jwtDecode from 'jwt-decode';
 
-const LoginButton = ({ userId }) => {
+const LoginButton = ({ updateUserId }) => {
   const onSignIn = async (credentials) => {
-    /*const name = googleUser.getBasicProfile().getName();
-    const email = googleUser.getBasicProfile().getEmail();*/
-
     var decoded = jwtDecode(credentials.credential);
+    console.log(decoded);
     const name = decoded.given_name;
     const email = decoded.email;
+    const pic = decoded.picture;
     console.log(name + ": " + email);
 
-    userId = await createUser(name, email);
+    var userId = await createUser(name, email, pic);
+    updateUserId(userId);
   };
 
   const createUser = async (name, email) => {
-    console.log("Inside createUser");
     const response = await axios.post('http://localhost:8000/user/create', {
       name,
       email,

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import "./addBtn.css" ;
 
 const AddWishButton = ({ userId, bookId }) => {
   const [isWishlisted, setIsWishlisted] = useState(false);
@@ -18,7 +19,7 @@ const AddWishButton = ({ userId, bookId }) => {
 
   return (
     <button onClick={addToWishlist}>
-      {isWishlisted ? <i className="singleIcons fa-solid fa-list"></i> : <i class="fa-solid fa-list-check"></i>}
+      {isWishlisted ? <i className="singleIcon fa-solid fa-list"></i> : <i className="wishIcon fa-solid fa-list-check"></i>}
     </button>
   );
 };

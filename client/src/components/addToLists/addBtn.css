@@ -1,0 +1,26 @@
+.singleIcon {
+    color: white;
+    background-color: mediumpurple;
+    border-radius: 8px;
+    margin-left: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.WishIcon {
+    color: white;
+    background-color: mediumpurple;
+    border-radius: 8px;
+    margin-left: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.buyOrOwn {
+    color: white;
+    background-color: mediumpurple;
+    border-radius: 8px;
+    margin-left: 5px;
+    border: none;
+    cursor: pointer;
+}

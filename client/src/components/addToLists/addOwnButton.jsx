@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { useState } from "react";
+import "./addBtn.css";
 
 const AddOwnButton = ({ userId, bookId }) => {
   const [isOwned, setIsOwned] = useState(false);
@@ -20,7 +21,7 @@ const AddOwnButton = ({ userId, bookId }) => {
   
 
   return (
-    <button onClick={purchaseBook}>
+    <button className="buyOrOwn" onClick={purchaseBook}>
       {isOwned ? "Buy" : "Owned"}
     </button>
   );

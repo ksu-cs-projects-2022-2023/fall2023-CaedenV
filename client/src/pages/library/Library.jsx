@@ -2,9 +2,10 @@ import LibBooks from "../../components/bookWithDesc/LibBooks";
 import OwnedBook from "../../components/ownedBook/OwnedBook";
 import "./library.css";
 import axios from "axios";
-import { useState, useParams, useEffect } from "react";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
-const Library = () => {
+const Library = (backend) => {
     const params = useParams();
     const userId = params.userId;
 
@@ -13,12 +14,12 @@ const Library = () => {
 
     useEffect(() => {
         // Make a GET request to the `/users/:userId/owned-books` endpoint.
-        axios.get(`http://project-server:8000/user/${userId}/owned-books`).then((response) => {
+        axios.get(`${backend}/user/${userId}/owned-books`).then((response) => {
             setOwnedBooks(response.data);
         });
 
         // Make a GET request to the `/users/:userId/wished-books` endpoint.
-        axios.get(`http://project-server:8000/user/${userId}/wished-books`).then((response) => {
+        axios.get(`${backend}/user/${userId}/wished-books`).then((response) => {
             setWishedBooks(response.data);
         });
     }, [userId]);
