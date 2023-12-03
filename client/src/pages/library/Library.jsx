@@ -6,20 +6,28 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 const Library = (backend) => {
-    const params = useParams();
-    const userId = params.userId;
+    const userIdObj = useParams();
+
+    var string = JSON.stringify(backend);
+    var backObj = JSON.parse(string);
+    var back = backObj.backend;
+
+    var jString = JSON.stringify(userIdObj);
+    var userObj = JSON.parse(jString);
+    var userId = userObj.userId;
+    var link = back + "/user/" + userId;
 
     const [ownedBooks, setOwnedBooks] = useState([]);
     const [wishedBooks, setWishedBooks] = useState([]);
 
     useEffect(() => {
         // Make a GET request to the `/users/:userId/owned-books` endpoint.
-        axios.get(`${backend}/user/${userId}/owned-books`).then((response) => {
+        axios.get(go + `/owned-books`).then((response) => {
             setOwnedBooks(response.data);
         });
 
         // Make a GET request to the `/users/:userId/wished-books` endpoint.
-        axios.get(`${backend}/user/${userId}/wished-books`).then((response) => {
+        axios.get(go + `/wished-books`).then((response) => {
             setWishedBooks(response.data);
         });
     }, [userId]);

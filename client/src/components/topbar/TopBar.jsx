@@ -6,7 +6,6 @@ import axios from "axios";
 
 
 const TopBar = ({ userId, updateUserId }) => {
-    const bookId = 0;
     const [userInfo, setUserInfo] = useState({});
     useEffect(() => {
         async function userIcon() {
@@ -21,10 +20,10 @@ const TopBar = ({ userId, updateUserId }) => {
 
         userIcon();
     }, [userId]);
-
+    const currReadId = userInfo.userCurrRead;
     const homeLink = userId ? `${userId}/home` : ``;
     const storeLink = userId ? `${userId}/store` : ``;
-    const readLink = userId ? `${userId}/read/${bookId}` : ``;
+    const readLink = userId ? `${userId}/read/${currReadId}` : ``;
     const libraryLink = userId ? `${userId}/library` : ``;
     const settingsLink = `${userId}/settings`;
 

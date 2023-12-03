@@ -24,7 +24,7 @@ router.get('/:userId', async (req, res) => {
 router.get('/:userId/curr-read', async (req, res) => {
     const userId = req.params.userId;
     const curr = await finalKnex('appUser')
-        .select('userCurrOwnRead')
+        .select('userCurrRead')
         .where('userId', userId)
     res.json(curr);
 });
@@ -62,28 +62,44 @@ router.get('/:userId/top-5-fav-books', async (req, res) => {
 router.get('/:userId/friends-list', async (req, res) => {
     const userId = req.params.userId;
 
-    const users = await finalKnex('UserFriends')
-        .select('*')
+    const friends = await finalKnex('UserFriends')
+        .select('friendId')
         .where('userId', userId);
 
-    res.json(users);
+    res.json(friends);
+});
+
+router.get('/:userId/friends-list/names', async (req, res) => {
+    const userId = req.params.userId;
+    const [friends, names] = await Promise.all([
+        finalKnex('UserFriends').select('friendId').where('userId', userId),
+        finalKnex('appUser').select('userName').whereIn('userId', friends.map(friend => friend.friendId)),
+    ]);
+
+    const friendNames = friends.map(friend => ({
+        userId: friend.friendId,
+        userName: names.find(name => name.userId === friend.friendId).userName,
+    }));
+
+    res.json(friendNames);
 });
 
 
 //UPDATE appUser table data
 router.put('/:userId', async (req, res) => {
-    const userId = req.params.userId;
+    const userInfo = req.params.userInfo;
+    const userId = userInfo.userId;
 
     await finalKnex('appUser')
         .where('userId', userId)
         .update({
-            userPicLink,
-            userFavGenre,
-            userUN,
+            userPicLink: userInfo.userPicLink,
+            userFavGenre: userInfo.userFavGenre,
+            userUN: userInfo.userUN,
         })
 
 
-    res.json({ message: 'User Pic, Genre, UserName updated successfully' });
+    res.json({ message: 'User Pic, Genre, UserName updated successfully', userInfo: userInfo });
 });
 
 router.put('/:userId/top-5-fav-books', async (req, res) => {
@@ -102,6 +118,15 @@ router.put('/:userId/top-5-fav-books', async (req, res) => {
 
     res.json({ message: 'Top 5 updated successfully' });
 });
+
+router.put('/:userId/current-read', async (req, res) => {
+    const userId = req.params.userId;
+    const newCurr = req.params.GoogleBookId;
+
+    await finalKnex('appUser')
+        .where('userId', userId)
+        .update({ userCurrRead: newCurr});
+})
 
 // INSERTS and DELETES rows existing tables
 router.post('/create', async (req, res) => {
@@ -174,7 +199,7 @@ router.put('/:userId/wished-books', async (req, res) => {
 
 router.put('/:userId/friends-list', async (req, res) => {
     const userId = req.params.userId;
-    const friendId = req.params.friendId;
+    const friendUN = req.params.friendId;
 
     await finalKnex('UserFriends')
         .insert([
@@ -195,7 +220,7 @@ router.delete('/:userId/friends-list/:friendId', async (req, res) => {
         .where('friendId', friendId)
         .delete();
 
-    res.json({ message: 'Friend removed successfully' });
+    res.json({ message: 'Friend removed successfully'});
 });
 
 module.exports = router;

@@ -13,6 +13,14 @@ router.get('/', async (req, res) => {
     res.json(books);
 })
 
+router.get('/:bookId', async (req, res) => {
+    const bookId = req.params.GoogleBookId;
+    const book = await finalKnex('Book')
+        .where('GoogleBookId', bookId)
+        .first();
+    res.json(book);
+});
+
 router.get('/:bookId/reviews', async (req, res) => {
     const bookId = req.params.GoogleBookId;
     const revs = await finalKnex('Reviews')

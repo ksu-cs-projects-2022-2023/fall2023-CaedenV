@@ -25,7 +25,7 @@ exports.up = function(knex) {
         table.string('userFavGenre')
         table.string('userJoinedAt').notNullable()
         table.boolean('userLoggedIn')
-        table.string('userCurrOwnRead')
+        table.string('userCurrRead')
 
     })
 

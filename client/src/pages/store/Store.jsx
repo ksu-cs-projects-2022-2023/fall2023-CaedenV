@@ -49,11 +49,18 @@ const searchGoogleBooks = async (query, selectedSearchType, backend) => {
 const Store = (backend) => {
   const [query, setQuery] = useState('');
   const [selectedSearchType, setSelectedSearchType] = useState('title');
-  const params = useParams();
-  const userId = params.userId;
+  const userIdObj = useParams();
+
+  var string = JSON.stringify(backend);
+  var backObj = JSON.parse(string);
+  var back = backObj.backend;
+
+  var jString = JSON.stringify(userIdObj);
+  var userObj = JSON.parse(jString);
+  var userId = userObj.userId;
 
   const searchResults = useMemo(async () => {
-    const results = await searchGoogleBooks(query, selectedSearchType, backend);
+    const results = await searchGoogleBooks(query, selectedSearchType, back);
     return results;
   }, [query, selectedSearchType]);
 

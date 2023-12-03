@@ -6,60 +6,58 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 
 const Settings = (backend) => {
-    const userId = useParams();
+    const userIdObj = useParams();
+
+    var string = JSON.stringify(backend);
+    var backObj = JSON.parse(string);
+    var back = backObj.backend;
+
+    var jString = JSON.stringify(userIdObj);
+    var userObj = JSON.parse(jString);
+    var userId = userObj.userId;
 
     const [user, setUser] = useState(null);
     const [top5Books, setTop5Books] = useState([]);
-    const [books, setBooks] = useState([]);
     const [fileInput, setFileInput] = useState(null);
     const [friends, setFriends] = useState([]);
-    const go = backend + "/user/" + userId.toString();
+    const go = `${back}/user/${userId}`;
 
     useEffect(() => {
-        
-        axios.get(go, {userId})
-            .then((response) => {
-                setUser(response.data);
-            });
+        async function GetAllInfo() {
+            axios.get(go, { userId: userId })
+                .then((response) => {
+                    setUser(response.data[0]);
+                });
+            axios.get(go + `/friends-list/names`, { userId: userId })
+                .then((response) => {
+                    setFriends(response.data);
+                });
 
-        axios.get(go + `/friends-list`, {userId})
-            .then((response) => {
-                setFriends(response.data);
-            });
+            axios.get(go + `/top-5-fav-books`, { userId: userId })
+                .then((response) => {
+                    setTop5Books(response.data);
+                });
+        }
 
-        axios.get(go + `/top-5-fav-books`, {userId})
-            .then((response) => {
-                setTop5Books(response.data);
-            });
-
-        axios.get(backend + `/books/`, {userId})
-            .then((response) => {
-                setBooks(response.data);
-            });
-    });
+        GetAllInfo();
+    }, [userId]);
 
     const handleAddFriend = (event) => {
         event.preventDefault();
 
-        const friendId = event.target.friendId.value;
+        const friendUN = event.target.friendUN.value;
 
-        axios.put(go + `/friends-list`, { friendId: friendId })
+        axios.put(go + `/friends-list`, { userId: userId, friendUN: friendUN })
             .then((response) => {
-                setFriends([...friends, { userId: user.userId, friendId }]);
-            });
+                setFriends(response.data);
+        });
     };
-    const handleRemoveFriend = (friendId) => {
-        axios.delete(go + `/friends-list/` + friendId)
+    const handleRemoveFriend = (friendId, userId) => {
+        axios.delete(go + `/friends-list/` + friendId, {friendId: friendId, userId: userId})
             .then((response) => {
-                setFriends(friends.filter((friend) => friend.friendId !== friendId));
-            });
+                setFriends(response.data);
+        });
     };
-
-    const handleChange = (event) => {
-        const bookState = `book${event.target.className.split(' ')[1]}`;
-        setTop5Books({ ...top5Books, [bookState]: event.target.value });
-    };
-
     const handleFileChange = (event) => {
         setFileInput(event.target.files[0]);
     };
@@ -67,16 +65,14 @@ const Settings = (backend) => {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        const formData = new FormData();
-        formData.append('userPicLink', fileInput);
-
-        axios.put(go + `/profile-pic`, formData)
+        console.log(user);
+        axios.put(go, {userInfo: user})
             .then((response) => {
                 setUser({ ...user, userPicLink: response.data.userPicLink });
             });
     };
 
-    if (!user || !top5Books || !books || !friends) {
+    if (!user) {
         return <div className="load">Loading</div>;
     }
 
@@ -90,9 +86,9 @@ const Settings = (backend) => {
                         position="bottom center">
                         <ul>
                             {friends.map((friend) => (
-                                <li key={friend.friendId}>
-                                    {friend.friendId}
-                                    <button onClick={() => handleRemoveFriend(friend.friendId)}>Remove</button>
+                                <li key={friend}>
+                                    {friend}
+                                    <button onClick={() => handleRemoveFriend(friend.friendId, user.userId)}>Remove</button>
                                 </li>
                             ))}
                         </ul>
@@ -118,34 +114,31 @@ const Settings = (backend) => {
                     <label>Profile Picture</label>
                     <div className="topCategory">
                         <div className="settingsProfPic">
-                            <img className="topProfile" src={user.userPicLink} alt={user.userUN}
+                            <img className="topProfile" 
+                                src={user.userPicLink || "https://static.vecteezy.com/system/resources/previews/000/348/518/original/vector-books-icon.jpg"}
+                                alt={user.userUN}
                             />
                             <label htmlFor="fileInput">
                                 <i className="settingsPPIcon fa-solid fa-face-smile-beam"></i>
                             </label>
-                            <input type="file" style={{ display: "none" }} onChange={handleFileChange} />
+                            <input type="file" style={{ display: "none" }} onChange={handleFileChange} value={fileInput}/>
                         </div>
                         <div className="personalsWrapper">
                             <form className="personalsForm">
                                 <div className="favGenreContainer">
                                     <label>Favorite Genre:</label>
                                     <input
-                                        type="text" value={user.userFavGenre}
+                                        type="text" value={user.userFavGenre || "Tell us your favorite genre"}
                                         onChange={(event) => setUser({ ...user, userFavGenre: event.target.value })}
                                     />
                                 </div>
                                 <div className="rankContainer">
                                     <label>Top Five Books:</label>
                                     <ol>
-                                        {top5Books.map((book, index) => {
-                                            const foundBook = books.find((b) => b.GoogleBookId === book.GoogleBookId);
-
-                                            return (
-                                                <li key={book.GoogleBookId}>
-                                                    {index + 1}. <input type="text" className={`rank ${index + 1}`} onChange={handleChange} placeholder={foundBook.title} />
-                                                </li>
-                                            );
-                                        })}
+                                        <input
+                                            type="text" value={user.userFavGenre || "Tell us your favorite genre"}
+                                            onChange={(event) => setUser({ ...user, userFavGenre: event.target.value })}
+                                        />
                                     </ol>
                                 </div>
                             </form>
@@ -158,7 +151,7 @@ const Settings = (backend) => {
                     </div>
                     <label>UserName</label>
                     <input
-                        type="text" value={user.userUN}
+                        type="text" value={user.userUN || "User#1234"} 
                         onChange={(event) => setUser({ ...user, userUN: event.target.value })}
                     />
 

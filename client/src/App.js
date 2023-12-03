@@ -25,7 +25,7 @@ function App() {
     <Router>
       <TopBar userId={userId} updateUserId={setUserId}/>
       <Routes>
-        <Route exact path="/" element={<Login />} />
+        <Route exact path="/" element={userId !== null ? <Home backend={backend}/> : <Login />} />
         <Route path="/login" element={userId !== null ? <Home backend={backend}/> : <Login />} />
         <Route path="/:userId/store" element={userId !== null ? <Store backend={backend}/> : <Login />} />
         <Route path="/:userId/settings" element={userId !== null ? <Settings backend={backend}/> : <Login />} />

@@ -9,23 +9,38 @@ import React, { useState, useEffect, memo } from 'react';
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
-const Single = memo(() => {
+const Single = memo((backend) => {
   const [info, setInfo] = useState({});
   const [friends, setFriends] = useState([]);
-  const { userId, GoogleBookId } = useParams();
+  const { userIdObj, BookIdObj } = useParams();
+
+  var string = JSON.stringify(backend);
+  var backObj = JSON.parse(string);
+  var back = backObj.backend;
+
+  var uString = JSON.stringify(userIdObj);
+  var userObj = JSON.parse(uString);
+  var userId = userObj.userId;
+
+  var bString = JSON.stringify(BookIdObj);
+  var bookObj = JSON.parse(bString);
+  var GoogleBookId = bookObj.GoogleBookId;
 
   useEffect(() => {
     async function fetchBook() {
-      const response = await axios.get(`http://project-server:8000/books/${GoogleBookId}`);
+      const response = await axios.get(back + `/books/` + GoogleBookId);
       const data = response.data;
 
       setInfo(data);
     }
-    axios.get(`http://project-server:8000/user/${userId}/friends-list`)
-      .then((response) => {
-        setFriends(response.data);
-      });
+    async function fetchFriends() {
+      axios.get(back + `/user/` + userId + `/friends-list`)
+        .then((response) => {
+          setFriends(response.data);
+        });
+    }
 
+    fetchFriends();
     fetchBook();
   });
 
