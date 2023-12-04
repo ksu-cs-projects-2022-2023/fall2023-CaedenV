@@ -5,7 +5,8 @@ import axios from "axios";
 import LibBooks from "../../components/bookWithDesc/LibBooks";
 
 const formatGoogleBooksResults = (results) => {
-  return results.map((book) => ({
+  return results.map((book, i) => ({
+    key: i,
     GoogleBookId: book.id,
     BookTitle: book.volumeInfo.title,
     BookCoverLink: book.volumeInfo.imageLinks.thumbnail,
@@ -34,36 +35,31 @@ const addCheckBook = async (GoogleBookId, BookTitle, BookCoverLink, BookAuthor, 
 
 const searchGoogleBooks = async (query, selectedSearchType, backend) => {
   // Search for books on Google Books.
-  const url = `https://www.googleapis.com/books/v1/volumes?q=${query}&filter=${selectedSearchType}&key=AIzaSyD2we9fItQNmaJdL0YiIT2PGlweOFdOhNg&maxResults=40`;
+  const url = `https://www.googleapis.com/books/v1/volumes?q=+${selectedSearchType}:${query}&download=epub&filter=ebooks&key=AIzaSyD2we9fItQNmaJdL0YiIT2PGlweOFdOhNg&maxResults=40`;
   const response = await axios.get(url);
-  const data = await response.json();
-
+  console.log(response.data.items);
   //Adds the book to the db if it doesn't already exist
-  for (const book of data.items) {
-    await addCheckBook(formatGoogleBooksResults(book), backend);
-  }
+  //addCheckBook(formatGoogleBooksResults(response.data.items), backend);
 
-  return data.items;
+  return response.data.items;
 };
 
-const Store = (backend) => {
+const Store = ({ backend }) => {
   const [query, setQuery] = useState('');
-  const [selectedSearchType, setSelectedSearchType] = useState('title');
+  const [selectedSearchType, setSelectedSearchType] = useState('intitle');
   const userIdObj = useParams();
-
-  var string = JSON.stringify(backend);
-  var backObj = JSON.parse(string);
-  var back = backObj.backend;
 
   var jString = JSON.stringify(userIdObj);
   var userObj = JSON.parse(jString);
   var userId = userObj.userId;
 
   const searchResults = useMemo(async () => {
-    const results = await searchGoogleBooks(query, selectedSearchType, back);
-    return results;
+    if (query != "") {
+      const results = searchGoogleBooks(query, selectedSearchType, backend);
+      return results;
+    }
+    return "";
   }, [query, selectedSearchType]);
-
   const handleSearch = (e) => {
     setQuery(e.target.value);
   };
@@ -73,21 +69,22 @@ const Store = (backend) => {
       <label className="pageLabel">Store</label>
       <div className='SearchArea'>
         <select className='s type' id='type' value={selectedSearchType} onChange={(e) => setSelectedSearchType(e.target.value)}>
-          <option value="rating">Rating</option>
-          <option value="title">Book Title</option>
-          <option value="author">Author</option>
-          <option value="genre">Genre</option>
+          <option value="intitle">Book Title</option>
+          <option value="inauthor">Author</option>
+          <option value="subject">Genre</option>
         </select>
         <form className="searchBar" onSubmit={handleSearch}>
           <input type="text" placeholder="Search" className="s Bar" onChange={handleSearch} />
           <button type="submit" className="searchIcon"><i className="sIcon fa-solid fa-magnifying-glass"></i></button>
         </form>
-        <div className="results">
-          <label>Here's what we found searching through {selectedSearchType}:</label>
+      </div>
+      <div className="results">
+        <label>Here's what we found searching through {selectedSearchType}:</label>
+        {searchResults && searchResults.results ? (
           <ul className="found">
-            {searchResults.results.map((book) => (
+            {searchResults.results.map((book, i) => (
               <LibBooks
-                key={book.id}
+                key={i}
                 cover={book.volumeInfo.imageLinks.thumbnail}
                 title={book.volumeInfo.title}
                 pubDate={book.volumeInfo.publishedDate}
@@ -97,10 +94,11 @@ const Store = (backend) => {
                 desc={book.volumeInfo.description}
                 id={book.id}
                 user={userId}
-              />
-            ))}
+              />))}
           </ul>
-        </div>
+        ) : (
+          <label>No results yet...</label>
+        )}
       </div>
     </div>
   )

@@ -1,16 +1,13 @@
 import "./settings.css"
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
-const Settings = (backend) => {
+const Settings = ({backend}) => {
     const userIdObj = useParams();
 
-    var string = JSON.stringify(backend);
-    var backObj = JSON.parse(string);
-    var back = backObj.backend;
 
     var jString = JSON.stringify(userIdObj);
     var userObj = JSON.parse(jString);
@@ -19,8 +16,9 @@ const Settings = (backend) => {
     const [user, setUser] = useState(null);
     const [top5Books, setTop5Books] = useState([]);
     const [fileInput, setFileInput] = useState(null);
+    const inputRef = useRef(null);
     const [friends, setFriends] = useState([]);
-    const go = `${back}/user/${userId}`;
+    const go = `${backend}/user/${userId}`;
 
     useEffect(() => {
         async function GetAllInfo() {
@@ -50,23 +48,29 @@ const Settings = (backend) => {
         axios.put(go + `/friends-list`, { userId: userId, friendUN: friendUN })
             .then((response) => {
                 setFriends(response.data);
-        });
+            });
     };
     const handleRemoveFriend = (friendId, userId) => {
-        axios.delete(go + `/friends-list/` + friendId, {friendId: friendId, userId: userId})
+        axios.delete(go + `/friends-list/` + friendId, { friendId: friendId, userId: userId })
             .then((response) => {
                 setFriends(response.data);
-        });
+            });
     };
+    const handleFileClick = () => {
+        inputRef.current.click();
+    };
+
     const handleFileChange = (event) => {
-        setFileInput(event.target.files[0]);
+        var file = event.target.files[0]
+        setFileInput(file);
+        setUser({ ...user, userFavGenre: file });
     };
 
     const handleSubmit = (event) => {
         event.preventDefault();
 
         console.log(user);
-        axios.put(go, {userInfo: user})
+        axios.put(go, { userInfo: user })
             .then((response) => {
                 setUser({ ...user, userPicLink: response.data.userPicLink });
             });
@@ -113,15 +117,16 @@ const Settings = (backend) => {
                 <form className="settingsForm" onSubmit={handleSubmit}>
                     <label>Profile Picture</label>
                     <div className="topCategory">
-                        <div className="settingsProfPic">
-                            <img className="topProfile" 
-                                src={user.userPicLink || "https://static.vecteezy.com/system/resources/previews/000/348/518/original/vector-books-icon.jpg"}
-                                alt={user.userUN}
-                            />
-                            <label htmlFor="fileInput">
-                                <i className="settingsPPIcon fa-solid fa-face-smile-beam"></i>
-                            </label>
-                            <input type="file" style={{ display: "none" }} onChange={handleFileChange} value={fileInput}/>
+                        <div className="settingsProfPic" onClick={handleFileClick}>
+                            {fileInput && user.userPicLink ? (
+                                <img className="topProfile"
+                                    src={URL.createObjectURL(user.userPicLink)} />
+                            ) : (<img className="topProfile"
+                                src={"https://static.vecteezy.com/system/resources/previews/000/348/518/original/vector-books-icon.jpg"} />
+                            )}
+                            <input type="file" accept="image/*" onChange={handleFileChange} ref={inputRef} style={{ display: "none" }} />
+                            <i className="settingsPPIcon fa-solid fa-face-smile-beam" />
+
                         </div>
                         <div className="personalsWrapper">
                             <form className="personalsForm">
@@ -151,7 +156,7 @@ const Settings = (backend) => {
                     </div>
                     <label>UserName</label>
                     <input
-                        type="text" value={user.userUN || "User#1234"} 
+                        type="text" value={user.userUN || "User#1234"}
                         onChange={(event) => setUser({ ...user, userUN: event.target.value })}
                     />
 

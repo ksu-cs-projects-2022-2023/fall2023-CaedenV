@@ -71,15 +71,16 @@ router.get('/:userId/friends-list', async (req, res) => {
 
 router.get('/:userId/friends-list/names', async (req, res) => {
     const userId = req.params.userId;
-    const [friends, names] = await Promise.all([
-        finalKnex('UserFriends').select('friendId').where('userId', userId),
-        finalKnex('appUser').select('userName').whereIn('userId', friends.map(friend => friend.friendId)),
-    ]);
-
-    const friendNames = friends.map(friend => ({
-        userId: friend.friendId,
-        userName: names.find(name => name.userId === friend.friendId).userName,
-    }));
+    const friendIds = await finalKnex('UserFriends')
+        .select('friendId')
+        .where('userId', userId);
+    
+    
+    const friendNames = [];
+    for (const friend of friendIds) {
+        const friendUN = await finalKnex('appUser').select('userName').where('userId', friend).first();
+        friendNames.push({ userId: friend, friendUN });
+    }
 
     res.json(friendNames);
 });
@@ -87,7 +88,7 @@ router.get('/:userId/friends-list/names', async (req, res) => {
 
 //UPDATE appUser table data
 router.put('/:userId', async (req, res) => {
-    const userInfo = req.params.userInfo;
+    const userInfo = req.body.userInfo;
     const userId = userInfo.userId;
 
     await finalKnex('appUser')

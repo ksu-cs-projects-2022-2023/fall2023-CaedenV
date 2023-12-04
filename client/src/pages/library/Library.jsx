@@ -5,17 +5,13 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
-const Library = (backend) => {
+const Library = ({backend}) => {
     const userIdObj = useParams();
-
-    var string = JSON.stringify(backend);
-    var backObj = JSON.parse(string);
-    var back = backObj.backend;
 
     var jString = JSON.stringify(userIdObj);
     var userObj = JSON.parse(jString);
     var userId = userObj.userId;
-    var link = back + "/user/" + userId;
+    var go = backend + "/user/" + userId;
 
     const [ownedBooks, setOwnedBooks] = useState([]);
     const [wishedBooks, setWishedBooks] = useState([]);
@@ -39,17 +35,17 @@ const Library = (backend) => {
                 <div className="ownWrapper">
                     <label className="ownTitle">Owned</label>
                     <ul className="ownList">
-                        {ownedBooks.map((book) => (
+                        {ownedBooks ? (ownedBooks.map((book) => (
                             <li key={book.id}><OwnedBook /></li>
-                        ))}
+                        ))) : (<label> Looks like you don't own any books...</label>) }
                     </ul>
                 </div>
                 <div className="wishWrapper">
                     <label className="wishTitle">Wishlist</label>
                     <ul className="wishList">
-                        {wishedBooks.map((book) => (
-                            <li key={book.id}><LibBooks /></li>
-                        ))}
+                    {wishedBooks ? (wishedBooks.map((book) => (
+                            <li key={book.id}><OwnedBook /></li>
+                        ))) : (<label> Looks like you don't want any books...</label>) }
                     </ul>
                 </div>
             </div>
