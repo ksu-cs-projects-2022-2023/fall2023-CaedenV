@@ -25,14 +25,14 @@ function App() {
     <Router>
       <TopBar userId={userId} updateUserId={setUserId}/>
       <Routes>
-        <Route exact path="/" element={userId !== null ? <Home backend={backend}/> : <Login />} />
-        <Route path="/login" element={userId !== null ? <Home backend={backend}/> : <Login />} />
-        <Route path="/:userId/store" element={userId !== null ? <Store backend={backend}/> : <Login />} />
-        <Route path="/:userId/settings" element={userId !== null ? <Settings backend={backend}/> : <Login />} />
-        <Route path="/:userId/view/:GoogleBookId" element={<Single backend={backend}/>} />
-        <Route path="/:userId/library" element={userId !== null ? <Library backend={backend}/> : <Login />} />
+        <Route exact path="/" element={userId !== null ? <Home backend={backend} userId={userId}/> : <Login />} />
+        <Route path="/login" element={userId !== null ? <Home backend={backend} userId={userId}/> : <Login />} />
+        <Route path="/:userId/store" element={userId !== null ? <Store backend={backend} userId={userId}/> : <Login />} />
+        <Route path="/:userId/settings" element={userId !== null ? <Settings backend={backend} userId={userId}/> : <Login />} />
+        <Route path="/:userId/view/:GoogleBookId" element={<Single backend={backend} userId={userId}/>} />
+        <Route path="/:userId/library" element={userId !== null ? <Library backend={backend} userId={userId}/> : <Login />} />
         <Route path="/:userId/read/:bookId" element={userId !== null ? <Read /> : <Login />} />
-        <Route path="/:userId/home" element={<Home backend={backend}/>} />
+        <Route path="/:userId/home" element={<Home backend={backend} userId={userId}/>} />
       </Routes>
     </Router>
   );

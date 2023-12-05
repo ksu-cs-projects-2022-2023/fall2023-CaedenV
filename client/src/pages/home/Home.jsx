@@ -1,18 +1,9 @@
 import LibBook from "../../components/bookWithDesc/LibBooks"
 import SideBar from "../../components/sidebar/SideBar"
-import { useParams } from "react-router-dom";
 import "./home.css"
 
-export default function Home(backend) {
-  const userIdObj = useParams();
-
-  var string = JSON.stringify(backend);
-  var backObj = JSON.parse(string);
-  var back = backObj.backend;
-
-  var jString = JSON.stringify(userIdObj);
-  var userObj = JSON.parse(jString);
-  var userId = userObj.userId;
+export default function Home(backend, userId) {
+ 
   return (
     <div className="home">
       <h1 className="Welcome">Welcome to WeReader</h1>

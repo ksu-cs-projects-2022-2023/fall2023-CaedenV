@@ -31,7 +31,7 @@ router.get('/:bookId/reviews', async (req, res) => {
 });
 
 //INSERT books into the table if not already there
-router.post('/', async (req, res) => {
+router.post('/check-book', async (req, res) => {
     const {
         GoogleBookId,
         BookTitle,
@@ -43,8 +43,9 @@ router.post('/', async (req, res) => {
         BookAvgRating,
     } = req.body;
 
-    const bookExists = await finalKnex('Book').where('GoogleBookId', GoogleBookId).exists();
-
+    //Checks if the book already exists in the database
+    const bookExists = await finalKnex('Book').where('GoogleBookId', GoogleBookId).first();
+    //If the book doesn't exist, add it.
     if (!bookExists) {
         await finalKnex('Book').insert({
             GoogleBookId,

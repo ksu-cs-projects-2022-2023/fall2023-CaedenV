@@ -10,7 +10,7 @@ exports.up = function(knex) {
         table.string('BookCoverLink')
         table.string('BookTitle').notNullable()
         table.string('BookAuthor')
-        table.date('BookPubDate')
+        table.string('BookPubDate')
         table.string('BookGenre')
         table.string('BookDesc')
         table.float('BookAvgRating', 1,1)

@@ -3,14 +3,8 @@ import OwnedBook from "../../components/ownedBook/OwnedBook";
 import "./library.css";
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
 
-const Library = ({backend}) => {
-    const userIdObj = useParams();
-
-    var jString = JSON.stringify(userIdObj);
-    var userObj = JSON.parse(jString);
-    var userId = userObj.userId;
+const Library = ({ backend, userId }) => {
     var go = backend + "/user/" + userId;
 
     const [ownedBooks, setOwnedBooks] = useState([]);
@@ -35,17 +29,39 @@ const Library = ({backend}) => {
                 <div className="ownWrapper">
                     <label className="ownTitle">Owned</label>
                     <ul className="ownList">
-                        {ownedBooks ? (ownedBooks.map((book) => (
-                            <li key={book.id}><OwnedBook /></li>
-                        ))) : (<label> Looks like you don't own any books...</label>) }
+                        {ownedBooks ? (<li>{ownedBooks.map((book, i) => (
+                            <OwnedBook
+                                key={i}
+                                cover={book.BookCoverLink}
+                                title={book.BookTitle}
+                                pubDate={book.BookPubDate}
+                                auth={book.BookAuthor}
+                                avgRate={book.BookAvgRating}
+                                genres={book.BookGenre}
+                                desc={book.BookDesc}
+                                id={book.GoogleBookId}
+                                user={userId}
+                            />))}</li>
+                        ) : (<label> Looks like you don't own any books...</label>)}
                     </ul>
                 </div>
                 <div className="wishWrapper">
                     <label className="wishTitle">Wishlist</label>
                     <ul className="wishList">
-                    {wishedBooks ? (wishedBooks.map((book) => (
-                            <li key={book.id}><OwnedBook /></li>
-                        ))) : (<label> Looks like you don't want any books...</label>) }
+                        {wishedBooks ? (<li>{wishedBooks.map((book, i) => (
+                            <LibBooks
+                                key={i}
+                                cover={book.BookCoverLink}
+                                title={book.BookTitle}
+                                pubDate={book.BookPubDate}
+                                auth={book.BookAuthor}
+                                avgRate={book.BookAvgRating}
+                                genres={book.BookGenre}
+                                desc={book.BookDesc}
+                                id={book.GoogleBookId}
+                                user={userId}
+                            />))}</li>
+                        ) : (<label> Looks like you don't want any books...</label>)}
                     </ul>
                 </div>
             </div>

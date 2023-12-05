@@ -2,16 +2,9 @@ import "./settings.css"
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import { useState, useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
 import axios from "axios";
 
-const Settings = ({backend}) => {
-    const userIdObj = useParams();
-
-
-    var jString = JSON.stringify(userIdObj);
-    var userObj = JSON.parse(jString);
-    var userId = userObj.userId;
+const Settings = ({backend, userId}) => {
 
     const [user, setUser] = useState(null);
     const [top5Books, setTop5Books] = useState([]);
