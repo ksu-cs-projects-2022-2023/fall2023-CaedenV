@@ -6,16 +6,22 @@ import LibBooks from "../../components/bookWithDesc/LibBooks";
 
 
 const addCheckBook = async (book, backend) => {
+  
   axios.post(`${backend}/books/check-book`, {
     GoogleBookId: book.GoogleBookId,
     BookTitle: book.BookTitle,
     BookCoverLink: book.BookCoverLink,
     BookAuthor: book.BookAuthor,
-    BookPubDate: book.BookPubDate,
     BookGenre: book.BookGenre,
     BookDesc: book.BookDesc,
     BookAvgRating: book.BookAvgRating,
   });
+  // console.log(book.GoogleBookId);
+  // axios.post(`${backend}/books/${book.GoogleBookId}/insert-date`, {
+  //   bookId: book.GoogleBookId,
+  //   BookPubDate: book.BookPubDate,
+  // });
+
 };
 
 
@@ -36,8 +42,8 @@ const Store = ({ backend, userId }) => {
       BookDesc: book.volumeInfo.description,
       BookAvgRating: book.volumeInfo.averageRating,
     }));
-    console.log(typeof(results[0].BookPubDate));
-    
+    //console.log(typeof(results[0].BookPubDate));
+
     setResults(formatted);
     if (results != null) {
       for (const book of results) {
@@ -58,7 +64,7 @@ const Store = ({ backend, userId }) => {
     axios.get(url).then((response) => {
       var unfiltered = response.data.items;
       formatGoogleBooksResults(unfiltered);
-      
+
     });
     console.log(results);
   };

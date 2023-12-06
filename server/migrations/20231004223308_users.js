@@ -6,13 +6,13 @@ exports.up = function(knex) {
     return knex.schema
     
     .createTable('Book', function (table) {
-        table.string('GoogleBookId').unique().notNullable()
-        table.string('BookCoverLink')
-        table.string('BookTitle').notNullable()
-        table.string('BookAuthor')
+        table.text('GoogleBookId').unique().notNullable()
+        table.text('BookCoverLink')
+        table.text('BookTitle').notNullable()
+        table.text('BookAuthor')
         table.string('BookPubDate')
-        table.string('BookGenre')
-        table.string('BookDesc')
+        table.text('BookGenre')
+        table.text('BookDesc')
         table.float('BookAvgRating', 1,1)
     })
 
@@ -21,7 +21,7 @@ exports.up = function(knex) {
         table.string('userUN').unique()
         table.string('userName').notNullable()
         table.string('userEmail').notNullable()
-        table.string('userPicLink')
+        table.text('userPicLink')
         table.string('userFavGenre')
         table.string('userJoinedAt').notNullable()
         table.boolean('userLoggedIn')

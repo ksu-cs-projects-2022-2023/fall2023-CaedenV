@@ -23,7 +23,7 @@ const LibBooks = ({ cover, title, pubDate, auth, avgRate, genres, desc, id, user
             <span className="bookGenre">{genres}</span>
           </Link>
         </div>
-        <Link className="link" to={single} id={id}>
+        <Link className="link" to={single}>
           <span className="bookTitle">{title} </span>
         </Link>
         <span className="Pub_Auth"> {auth} | {pubDate}</span>
@@ -33,7 +33,7 @@ const LibBooks = ({ cover, title, pubDate, auth, avgRate, genres, desc, id, user
             <i className="reviewIcon fa-solid fa-star-half-stroke"></i>
           </Link>
           <i className="singleLen fa-solid fa-scroll"></i>
-          <Link className="buyLink" to={single} id={id}>
+          <Link className="buyLink" to={single}>
             <button className="buy">...</button>
           </Link>
           <AddWishButton className="Wish" userId={user} bookId={id} />

@@ -9,18 +9,14 @@ import React, { useState, useEffect, memo } from 'react';
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
-const Single = memo((backend) => {
+const Single = memo((backend, userId) => {
   const [info, setInfo] = useState({});
   const [friends, setFriends] = useState([]);
-  const { userIdObj, BookIdObj } = useParams();
+  const { BookIdObj } = useParams();
 
   var string = JSON.stringify(backend);
   var backObj = JSON.parse(string);
   var back = backObj.backend;
-
-  var uString = JSON.stringify(userIdObj);
-  var userObj = JSON.parse(uString);
-  var userId = userObj.userId;
 
   var bString = JSON.stringify(BookIdObj);
   var bookObj = JSON.parse(bString);

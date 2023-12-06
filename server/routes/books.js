@@ -37,7 +37,6 @@ router.post('/check-book', async (req, res) => {
         BookTitle,
         BookCoverLink,
         BookAuthor,
-        BookPubDate,
         BookGenre,
         BookDesc,
         BookAvgRating,
@@ -47,23 +46,32 @@ router.post('/check-book', async (req, res) => {
     const bookExists = await finalKnex('Book').where('GoogleBookId', GoogleBookId).first();
     //If the book doesn't exist, add it.
     if (!bookExists) {
-        await finalKnex('Book').insert({
-            GoogleBookId,
-            BookTitle,
-            BookCoverLink,
-            BookAuthor,
-            BookPubDate,
-            BookGenre,
-            BookDesc,
-            BookAvgRating,
-        })
+        await finalKnex('Book').insert([   
+            {
+                GoogleBookId: GoogleBookId,
+                BookTitle: BookTitle,
+                BookCoverLink: BookCoverLink,
+                BookAuthor: BookAuthor,
+                BookGenre: BookGenre,
+                BookDesc: BookDesc,
+                BookAvgRating: BookAvgRating,
+            }
+        ]);
 
         // Return a success response.
-        res.status(201).json({ message: 'Book created successfully.' });
+        res.status(201).json({ message: 'Book created successfully.'});
     } else {
         // Return a conflict response.
         res.status(200).json({ message: 'Book already exists.' });
     }
+})
+
+router.post('/:bookId/insert-date', async (req, res) => {
+    const bookId = req.params.bookId;
+    const date = req.params.BookPubDate;
+    await finalKnex('Book').insert([{BookPubDate: date}]).where('GoogleBookId', bookId);
+
+    res.status(201).json({message: 'Date successfully added'}); 
 })
 
 module.exports = router;
