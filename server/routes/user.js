@@ -150,7 +150,7 @@ router.post('/create', async (req, res) => {
 
     // If the user doesn't exist, create a new user.
     if (!user) {
-        const [userId] = await finalKnex('appUser').insert([
+        const userId = await finalKnex('appUser').insert([
             {
                 userName: name,
                 userEmail: email,

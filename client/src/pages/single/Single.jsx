@@ -12,25 +12,20 @@ import axios from "axios";
 const Single = memo((backend, userId) => {
   const [info, setInfo] = useState({});
   const [friends, setFriends] = useState([]);
-  const { BookIdObj } = useParams();
 
-  var string = JSON.stringify(backend);
-  var backObj = JSON.parse(string);
-  var back = backObj.backend;
+  
 
-  var bString = JSON.stringify(BookIdObj);
-  var bookObj = JSON.parse(bString);
-  var GoogleBookId = bookObj.GoogleBookId;
+
 
   useEffect(() => {
     async function fetchBook() {
-      const response = await axios.get(back + `/books/` + GoogleBookId);
+      const response = await axios.get(backend + `/books/` + GoogleBookId);
       const data = response.data;
 
       setInfo(data);
     }
     async function fetchFriends() {
-      axios.get(back + `/user/` + userId + `/friends-list`)
+      axios.get(backend + `/user/` + userId + `/friends-list`)
         .then((response) => {
           setFriends(response.data);
         });

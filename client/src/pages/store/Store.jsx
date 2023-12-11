@@ -42,9 +42,10 @@ const Store = ({ backend, userId }) => {
       BookDesc: book.volumeInfo.description,
       BookAvgRating: book.volumeInfo.averageRating,
     }));
-    //console.log(typeof(results[0].BookPubDate));
+    console.log(formatted);
 
     setResults(formatted);
+    console.log(results);
     if (results != null) {
       for (const book of results) {
         addCheckBook(book, backend);
@@ -66,7 +67,7 @@ const Store = ({ backend, userId }) => {
       formatGoogleBooksResults(unfiltered);
 
     });
-    console.log(results);
+    
   };
 
   return (

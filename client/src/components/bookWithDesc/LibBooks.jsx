@@ -4,8 +4,8 @@ import AddWishButton from "../addToLists/addWishButton";
 
 
 const LibBooks = ({ cover, title, pubDate, auth, avgRate, genres, desc, id, user }) => {
-  const single = `${user}/view/${id}`;
-  const store = `${user}/store`;
+  const single = `/view/${id}`;
+  const store = `/store`;
 
 
   return (
@@ -28,7 +28,7 @@ const LibBooks = ({ cover, title, pubDate, auth, avgRate, genres, desc, id, user
         </Link>
         <span className="Pub_Auth"> {auth} | {pubDate}</span>
         <div className="iconContainer">
-          <Link className="link" to={store} >
+          <Link className="link" to={store} bookId={id}>
             <span className="ratingNum">{avgRate}</span>
             <i className="reviewIcon fa-solid fa-star-half-stroke"></i>
           </Link>
