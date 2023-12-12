@@ -5,22 +5,56 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 
 const Library = ({ backend, userId }) => {
-    var go = backend + "/user/" + userId;
-
     const [ownedBooks, setOwnedBooks] = useState([]);
     const [wishedBooks, setWishedBooks] = useState([]);
+    const [isLoading, setIsLoading] = useState(true); // New state for loading indicator
+
+    // Function to fetch both owned and wished books
+    const fetchLibraryData = async () => {
+        setIsLoading(true);
+
+        var ownedBooksPromise = axios.get(`${backend}/user/${userId}/owned-books`);
+        var wishedBooksPromise = axios.get(`${backend}/user/${userId}/wished-books`);
+
+        // Use Promise.all to wait for both requests
+        await Promise.all([ownedBooksPromise, wishedBooksPromise]).then(([ownedResponse, wishedResponse]) => {
+            ownedBooksPromise = ownedResponse.data;
+            wishedBooksPromise = wishedResponse.data;
+        });
+        const ownedBooksIds = ownedBooksPromise.map((book) => book.GoogleBookId);
+        const wishedBooksIds = wishedBooksPromise.map((book) => book.GoogleBookId);
+        const tempOwn = [];
+        for (const bookId of ownedBooksIds) {
+            try {
+                const response = await axios.get(`${backend}/books/${bookId}`);
+                tempOwn.push(response.data[0]);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        const tempWish = [];
+        for (const bookId of wishedBooksIds) {
+            try {
+                const response = await axios.get(`${backend}/books/${bookId}`);
+                tempWish.push(response.data[0]);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        setOwnedBooks(tempOwn);
+        setWishedBooks(tempWish);
+        
+        setIsLoading(false);
+    };
 
     useEffect(() => {
-        // Make a GET request to the `/users/:userId/owned-books` endpoint.
-        axios.get(go + `/owned-books`).then((response) => {
-            setOwnedBooks(response.data);
-        });
-
-        // Make a GET request to the `/users/:userId/wished-books` endpoint.
-        axios.get(go + `/wished-books`).then((response) => {
-            setWishedBooks(response.data);
-        });
+        fetchLibraryData();
     }, [userId]);
+
+    if (isLoading) {
+        return <p>Loading your library...</p>;
+    }
 
     return (
         <div className="library">
@@ -29,7 +63,7 @@ const Library = ({ backend, userId }) => {
                 <div className="ownWrapper">
                     <label className="ownTitle">Owned</label>
                     <ul className="ownList">
-                        {ownedBooks ? (<li>{ownedBooks.map((book, i) => (
+                        {ownedBooks.length > 0 ? (<li>{ownedBooks.map((book, i) => (
                             <OwnedBook
                                 key={i}
                                 cover={book.BookCoverLink}
@@ -47,26 +81,27 @@ const Library = ({ backend, userId }) => {
                 </div>
                 <div className="wishWrapper">
                     <label className="wishTitle">Wishlist</label>
-                    <ul className="wishList">
-                        {wishedBooks ? (<li>{wishedBooks.map((book, i) => (
-                            <LibBooks
-                                key={i}
-                                cover={book.BookCoverLink}
-                                title={book.BookTitle}
-                                pubDate={book.BookPubDate}
-                                auth={book.BookAuthor}
-                                avgRate={book.BookAvgRating}
-                                genres={book.BookGenre}
-                                desc={book.BookDesc}
-                                id={book.GoogleBookId}
-                                user={userId}
-                            />))}</li>
-                        ) : (<label> Looks like you don't want any books...</label>)}
-                    </ul>
+                    {wishedBooks.length > 0 ? (
+                        <ul className="wishList">
+                            <li>{wishedBooks.map((book, i) => (
+                                <LibBooks
+                                    key={i}
+                                    cover={book.BookCoverLink}
+                                    title={book.BookTitle}
+                                    pubDate={book.BookPubDate}
+                                    auth={book.BookAuthor}
+                                    avgRate={book.BookAvgRating}
+                                    genres={book.BookGenre}
+                                    desc={book.BookDesc}
+                                    id={book.GoogleBookId}
+                                    user={userId}
+                                />))}
+                            </li>
+                        </ul>
+                    ) : (<label> Looks like you don't want any books...</label>)}
                 </div>
             </div>
         </div>
-
     )
 };
 

@@ -14,15 +14,16 @@ router.get('/', async (req, res) => {
 })
 
 router.get('/:bookId', async (req, res) => {
-    const bookId = req.params.GoogleBookId;
+    const bookId = req.params.bookId;
     const book = await finalKnex('Book')
+        .select('*')
         .where('GoogleBookId', bookId)
-        .first();
-    res.json(book);
+    res.json(book); 
 });
 
+
 router.get('/:bookId/reviews', async (req, res) => {
-    const bookId = req.params.GoogleBookId;
+    const bookId = req.params.bookId;
     const revs = await finalKnex('Reviews')
         .select('*')
         .where('GoogleBookId', bookId);
@@ -46,7 +47,7 @@ router.post('/check-book', async (req, res) => {
     const bookExists = await finalKnex('Book').where('GoogleBookId', GoogleBookId).first();
     //If the book doesn't exist, add it.
     if (!bookExists) {
-        await finalKnex('Book').insert([   
+        await finalKnex('Book').insert([
             {
                 GoogleBookId: GoogleBookId,
                 BookTitle: BookTitle,
@@ -59,7 +60,7 @@ router.post('/check-book', async (req, res) => {
         ]);
 
         // Return a success response.
-        res.status(201).json({ message: 'Book created successfully.'});
+        res.status(201).json({ message: 'Book created successfully.' });
     } else {
         // Return a conflict response.
         res.status(200).json({ message: 'Book already exists.' });
@@ -69,9 +70,29 @@ router.post('/check-book', async (req, res) => {
 router.post('/:bookId/insert-date', async (req, res) => {
     const bookId = req.params.bookId;
     const date = req.params.BookPubDate;
-    await finalKnex('Book').insert([{BookPubDate: date}]).where('GoogleBookId', bookId);
+    await finalKnex('Book').insert([{ BookPubDate: date }]).where('GoogleBookId', bookId);
 
-    res.status(201).json({message: 'Date successfully added'}); 
+    res.status(201).json({ message: 'Date successfully added' });
+})
+
+router.post('/:bookId/reviews', async (req, res) => {
+    const revTitle = req.body.title;
+    const revText = req.body.text;
+    const revRating = req.body.rating;
+    const bookId = req.params.bookId;
+    const userId = req.body.userId;
+
+    await finalKnex('Reviews').insert([
+        {
+            GoogleBookId: bookId,
+            ReviewTitle: revTitle,
+            ReviewText: revText,
+            ReviewUserId: userId,
+            ReviewRating: revRating,
+        }
+    ], ['ReviewId']);
+
+    res.status(201).json({ message: 'Review successfully added' });
 })
 
 module.exports = router;

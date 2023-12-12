@@ -7,18 +7,34 @@ const Reviews = ({ bookId }) => {
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
-    axios.get(`http://project-server:8000/books/${bookId}/reviews`).then((response) => {
-      setReviews(response.data);
-    });
+    async function getReviews() {
+      axios.get(`http://localhost:8000/books/${bookId}/reviews`, { GoogleBookId: bookId })
+      .then((response) => {
+        setReviews(response.data);
+      });
+    } 
+    
+    getReviews();
+    setInterval(getReviews, 60000);
   }, [bookId]);
 
   return (
     <div>
-      <ul>
-        {reviews.map((review) => (
-          <li key={review.id}><Review /></li>
-        ))}
-      </ul>
+      {reviews.length > 0 ? (
+        <ul>
+          <li>{reviews.map((review, i) => (
+            <Review
+              key={i}
+              user={review.ReviewUserId}
+              revTitle={review.ReviewTitle}
+              revRating={review.ReviewRating}
+              revText={review.ReviewText}
+            />))}</li>
+        </ul>
+      ) : (
+        <label>No reviews yet...</label>
+      )}
+
     </div>
   )
 }

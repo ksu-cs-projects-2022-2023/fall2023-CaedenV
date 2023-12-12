@@ -5,35 +5,39 @@ import AddWishButton from "../../components/addToLists/addWishButton";
 import AddOwnButton from "../../components/addToLists/addOwnButton";
 import Popup from 'reactjs-popup';
 import "./single.css";
-import React, { useState, useEffect, memo } from 'react';
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
 import axios from "axios";
+import { useParams } from 'react-router-dom';
 
-const Single = memo((backend, userId) => {
+const Single = (userIdObj) => {
   const [info, setInfo] = useState({});
   const [friends, setFriends] = useState([]);
-
+  const bookIdObj = useParams();
+  const bookId = String(bookIdObj.GoogleBookId);
+  const userId = String(userIdObj.userId);
   
 
 
 
-  useEffect(() => {
-    async function fetchBook() {
-      const response = await axios.get(backend + `/books/` + GoogleBookId);
-      const data = response.data;
 
-      setInfo(data);
-    }
-    async function fetchFriends() {
-      axios.get(backend + `/user/` + userId + `/friends-list`)
+
+  useEffect(() => {
+    async function FetchAllInfo() {
+      axios.get(`http://localhost:8000/books/${bookId}`, {GoogleBookId: bookId})
+      .then((response) => {
+        console.log(response);
+        setInfo(response.data[0]);
+    });
+
+    axios.get(`http://localhost:8000/user/${userId}/friends-list`, {userId: userId})
         .then((response) => {
           setFriends(response.data);
         });
-    }
 
-    fetchFriends();
-    fetchBook();
-  });
+    }
+    FetchAllInfo();
+    
+  }, [bookId]);
 
   const { BookCoverLink, BookTitle, BookAuthor, BookPubDate, BookAvgRating, BookDesc } = info;
 
@@ -52,8 +56,8 @@ const Single = memo((backend, userId) => {
           <span className="bookDetails">
             <h1 className="singleBookTitle"> {BookTitle}
               <div className="singleBookOpt">
-                <AddOwnButton userId={userId} bookId={GoogleBookId} />
-                <AddWishButton userId={userId} bookId={GoogleBookId} />
+                <AddOwnButton userId={userId} bookId={bookId} />
+                <AddWishButton userId={userId} bookId={bookId} />
                 <Popup trigger=
                   {<i className="singleIcons fa-solid fa-share"></i>}
                   position="bottom right">
@@ -88,13 +92,13 @@ const Single = memo((backend, userId) => {
               Reviews
             </h>
           </div>
-          <MakeReview bookId={GoogleBookId} />
-          <Reviews bookId={GoogleBookId} />
+          <MakeReview bookId={bookId} userId={userId}/>
+          <Reviews bookId={bookId} />
         </div>
       </div>
       <SideBar />
     </div>
   );
-});
+};
 
 export default Single;

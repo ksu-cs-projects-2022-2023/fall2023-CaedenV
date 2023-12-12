@@ -2,18 +2,18 @@ import "./makeReview.css"
 import React, { useState } from "react";
 import axios from "axios";
 
-const MakeReview = ({ bookId }) => {
+const MakeReview = ({ bookId, userId}) => {
     const [reviewTitle, setReviewTitle] = useState("");
     const [reviewRating, setReviewRating] = useState(0);
     const [reviewText, setReviewText] = useState("");
 
     const handleSubmit = async () => {
-        const response = await axios.post(`http://project-server:8000/books/${bookId}/reviews`, {
+        axios.post(`http://localhost:8000/books/${bookId}/reviews`, {
             title: reviewTitle,
             rating: reviewRating,
-            text: reviewText
+            text: reviewText,
+            userId: userId,
         });
-        return response;
     };
 
     return (
@@ -26,13 +26,15 @@ const MakeReview = ({ bookId }) => {
                     <input type="int" value={reviewRating} onChange={(e) => setReviewRating(e.target.value)}
                     placeholder="3" className="numStars"/>
                     <i className="reviewIcon fa-solid fa-star-half-stroke"></i>
+                    <i class="revSubmit Icon fa-solid fa-pen-nib" onClick={handleSubmit}></i>
                     <hr />
+                    
                 </div>
-                <div className="makeRevGrp">
+                <div className="makeRevText">
                     <textarea value={reviewText} onChange={(e) => setReviewText(e.target.value)}
                     placeholder="How was it? Let us know in more detail..." type="text" className="revInput revText"></textarea>
                 </div>
-                <i class="revSubmit Icon fa-solid fa-pen-nib" onClick={handleSubmit}></i>
+                
             </form>
         </div>
     )

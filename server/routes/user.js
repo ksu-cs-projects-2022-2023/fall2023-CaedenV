@@ -33,7 +33,7 @@ router.get('/:userId/owned-books', async (req, res) => {
     const userId = req.params.userId;
 
     const books = await finalKnex('OwnedBooks')
-        .select('*')
+    .select('GoogleBookId')
         .where('userId', userId);
 
     res.json(books);
@@ -43,7 +43,7 @@ router.get('/:userId/wished-books', async (req, res) => {
     const userId = req.params.userId;
 
     const books = await finalKnex('WishedBooks')
-        .select('*')
+        .select('GoogleBookId')
         .where('userId', userId);
 
     res.json(books);
@@ -74,15 +74,15 @@ router.get('/:userId/friends-list/names', async (req, res) => {
     const friendIds = await finalKnex('UserFriends')
         .select('friendId')
         .where('userId', userId);
-    
-    
+
+
     const friendNames = [];
     for (const friend of friendIds) {
         const friendUN = await finalKnex('appUser').select('userName').where('userId', friend).first();
         friendNames.push({ userId: friend, friendUN });
     }
 
-    res.json(friendNames);
+    res.json(friendNames); 
 });
 
 
@@ -126,7 +126,7 @@ router.put('/:userId/current-read', async (req, res) => {
 
     await finalKnex('appUser')
         .where('userId', userId)
-        .update({ userCurrRead: newCurr});
+        .update({ userCurrRead: newCurr });
 })
 
 // INSERTS and DELETES rows existing tables
@@ -158,7 +158,7 @@ router.post('/create', async (req, res) => {
                 userLoggedIn: userLoggedIn,
                 userPicLink: pic
             }
-        ], ['userId']);
+        ], ['userId']); 
 
         // Return a success response.
         res.status(201).json({ message: 'User created successfully.', userId: userId });
@@ -168,7 +168,7 @@ router.post('/create', async (req, res) => {
     }
 })
 
-router.put('/:userId/owned-books', async (req, res) => {
+router.post('/:userId/owned-books', async (req, res) => {
     const userId = req.params.userId;
     const bookId = req.body.bookId;
 
@@ -184,23 +184,36 @@ router.put('/:userId/owned-books', async (req, res) => {
     res.json({ message: 'Owned books list updated successfully' });
 });
 
-router.put('/:userId/wished-books', async (req, res) => {
+router.post('/:userId/wished-books', async (req, res) => {
     const userId = req.params.userId;
     const bookId = req.body.bookId;
-
     // Insert a new row into the wish_listed_books table
-    await finalKnex('WishedBooks')
-        .insert([
-            { userId: userId },
-            { GoogleBookId: bookId }
-        ]);
+    const WishId = await finalKnex('WishedBooks').insert([
+        {
+            userId: userId,
+            GoogleBookId: bookId
+        }
 
-    res.json({ message: 'Wish-listed books list updated successfully' });
+    ], ['WishId']);
+
+    res.json({ message: 'Wish-listed books list updated successfully', WishId: WishId });
 });
 
-router.put('/:userId/friends-list', async (req, res) => {
+router.delete('/:userId/wished-books', async (req, res) => {
     const userId = req.params.userId;
-    const friendUN = req.params.friendId;
+    const bookId = req.body.bookId; 
+    // Insert a new row into the wish_listed_books table
+    await finalKnex('WishedBooks')
+        .where('userId', userId)
+        .where('GoogleBookId', bookId)
+        .delete();
+
+    res.json({ message: 'Book removed successfully' });
+});
+
+router.post('/:userId/friends-list', async (req, res) => {
+    const userId = req.params.userId;
+    const friendId = req.body.friendId;
 
     await finalKnex('UserFriends')
         .insert([
@@ -221,7 +234,7 @@ router.delete('/:userId/friends-list/:friendId', async (req, res) => {
         .where('friendId', friendId)
         .delete();
 
-    res.json({ message: 'Friend removed successfully'});
+    res.json({ message: 'Friend removed successfully' });
 });
-
+ 
 module.exports = router;

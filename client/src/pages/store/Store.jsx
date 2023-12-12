@@ -6,21 +6,18 @@ import LibBooks from "../../components/bookWithDesc/LibBooks";
 
 
 const addCheckBook = async (book, backend) => {
-  
-  axios.post(`${backend}/books/check-book`, {
-    GoogleBookId: book.GoogleBookId,
-    BookTitle: book.BookTitle,
-    BookCoverLink: book.BookCoverLink,
-    BookAuthor: book.BookAuthor,
-    BookGenre: book.BookGenre,
-    BookDesc: book.BookDesc,
-    BookAvgRating: book.BookAvgRating,
-  });
-  // console.log(book.GoogleBookId);
-  // axios.post(`${backend}/books/${book.GoogleBookId}/insert-date`, {
-  //   bookId: book.GoogleBookId,
-  //   BookPubDate: book.BookPubDate,
-  // });
+  if (book.BookPubDate) {
+    axios.post(`${backend}/books/check-book`, {
+      GoogleBookId: book.GoogleBookId,
+      BookTitle: book.BookTitle,
+      BookCoverLink: book.BookCoverLink,
+      BookAuthor: book.BookAuthor,
+      BookGenre: book.BookGenre,
+      BookDesc: book.BookDesc,
+      BookAvgRating: book.BookAvgRating,
+      BookPubDate: book.BookPubDate,
+    });
+  }
 
 };
 
@@ -42,10 +39,10 @@ const Store = ({ backend, userId }) => {
       BookDesc: book.volumeInfo.description,
       BookAvgRating: book.volumeInfo.averageRating,
     }));
-    console.log(formatted);
+
 
     setResults(formatted);
-    console.log(results);
+    console.log(formatted);
     if (results != null) {
       for (const book of results) {
         addCheckBook(book, backend);
@@ -61,20 +58,20 @@ const Store = ({ backend, userId }) => {
     //const formattedQ = newQ.includes(' ') ? newQ.replace(' ', '+') : newQ;
     setQuery(newQ);
     //Searches through the Google Books API based on the query and search type
-    const url = `https://www.googleapis.com/books/v1/volumes?q=+${selectedSearchType}:${query}&download=epub&filter=ebooks&key=AIzaSyD2we9fItQNmaJdL0YiIT2PGlweOFdOhNg&maxResults=40`;
+    const url = `https://www.googleapis.com/books/v1/volumes?q=+${selectedSearchType}:${query}&download=epub&filter=ebooks&langRestring=en&printType=books&key=AIzaSyD2we9fItQNmaJdL0YiIT2PGlweOFdOhNg&maxResults=40`;
     axios.get(url).then((response) => {
       var unfiltered = response.data.items;
       formatGoogleBooksResults(unfiltered);
 
     });
-    
+
   };
 
   return (
     <div className="store">
       <label className="pageLabel">Store</label>
       <div className='SearchArea'>
-        <select className='s type' id='type' value={selectedSearchType} onChange={(e) => setSelectedSearchType(e.target.value)}>
+        <select className='s type' id='type' value={selectedSearchType} onChange={(e) => setSelectedSearchType(e.target.value)} >
           <option value="intitle">Book Title</option>
           <option value="inauthor">Author</option>
           <option value="subject">Genre</option>

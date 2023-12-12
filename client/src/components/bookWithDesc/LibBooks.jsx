@@ -10,7 +10,7 @@ const LibBooks = ({ cover, title, pubDate, auth, avgRate, genres, desc, id, user
 
   return (
     <div className="libBooks">
-      <Link className="link" to={single} id={id} >
+      <Link className="link" to={single}>
         <img className="bookCover"
           src={cover}
           alt="Book Cover"
@@ -28,10 +28,8 @@ const LibBooks = ({ cover, title, pubDate, auth, avgRate, genres, desc, id, user
         </Link>
         <span className="Pub_Auth"> {auth} | {pubDate}</span>
         <div className="iconContainer">
-          <Link className="link" to={store} bookId={id}>
-            <span className="ratingNum">{avgRate}</span>
-            <i className="reviewIcon fa-solid fa-star-half-stroke"></i>
-          </Link>
+          <span className="ratingNum">{avgRate}</span>
+          <i className="reviewIcon fa-solid fa-star-half-stroke"></i>
           <i className="singleLen fa-solid fa-scroll"></i>
           <Link className="buyLink" to={single}>
             <button className="buy">...</button>

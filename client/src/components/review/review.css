@@ -4,22 +4,15 @@
     flex-direction: column;
 }
 
-.reviewInfo{
-    display: flex;
-    flex-direction: column;
-    color: rgb(119, 91, 175);
-    font-size: 25px;
-}
-
 .reviewTitle{
     font-family: 'Merriweather', serif;
-    font-size: 13px;
+    font-size: 30px;
     font-weight: bold;
     color: mediumpurple;
 }
 
 .reviewIcon{
-    margin-left: 10px;
+    margin-left: 5px;
 }
 .reviewDate{
     font-weight: lighter;
@@ -29,7 +22,7 @@
 
 .revDesc{
     font-family: 'Lora', serif;
-    font-size: 14px;
+    font-size: 18px;
     color: rgb(104, 76, 161);
     overflow: hidden;
     text-overflow: ellipsis;
