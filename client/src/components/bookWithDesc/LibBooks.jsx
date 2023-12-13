@@ -1,11 +1,42 @@
 import "./libBooks.css"
 import { Link } from "react-router-dom";
 import AddWishButton from "../addToLists/addWishButton";
+import AddOwnButton from "../addToLists/addOwnButton";
+import AddFavButton from "../addToLists/addFavButton";
+import axios from "axios";
 
 
-const LibBooks = ({ cover, title, pubDate, auth, avgRate, genres, desc, id, user }) => {
+const LibBooks = ({ cover, title, pubDate, auth, avgRate, genres, desc, id, user, wishes, owns, favs }) => {
   const single = `/view/${id}`;
   const store = `/store`;
+  var isOwned = false;
+  var isWished = false;
+  var favRank = 0;
+  
+  if (wishes.length > 0) {
+    for (const wishedId of wishes) {
+      if (wishedId == id) { 
+        isWished = true;
+      }
+    }
+  }
+
+  if (owns.length > 0) {
+    for (const ownedId of owns) {
+      if (ownedId == id) { 
+        isOwned = true;
+      }
+    }
+  }
+
+  if (favs.length > 0) {
+    for (const favBook in favs) {
+      if (favBook == id) {
+        favRank = axios.get(`http://localhost:8000/user/${user}/fav-rank`, {bookId: id} )
+      }
+    }
+  }
+  
 
 
   return (
@@ -34,7 +65,9 @@ const LibBooks = ({ cover, title, pubDate, auth, avgRate, genres, desc, id, user
           <Link className="buyLink" to={single}>
             <button className="buy">...</button>
           </Link>
-          <AddWishButton className="Wish" userId={user} bookId={id} />
+          {isOwned ? (<label></label>) : (<AddWishButton className="Wish" userId={user} bookId={id} isWished={isWished}/>)}
+          <AddOwnButton className="Own" userId={user} bookId={id} isOwned={isOwned}/>
+          <AddFavButton className="Fav" userId={user} bookId={id} favRank={favRank}/>
         </div>
         <span className="bookDesc">
           {desc}

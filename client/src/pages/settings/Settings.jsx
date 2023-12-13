@@ -7,7 +7,6 @@ import axios from "axios";
 const Settings = ({ backend, userId }) => {
 
     const [user, setUser] = useState(null);
-    const [top5Books, setTop5Books] = useState([]);
     const inputRef = useRef(null);
     const [friends, setFriends] = useState([]);
     const go = `${backend}/user/${userId}`;
@@ -21,11 +20,6 @@ const Settings = ({ backend, userId }) => {
             axios.get(go + `/friends-list/names`, { userId: userId })
                 .then((response) => {
                     setFriends(response.data);
-                });
-
-            axios.get(go + `/top-5-fav-books`, { userId: userId })
-                .then((response) => {
-                    setTop5Books(response.data);
                 });
         }
 
@@ -66,10 +60,7 @@ const Settings = ({ backend, userId }) => {
         event.preventDefault();
 
         console.log(user);
-        axios.put(go, { userInfo: user })
-            .then((response) => {
-                setUser({ ...user, userPicLink: response.data.userPicLink });
-            });
+        axios.put(go, { userInfo: user });
     };
 
     if (!user) {
@@ -126,24 +117,6 @@ const Settings = ({ backend, userId }) => {
                                     type="text" value={user.userFavGenre || "Tell us your favorite genre"}
                                     onChange={(event) => setUser({ ...user, userFavGenre: event.target.value })}
                                 />
-                            </div>
-                            <div className="rankContainer">
-                                <label>Top Five Books:</label>
-                                <ol>
-                                    <input type="text" value={top5Books[0] || "Title #1"} /> by <input type="text" value={top5Books[0] || "Author #1"} />
-                                </ol>
-                                <ol>
-                                    <input type="text" value={top5Books[1] || "Title #2"} /> by <input type="text" value={top5Books[1] || "Author #2"} />
-                                </ol>
-                                <ol>
-                                    <input type="text" value={top5Books[2] || "Title #3"} /> by <input type="text" value={top5Books[2] || "Author #3"} />
-                                </ol>
-                                <ol>
-                                    <input type="text" value={top5Books[3] || "Title #4"} /> by <input type="text" value={top5Books[3] || "Author #4"} />
-                                </ol>
-                                <ol>
-                                    <input type="text" value={top5Books[4] || "Title #5"} /> by <input type="text" value={top5Books[4] || "Author #5"} />
-                                </ol>
                             </div>
                         </form>
                     </div>

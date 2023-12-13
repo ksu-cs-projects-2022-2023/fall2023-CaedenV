@@ -1,5 +1,5 @@
 import "./store.css"
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import LibBooks from "../../components/bookWithDesc/LibBooks";
 
@@ -27,6 +27,29 @@ const Store = ({ backend, userId }) => {
   const [query, setQuery] = useState('');
   const [selectedSearchType, setSelectedSearchType] = useState('intitle');
   const [results, setResults] = useState([]);
+  const [ownedBooks, setOwnedBooks] = useState([]);
+  const [wishedBooks, setWishedBooks] = useState([]);
+  const [favedBooks, setFavedBooks] = useState([]);
+
+  const FetchLibrary = async () => {
+    var ownedBooksPromise = axios.get(`${backend}/user/${userId}/owned-books`);
+    var wishedBooksPromise = axios.get(`${backend}/user/${userId}/wished-books`);
+    var favedBooksPromise = axios.geet(`${backend}/user/${userId}/top-5-fav-books`);
+
+    // Use Promise.all to wait for both requests
+    await Promise.all([ownedBooksPromise, wishedBooksPromise, favedBooksPromise]).then(([ownedResponse, wishedResponse, favedResponse]) => {
+      ownedBooksPromise = ownedResponse.data;
+      wishedBooksPromise = wishedResponse.data;
+      favedBooksPromise = favedResponse.data;
+    });
+    const ownedBooksIds = ownedBooksPromise.map((book) => book.GoogleBookId);
+    const wishedBooksIds = wishedBooksPromise.map((book) => book.GoogleBookId);
+    const favBookIds = favedBooksPromise.map((book) => book.GoogleBookId);
+
+    setOwnedBooks(ownedBooksIds);
+    setWishedBooks(wishedBooksIds);
+    setFavedBooks(favBookIds);
+  }
 
   const formatGoogleBooksResults = (unfiltered) => {
     var formatted = unfiltered.map((book) => ({
@@ -49,6 +72,12 @@ const Store = ({ backend, userId }) => {
       }
     }
   };
+
+
+
+  useEffect(() => {
+    FetchLibrary();
+  }, [userId]);
 
   const handleSearch = (e) => {
     // Sets the query for the Google Books Search
@@ -97,6 +126,9 @@ const Store = ({ backend, userId }) => {
                 desc={book.BookDesc}
                 id={book.GoogleBookId}
                 user={userId}
+                wishes={wishedBooks}
+                owns={ownedBooks}
+                favs={favedBooks}
               />))}</li>
           </ul>
         ) : (

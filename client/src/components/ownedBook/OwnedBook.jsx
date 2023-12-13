@@ -1,66 +1,58 @@
 import "./ownedBook.css"
 import { Link } from "react-router-dom";
-import { Component } from "react";
+import axios from "axios";
+import AddFavButton from "../addToLists/addFavButton";
 
 
-class OwnedBook extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      info: [],
-      data: {
-        cover: props.fullCover,
-        title: props.title,
-        pubDate: props.pubDate,
-        auth: props.auth,
-        avgRate: props.avgRate,
-        genres: props.genres,
-        desc: props.desc,
-        id: props.id,
-        single: "/book/:" + props.id,
-        read: "/read/:" + props.id
-      },
+const OwnedBook = ({ cover, title, pubDate, auth, avgRate, genres, id, user, favs }) => {
+  const single = `/view/${id}`;
+  const store = `/store`;
+  const read = `/read/${id}`;
+  var favRank = 0;
 
+  if (favs.length > 0) {
+    for (const favBook in favs) {
+      if (favBook == id) {
+        favRank = axios.get(`http://localhost:8000/user/${user}/fav-rank`, {bookId: id} )
+      }
     }
   }
+  
 
-  render() {
-    return (
-      <div className="libBooks">
-        <Link className="link" to={this.state.data.single} id={this.state.data.id} >
-          <img className="bookCover"
-            src={this.state.data.cover}
-            alt="Book Cover"
-          />
-        </Link>
 
-        <div className="bookInfo">
-          <div className="bookGenre">
-            <Link className="link" to="/store" >
-              <span className="bookGenre">{this.state.data.genres}</span>
-            </Link>
-          </div>
-          <Link className="link" to={this.state.data.single} id={this.state.data.id}>
-            <span className="bookTitle">{this.state.data.title} </span>
+  return (
+    <div className="libBooks">
+      <Link className="link" to={single}>
+        <img className="bookCover"
+          src={cover}
+          alt="Book Cover"
+        />
+      </Link>
+
+      <div className="bookInfo">
+        <div className="bookGenre">
+          <Link className="link" to={store} >
+            <span className="bookGenre">{genres}</span>
           </Link>
-          <span className="Pub_Auth"> {this.state.data.auth} | {this.state.data.pubDate}</span>
-          <div className="iconContainer">
-            <Link className="link" to="/store" >
-              <span className="ratingNum">{this.state.data.avgRate}</span>
-              <i className="reviewIcon fa-solid fa-star-half-stroke"></i>
-            </Link>
-            <i className="singleLen fa-solid fa-scroll"></i>
-            <Link className="openLink" to={"/open/:bookId"}>
-              <button className="read">Open</button>
-            </Link>
-          </div>
-          <span className="bookDesc">
-            {this.state.data.desc}
-          </span>
+        </div>
+        <Link className="link" to={single}>
+          <span className="bookTitle">{title} </span>
+        </Link>
+        <span className="Pub_Auth"> {auth} | {pubDate}</span>
+        <div className="iconContainer">
+          <Link className="link" to={store} >
+            <span className="ratingNum">{avgRate}</span>
+            <i className="reviewIcon fa-solid fa-star-half-stroke"></i>
+          </Link>
+          <i className="singleLen fa-solid fa-scroll"></i>
+          <Link className="openLink" to={read}>
+            <button className="read">Open</button>
+          </Link>
+          <AddFavButton favRank={favRank} userId={user} bookId={id}/>
         </div>
       </div>
-    )
-  }
+    </div>
+  )
 }
 
 

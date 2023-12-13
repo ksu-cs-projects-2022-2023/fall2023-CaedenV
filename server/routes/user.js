@@ -33,7 +33,7 @@ router.get('/:userId/owned-books', async (req, res) => {
     const userId = req.params.userId;
 
     const books = await finalKnex('OwnedBooks')
-    .select('GoogleBookId')
+        .select('GoogleBookId')
         .where('userId', userId);
 
     res.json(books);
@@ -53,10 +53,22 @@ router.get('/:userId/top-5-fav-books', async (req, res) => {
     const userId = req.params.userId;
 
     const top5Books = await finalKnex('Top5Books')
+        .select('GoogleBookId')
         .where('userId', userId)
-        .first();
 
     res.json(top5Books);
+});
+
+router.get('/:userId/fav-rank', async (req, res) => {
+    const userId = req.params.userId;
+    const bookId = req.body.bookId;
+
+    const favRank = await finalKnex('Top5Books')
+        .select('BookRank')
+        .where('userId', userId)
+        .where('GoogleBookId', bookId);
+
+    res.json(favRank);
 });
 
 router.get('/:userId/friends-list', async (req, res) => {
@@ -82,7 +94,7 @@ router.get('/:userId/friends-list/names', async (req, res) => {
         friendNames.push({ userId: friend, friendUN });
     }
 
-    res.json(friendNames); 
+    res.json(friendNames);
 });
 
 
@@ -94,13 +106,12 @@ router.put('/:userId', async (req, res) => {
     await finalKnex('appUser')
         .where('userId', userId)
         .update({
-            userPicLink: userInfo.userPicLink,
             userFavGenre: userInfo.userFavGenre,
             userUN: userInfo.userUN,
-        })
+        });
 
 
-    res.json({ message: 'User Pic, Genre, UserName updated successfully', userInfo: userInfo });
+    res.json({ message: 'Genre, UserName updated successfully', userInfo: userInfo });
 });
 
 router.put('/:userId/top-5-fav-books', async (req, res) => {
@@ -158,7 +169,7 @@ router.post('/create', async (req, res) => {
                 userLoggedIn: userLoggedIn,
                 userPicLink: pic
             }
-        ], ['userId']); 
+        ], ['userId']);
 
         // Return a success response.
         res.status(201).json({ message: 'User created successfully.', userId: userId });
@@ -201,11 +212,14 @@ router.post('/:userId/wished-books', async (req, res) => {
 
 router.delete('/:userId/wished-books', async (req, res) => {
     const userId = req.params.userId;
-    const bookId = req.body.bookId; 
+    const bookId = req.body.bookId;
+    const wishId = await finalKnex('WishedBooks')
+        .select('WishId')
+        .where('userId', userId)
+        .andWhere('GoogleBookId', bookId);
     // Insert a new row into the wish_listed_books table
     await finalKnex('WishedBooks')
-        .where('userId', userId)
-        .where('GoogleBookId', bookId)
+        .where('WishId', wishId)
         .delete();
 
     res.json({ message: 'Book removed successfully' });
@@ -236,5 +250,5 @@ router.delete('/:userId/friends-list/:friendId', async (req, res) => {
 
     res.json({ message: 'Friend removed successfully' });
 });
- 
+
 module.exports = router;
