@@ -14,3 +14,15 @@
     overflow-y: scroll;
     height: 83vh;
 }
+
+.favWrapper{
+    display: flex;
+}
+
+.favWrapper > ul{
+    white-space: nowrap;
+}
+.favWrapper > li{
+    margin-top: 5px;
+    display: inline-block;
+}

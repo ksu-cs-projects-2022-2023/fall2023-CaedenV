@@ -1,4 +1,5 @@
-import LibBook from "../../components/bookWithDesc/LibBooks"
+import LibBook from "../../components/bookWithDesc/LibBooks";
+import { getRecommendations } from '../../components/recs/RecBuilder';
 import SideBar from "../../components/sidebar/SideBar"
 import axios from "axios";
 import { useState, useEffect } from "react";
@@ -50,7 +51,7 @@ const Home = ({backend, userId}) => {
             <ul className="genre3">
             </ul>
           </div>
-        ) : (<label>Complete your profile to allow recommendations based on favorites.</label>)}
+        ) : (<label>Look for your favorites in the Store.</label>)}
 
         {ownedBooks ? (
           <div className="owned">

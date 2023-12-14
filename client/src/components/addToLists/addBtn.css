@@ -1,26 +1,35 @@
-.singleIcon {
-    color: white;
-    background-color: mediumpurple;
-    border-radius: 8px;
-    margin-left: 5px;
-    border: none;
-    cursor: pointer;
-}
-
 .Wish {
     color: white;
     background-color: mediumpurple;
     border-radius: 5px;
     border-color: transparent;
     cursor: pointer;
+    margin-left: 5px;
 }
 
-.buyOrOwn {
+.buy {
     color: white;
     background-color: mediumpurple;
-    border-radius: 8px;
-    margin-left: 5px;
-    margin-right: 5px;
+    border-radius: 5px;
     border: none;
     cursor: pointer;
+    margin-left: 5px;
+}
+
+.read {
+    color: white;
+    background-color: mediumpurple;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+.Fav {
+    color: white;
+    background-color: mediumpurple;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    margin-left: 5px;
 }

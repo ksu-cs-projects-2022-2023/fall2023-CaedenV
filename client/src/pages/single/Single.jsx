@@ -25,7 +25,6 @@ const Single = (userIdObj) => {
     async function FetchAllInfo() {
       axios.get(`http://localhost:8000/books/${bookId}`, {GoogleBookId: bookId})
       .then((response) => {
-        console.log(response);
         setInfo(response.data[0]);
     });
 
