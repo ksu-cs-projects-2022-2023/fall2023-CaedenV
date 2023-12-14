@@ -1,6 +1,5 @@
-const natural = require('natural');
-const fs = require('fs');
-
+import fs from "fs";
+import natural from "natural";
 // Load the CSV data into a string (replace 'your_book_data.csv' with your file)
 const csvData = fs.readFileSync('GoodReads_Books.csv', 'utf8');
 
@@ -66,3 +65,4 @@ function getRecommendations(inputBook) {
 // };
 
 // console.log('Recommended ISBNs:', recommendations);
+export { getRecommendations };

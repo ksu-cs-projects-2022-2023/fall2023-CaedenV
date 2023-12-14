@@ -9,7 +9,7 @@ const AddOwnButton = ({ userId, bookId, isOwned }) => {
   const purchaseBook = async () => {
     // Redirect the user to the Google Books website to purchase the book
     window.open(`https://books.google.com/books?id=${bookId}`, "_blank");
-    const response = await axios.put(`http://localhost:8000/user/${userId}/owned-books`, {
+    const response = await axios.post(`http://localhost:8000/user/${userId}/owned-books`, {
       bookId: bookId,
     });
 
@@ -19,7 +19,7 @@ const AddOwnButton = ({ userId, bookId, isOwned }) => {
   };
 
   const setCurrentRead = async () => {
-    const response = await axios.post(`http://localhost:8000/user/${userId}/curr-read`, {
+    const response = await axios.put(`http://localhost:8000/user/${userId}/curr-read`, {
       userId, userId,
       bookId: bookId
     });

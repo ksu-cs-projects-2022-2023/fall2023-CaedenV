@@ -9,6 +9,7 @@ const Home = ({backend, userId}) => {
   const [user, setUser] = useState({});
   const [top5, setTop5] = useState([]);
   const [ownedBooks, setOwnedBooks] = useState([]);
+  const [wishedBooks, setWishedBooks] = useState([]);
 
 
   const FetchData = async () => {
@@ -26,8 +27,14 @@ const Home = ({backend, userId}) => {
       .then((response) => {
         setTop5(response.data[0]);
       });
+      axios.get(`${backend}/user/${userId}/wished-books`)
+      .then((response) => {
+        setWishedBooks(response.data[0]);
+      });
   }
 
+
+ 
   useEffect(() => {
     FetchData();
   }, [userId]);
@@ -38,9 +45,6 @@ const Home = ({backend, userId}) => {
       <div className="recsOverall">
         <h2>{user.userFavGenre} books you may enjoy:</h2>
         <div className="rec genre1">
-          <ul className="genre1">
-
-          </ul>
         </div>
         {top5 ? (
           <div className="top5">

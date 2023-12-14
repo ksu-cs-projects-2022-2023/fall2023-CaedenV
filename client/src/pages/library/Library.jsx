@@ -31,7 +31,7 @@ const Library = ({ backend, userId }) => {
         const ownedBooksIds = ownedBooksPromise.map((book) => book.GoogleBookId);
         const wishedBooksIds = wishedBooksPromise.map((book) => book.GoogleBookId);
         const favBookIds = favedBooksPromise.map((book) => book.GoogleBookId);
-        
+
         setWishIds(wishedBooksIds);
         setOwnIds(ownedBooksIds);
         setFavIds(favBookIds);
@@ -129,27 +129,30 @@ const Library = ({ backend, userId }) => {
             </div>
             <div className="favWrapper">
                 <label>Favorites</label>
-                {favBooks.length > 0 ? (
-                    <ul className="favList">
-                        <li>{wishedBooks.map((book, i) => (
-                            <LibBooks
-                                key={i}
-                                cover={book.BookCoverLink}
-                                title={book.BookTitle}
-                                pubDate={book.BookPubDate}
-                                auth={book.BookAuthor}
-                                avgRate={book.BookAvgRating}
-                                genres={book.BookGenre}
-                                desc={book.BookDesc}
-                                id={book.GoogleBookId}
-                                user={userId}
-                                wishes={wishIds}
-                                owns={ownIds}
-                                favs={favIds}
-                            />))}
-                        </li>
-                    </ul>
-                ) : (<label>Go add some of your favorites from the store!</label>)}
+                <div className="favBooks">
+                    {favBooks.length > 0 ? (
+                        <ul className="favList">
+                            <li>{wishedBooks.map((book, i) => (
+                                <LibBooks
+                                    key={i}
+                                    cover={book.BookCoverLink}
+                                    title={book.BookTitle}
+                                    pubDate={book.BookPubDate}
+                                    auth={book.BookAuthor}
+                                    avgRate={book.BookAvgRating}
+                                    genres={book.BookGenre}
+                                    desc={book.BookDesc}
+                                    id={book.GoogleBookId}
+                                    user={userId}
+                                    wishes={wishIds}
+                                    owns={ownIds}
+                                    favs={favIds}
+                                />))}
+                            </li>
+                        </ul>
+                    ) : (<label>Go add some of your favorites from the store!</label>)}
+                </div>
+
             </div>
         </div>
     )

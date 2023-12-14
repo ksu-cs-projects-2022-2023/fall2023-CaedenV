@@ -90,8 +90,9 @@ const Store = ({ backend, userId }) => {
     const url = `https://www.googleapis.com/books/v1/volumes?q=+${selectedSearchType}:${query}&download=epub&filter=ebooks&langRestring=en&printType=books&key=AIzaSyD2we9fItQNmaJdL0YiIT2PGlweOFdOhNg&maxResults=40`;
     axios.get(url).then((response) => {
       var unfiltered = response.data.items;
-      formatGoogleBooksResults(unfiltered);
-
+      if (unfiltered) {
+        formatGoogleBooksResults(unfiltered);
+      }
     });
 
   };
