@@ -7,14 +7,13 @@ The algorithmic aspect of this website incorporates multiple methods of personal
 Lastly, the social space behind WeReader encompasses a "Friend" system! The most enjoyable about reading should be how you can share that experience with others, so WeReader allows a user to send a book recommendation directly to a user's email.
 <br> </br>
 
-
+This project was done using a postgreSQL database connected to my backend through Docker by making containers for each end (front and back). Within my backend, I used Knex partnered with Nodejs as a way to implement the tables from postgreSQL. In my front end, I used Reactjs to produce a cleaner design.
 
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-### `npm start`
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+With docker as the main bridge, my project's server was run with the following commands:
+`docker compose up -d --build`
+`docker logs -f project-server` to view the logs of the back end, or 
+`docker logs -f project-client` to view the logs of the front end
