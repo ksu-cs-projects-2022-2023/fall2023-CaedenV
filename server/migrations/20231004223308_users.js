@@ -80,6 +80,7 @@ exports.up = function(knex) {
   exports.down = function(knex) {
     return knex.schema
       .dropTable('Reviews')
+      .dropTable('userNotifs')
       .dropTable('Top5Books')
       .dropTable('UserFriends')
       .dropTable('WishedBooks')

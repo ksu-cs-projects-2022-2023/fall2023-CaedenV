@@ -19,7 +19,7 @@ const MakeReview = ({ bookId, userId, bookAvgRating}) => {
         if(numRevs == 0) {
             bookAvgRating = (oldAvg + reviewRating) / 1;
         }
-        console.log(bookAvgRating);
+        
         await axios.put(`http://localhost:8000/books/${bookId}/avgRating`, {newAvg: bookAvgRating})
             .then((response) => console.log(response.data.message)
         );

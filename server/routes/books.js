@@ -31,7 +31,7 @@ router.get('/:bookId/reviews', async (req, res) => {
     res.json(revs);
 });
 
-router.put('/bookId/avgRating', async (req, res) => {
+router.put('/:bookId/avgRating', async (req, res) => {
     const bookId = req.params.bookId;
     const newAvg = req.body.newAvg;
 
