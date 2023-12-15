@@ -8,6 +8,7 @@ import "./single.css";
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import { useParams } from 'react-router-dom';
+//import { Gmail } from '@googleapis/gmail';
 
 const Single = (userIdObj) => {
   const [info, setInfo] = useState({});
@@ -31,12 +32,16 @@ const Single = (userIdObj) => {
 
       axios.get(`http://localhost:8000/user/${userId}/friends-list`, { userId: userId })
         .then((response) => {
-          setFriends(response.data);
+          setFriends(response.data.friends);
         });
 
     }
     FetchAllInfo();
-  }, [bookId]);
+  }, [bookId, userId]);
+
+  const sendRec = (e) => {
+    //axios.post(`http://localhost:8000/user/${userId}/send-rec`, {friendId: e, bookId: bookId});
+  }
 
   var { BookCoverLink, BookTitle, BookAuthor, BookPubDate, BookAvgRating, BookDesc } = info;
 
@@ -63,7 +68,7 @@ const Single = (userIdObj) => {
                   <ul>
                     {friends.map((friend) => (
                       <li key={friend.friendId}>
-                        {friend.friendId}
+                        <button className="send" onClick={(e) => sendRec(e.target.innerText)}>{friend.friendId}</button>
                       </li>
                     ))}
                   </ul>

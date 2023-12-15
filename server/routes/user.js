@@ -21,6 +21,14 @@ router.get('/:userId', async (req, res) => {
     res.json(user);
 });
 
+router.get('/:userId/notifs', async (req, res) => {
+    const userId = req.params.userId;
+    const notifs = await finalKnex('userNotifs')
+        .select('*')
+        .where('NotifGet', userId)
+    res.json({notifs: notifs});
+})
+
 router.get('/:userId/curr-read', async (req, res) => {
     const userId = req.params.userId;
     const curr = await finalKnex('appUser')
@@ -78,7 +86,7 @@ router.get('/:userId/friends-list', async (req, res) => {
         .select('friendId')
         .where('userId', userId);
 
-    res.json(friends);
+    res.json({friends: friends});
 });
 
 router.get('/:userId/friends-list/names', async (req, res) => {
@@ -88,10 +96,10 @@ router.get('/:userId/friends-list/names', async (req, res) => {
         .where('userId', userId);
 
 
-    const friendNames = [];
+    var friendNames = [];
     for (const friend of friendIds) {
         const friendUN = await finalKnex('appUser').select('userName').where('userId', friend).first();
-        friendNames.push({ userId: friend, friendUN });
+        friendNames.push(friendUN);
     }
 
     res.json(friendNames);
@@ -192,16 +200,16 @@ router.post('/:userId/top-5-fav-books', async (req, res) => {
     const existingBooksCount = await finalKnex('Top5Books').where('userId', userId).count('*');
     if (existingBooksCount >= 5) {
         await finalKnex('Top5Books').where('userId', userId)
-        .andWhere('BookRank', 6)
-        .delete();
+            .andWhere('BookRank', 6)
+            .delete();
     }
     await finalKnex('Top5Books').insert([
         {
-          userId,
-          BookId: bookId,
-          BookRank: rank,
+            userId,
+            BookId: bookId,
+            BookRank: rank,
         }
-      ], ['topBookId']);
+    ], ['topBookId']);
 
     res.status(201).json({ message: 'Book added to favorites successfully.', bookRank: rank });
 });
@@ -220,6 +228,36 @@ router.post('/:userId/wished-books', async (req, res) => {
 
     res.json({ message: 'Wish-listed books list updated successfully', WishId: WishId });
 });
+
+router.post('/:userId/send-rec', async (req, res) => {
+    const sender = req.params.userId;
+    const sendTo = req.body.friendId;
+    const bookId = req.body.bookId;
+
+    await finalKnex('userNotifs').insert([
+        {
+            NotifGetId: sendTo,
+            NotifSendId: sender,
+            NotifBookId: bookId,
+            NotifOpened: false,
+        }
+    ], ['NotifId']);
+    res.json({ message: 'Recommendation Sent'});
+})
+
+router.put('/:userId/send-rec', async (req, res) => {
+    const sender = req.params.userId;
+    const sendTo = req.body.friendfId;
+
+    await finalKnex('userNotifs')
+        .where('NotifSendId', sender)
+        .andWhere('NotifGetId', sendTo)
+        .update({
+            NotifOpened: true,
+        });
+
+        res.json({ message: 'Recommendation Opened'});
+})
 
 router.delete('/:userId/wished-books', async (req, res) => {
     const userId = req.params.userId;
@@ -243,7 +281,11 @@ router.post('/:userId/friends-list', async (req, res) => {
                 friendId: friendId
             }
         ]);
-    res.json({ message: 'Friends list updated successfully' });
+    const friends = await finalKnex('UserFriends')
+        .select('friendId')
+        .where('userId', userId);
+
+    res.json({ message: 'Friends list updated successfully', friends: friends });
 });
 
 router.delete('/:userId/friends-list/:friendId', async (req, res) => {
@@ -254,8 +296,11 @@ router.delete('/:userId/friends-list/:friendId', async (req, res) => {
         .where('userId', userId)
         .where('friendId', friendId)
         .delete();
+    const friends = await finalKnex('UserFriends')
+        .select('friendId')
+        .where('userId', userId);
 
-    res.json({ message: 'Friend removed successfully' });
+    res.json({ message: 'Friends list updated successfully', friends: friends });
 });
 
 module.exports = router;

@@ -20,7 +20,6 @@ const LoginButton = ({ updateUserId }) => {
       name,
       email,
     });
-
     return response.data.userId;
   };
 

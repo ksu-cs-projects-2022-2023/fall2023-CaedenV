@@ -1,4 +1,4 @@
-import LibBook from "../../components/bookWithDesc/LibBooks";
+import Search from "../../components/Search/Search";
 //import { getRecommendations } from '../../components/recs/RecBuilder';
 import SideBar from "../../components/sidebar/SideBar"
 import axios from "axios";
@@ -36,7 +36,7 @@ const Home = ({backend, userId}) => {
 
  
   useEffect(() => {
-    FetchData();
+    FetchData(); 
   }, [userId]);
 
   return (
@@ -44,8 +44,7 @@ const Home = ({backend, userId}) => {
       <h1 className="Welcome">Welcome to WeReader</h1>
       <div className="recsOverall">
         <h2>{user.userFavGenre} books you may enjoy:</h2>
-        <div className="rec genre1">
-        </div>
+        <Search backend={backend} userId={userId} params={"subject"} query={user.userFavGenre} />
         {top5 ? (
           <div className="top5">
             <h2>FavBook1 books you may enjoy:</h2>

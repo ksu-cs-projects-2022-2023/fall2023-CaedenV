@@ -53,6 +53,14 @@ exports.up = function(knex) {
         table.string('BookId').notNullable().references("GoogleBookId").inTable("Book")
         table.integer('BookRank').notNullable()
     })
+
+    .createTable('userNotifs', function (table) {
+        table.increments('NotifId')
+        table.integer('NotifGetId').notNullable().references("userId").inTable("appUser")
+        table.integer('NotifSendId').notNullable().references("userId").inTable("appUser")
+        table.string('NotifBookId').notNullable().references("GoogleBookId").inTable("Book")
+        table.boolean('NotifOpened').notNullable()
+    })
     
     .createTable('Reviews', function (table) {
         table.increments('ReviewId')

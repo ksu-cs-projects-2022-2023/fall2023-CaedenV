@@ -29,7 +29,7 @@ function App() {
         <Route path="/login" element={userId !== null ? <Home backend={backend} userId={userId}/> : <Login />} />
         <Route path="/:userId/store" element={userId !== null ? <Store backend={backend} userId={userId}/> : <Login />} />
         <Route path="/:userId/settings" element={userId !== null ? <Settings backend={backend} userId={userId}/> : <Login />} />
-        <Route path="/view/:GoogleBookId" element={<Single userId={userId}/>} />
+        <Route path="/view/:GoogleBookId" element={userId !== null ? <Single userId={userId}/> : <Login/>} />
         <Route path="/:userId/library" element={userId !== null ? <Library backend={backend} userId={userId}/> : <Login />} />
         <Route path="/read/:bookId" element={userId !== null ? <Read /> : <Login />} />
         <Route path="/:userId/home" element={<Home backend={backend} userId={userId}/>} />

@@ -17,9 +17,9 @@ const Settings = ({ backend, userId }) => {
                 .then((response) => {
                     setUser(response.data[0]);
                 });
-            axios.get(go + `/friends-list/names`, { userId: userId })
+            axios.get(go + `/friends-list`, { userId: userId })
                 .then((response) => {
-                    setFriends(response.data);
+                    setFriends(response.data.friends);
                 });
         }
 
@@ -28,18 +28,17 @@ const Settings = ({ backend, userId }) => {
 
     const handleAddFriend = (event) => {
         event.preventDefault();
-
-        const friendUN = event.target.friendUN.value;
-
-        axios.post(go + `/friends-list`, { userId: userId, friendUN: friendUN })
+        const friendId = event.target.value;
+        axios.post(go + `/friends-list`, { userId: userId, friendId: friendId })
             .then((response) => {
-                setFriends(response.data);
+                
+                setFriends(response.data.friends);
             });
     };
     const handleRemoveFriend = (friendId, userId) => {
         axios.delete(go + `/friends-list/` + friendId, { friendId: friendId, userId: userId })
             .then((response) => {
-                setFriends(response.data);
+                setFriends(response.data.friends);
             });
     };
     const handleFileClick = () => {
@@ -58,8 +57,6 @@ const Settings = ({ backend, userId }) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-
-        console.log(user);
         axios.put(go, { userInfo: user });
     };
 
@@ -76,22 +73,21 @@ const Settings = ({ backend, userId }) => {
                     position="bottom center">
                     <ul>
                         {friends.map((friend) => (
-                            <li key={friend}>
-                                {friend}
+                            <li key={friend.friendId}>
+                                {friend.friendId}
                                 <button onClick={() => handleRemoveFriend(friend.friendId, user.userId)}>Remove</button>
                             </li>
                         ))}
                     </ul>
-                    <Popup trigger={<button className="addF" onClick={handleAddFriend}>Add Friend</button>}
+                    <Popup trigger={<button className="addF" >Add Friend</button>}
                         modal nested>
                         {
                             close => (
                                 <div className='modal'>
                                     <div className="enterName">
                                         <label className="enterLbl">Enter Username:</label>
-                                        <input type="text" className="fName" placeholder="Friend ID" />
+                                        <input type="text" className="fName" placeholder="Friend ID" onChange={handleAddFriend}/>
                                     </div>
-                                    <label className="found">Friend added!</label>
                                 </div>
                             )
                         }

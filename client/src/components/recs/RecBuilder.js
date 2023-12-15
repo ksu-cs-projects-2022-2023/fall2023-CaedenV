@@ -1,5 +1,5 @@
-import fs from "fs";
-import natural from "natural";
+import fs from 'fs';
+import natural from 'natural';
 // Load the CSV data into a string (replace 'your_book_data.csv' with your file)
 const csvData = fs.readFileSync('GoodReads_Books.csv', 'utf8');
 

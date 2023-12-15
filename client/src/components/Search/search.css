@@ -1,0 +1,10 @@
+.results {
+    display: inline-block;
+}
+.results > ul{
+    white-space: nowrap;
+}
+.results > li{
+    margin-top: 5px;
+    display: inline-block;
+}
