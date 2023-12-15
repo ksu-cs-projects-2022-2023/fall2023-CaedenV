@@ -15,7 +15,8 @@ const Single = (userIdObj) => {
   const bookIdObj = useParams();
   const bookId = String(bookIdObj.GoogleBookId);
   const userId = String(userIdObj.userId);
-  
+
+
 
 
 
@@ -23,22 +24,21 @@ const Single = (userIdObj) => {
 
   useEffect(() => {
     async function FetchAllInfo() {
-      axios.get(`http://localhost:8000/books/${bookId}`, {GoogleBookId: bookId})
-      .then((response) => {
-        setInfo(response.data[0]);
-    });
+      axios.get(`http://localhost:8000/books/${bookId}`, { GoogleBookId: bookId })
+        .then((response) => { 
+          setInfo(response.data[0]);
+        });
 
-    axios.get(`http://localhost:8000/user/${userId}/friends-list`, {userId: userId})
+      axios.get(`http://localhost:8000/user/${userId}/friends-list`, { userId: userId })
         .then((response) => {
           setFriends(response.data);
         });
 
     }
     FetchAllInfo();
-    
   }, [bookId]);
 
-  const { BookCoverLink, BookTitle, BookAuthor, BookPubDate, BookAvgRating, BookDesc } = info;
+  var { BookCoverLink, BookTitle, BookAuthor, BookPubDate, BookAvgRating, BookDesc } = info;
 
   if (!info) {
     return <div>Loading...</div>;
@@ -77,7 +77,7 @@ const Single = (userIdObj) => {
               <span className="split">|</span>
               <i className="singleLen fa-solid fa-scroll"></i>
               <span className="split">|</span>
-              <span className="ratingNum">{BookAvgRating}</span>
+              <span className="ratingNum">{BookAvgRating || 0}</span>
               <i className="reviewIcon fa-solid fa-star-half-stroke"></i>
             </div>
             <p className="singleBookDesc">
@@ -91,7 +91,7 @@ const Single = (userIdObj) => {
               Reviews
             </h>
           </div>
-          <MakeReview bookId={bookId} userId={userId}/>
+          <MakeReview bookId={bookId} userId={userId} bookAvgRating={BookAvgRating || "NA"}/>
           <Reviews bookId={bookId} />
         </div>
       </div>

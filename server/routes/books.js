@@ -18,7 +18,7 @@ router.get('/:bookId', async (req, res) => {
     const book = await finalKnex('Book')
         .select('*')
         .where('GoogleBookId', bookId)
-    res.json(book); 
+    res.json(book);
 });
 
 
@@ -30,6 +30,19 @@ router.get('/:bookId/reviews', async (req, res) => {
 
     res.json(revs);
 });
+
+router.put('/bookId/avgRating', async (req, res) => {
+    const bookId = req.params.bookId;
+    const newAvg = req.body.newAvg;
+
+    await finalKnex('Book')
+        .where('GoogleBookId', bookId)
+        .update({
+            BookAvgRating: newAvg
+        });
+
+        res.json({ message: 'Book average rating updated' });
+})
 
 //INSERT books into the table if not already there
 router.post('/check-book', async (req, res) => {
@@ -76,23 +89,41 @@ router.post('/:bookId/insert-date', async (req, res) => {
 })
 
 router.post('/:bookId/reviews', async (req, res) => {
-    const revTitle = req.body.title;
-    const revText = req.body.text;
-    const revRating = req.body.rating;
-    const bookId = req.params.bookId;
-    const userId = req.body.userId;
+    try {
+        const revTitle = req.body.title;
+        const revText = req.body.text;
+        const revRating = req.body.rating;
+        const userId = req.body.userId;
 
-    await finalKnex('Reviews').insert([
-        {
-            GoogleBookId: bookId,
-            ReviewTitle: revTitle,
-            ReviewText: revText,
-            ReviewUserId: userId,
-            ReviewRating: revRating,
-        }
-    ], ['ReviewId']);
+        await finalKnex('Reviews').insert([
+            {
+                GoogleBookId: req.params.bookId,
+                ReviewTitle: revTitle,
+                ReviewText: revText,
+                ReviewUserId: userId,
+                ReviewRating: revRating,
+            }
+        ], ['ReviewId']);
 
-    res.status(201).json({ message: 'Review successfully added' });
+        const oldRevs = await finalKnex('Reviews')
+            .count('ReviewId')
+            .where('GoogleBookId', req.params.bookId);
+        var oldAvg = await finalKnex('Book')
+            .select('BookAvgRating')
+            .where('GoogleBookId', req.params.bookId);
+        // var newAvg = revRating;
+        // if (oldAvg) {
+        //     newAvg = (oldAvg + revRating) / numRevs;
+        // }
+
+        //await finalKnex('Book').where('GoogleBookId', req.params.bookId).update({ BookAvgRating: newAvg });
+
+        res.status(201).json({ message: 'Review successfully added. Avg Rating updated', numRevs: oldRevs || 0, oldAvg: oldAvg });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'An error occurred while processing your request.' });
+    }
+    
 })
 
 module.exports = router;

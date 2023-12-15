@@ -224,13 +224,9 @@ router.post('/:userId/wished-books', async (req, res) => {
 router.delete('/:userId/wished-books', async (req, res) => {
     const userId = req.params.userId;
     const bookId = req.body.bookId;
-    const wishId = await finalKnex('WishedBooks')
-        .select('WishId')
-        .where('userId', userId)
-        .andWhere('GoogleBookId', bookId);
-    // Insert a new row into the wish_listed_books table
     await finalKnex('WishedBooks')
-        .where('WishId', wishId)
+        .where('userId', userId)
+        .andWhere('GoogleBookId', bookId)
         .delete();
 
     res.json({ message: 'Book removed successfully' });

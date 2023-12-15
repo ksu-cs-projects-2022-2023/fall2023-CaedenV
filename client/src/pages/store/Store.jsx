@@ -6,7 +6,9 @@ import LibBooks from "../../components/bookWithDesc/LibBooks";
 
 
 const addCheckBook = async (book, backend) => {
-  if (book.BookPubDate) {
+  const fakeDate = "1001-01-01";
+  if (book.BookPubDate != undefined) {
+    console.log(book);
     axios.post(`${backend}/books/check-book`, {
       GoogleBookId: book.GoogleBookId,
       BookTitle: book.BookTitle,
@@ -18,6 +20,19 @@ const addCheckBook = async (book, backend) => {
       BookPubDate: book.BookPubDate,
     });
   }
+  else {
+    axios.post(`${backend}/books/check-book`, {
+      GoogleBookId: book.GoogleBookId,
+      BookTitle: book.BookTitle,
+      BookCoverLink: book.BookCoverLink,
+      BookAuthor: book.BookAuthor,
+      BookGenre: book.BookGenre,
+      BookDesc: book.BookDesc,
+      BookAvgRating: book.BookAvgRating,
+      BookPubDate: fakeDate,
+    });
+  }
+  
 
 };
 
@@ -65,7 +80,6 @@ const Store = ({ backend, userId }) => {
 
 
     setResults(formatted);
-    console.log(formatted);
     if (results.length > 0) {
       for (const book of results) {
         addCheckBook(book, backend);
